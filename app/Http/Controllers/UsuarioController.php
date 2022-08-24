@@ -108,7 +108,7 @@ class UsuarioController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update( $request,  $id)
+    public function update(Request $request, $id)
     {
         $edit = User::findOrFail($id);
         $edit -> nombre = $request->nombre_us;
@@ -117,6 +117,8 @@ class UsuarioController extends Controller
         $edit -> nombre_usuario = $request->username;
         if ($edit->contrasena !=null) {
             $edit->contrasena = Hash::make($request->contrasena);
+        }else{
+            $edit->contrasena =$request->contra2;
         }
         $edit->roles()->detach();
         if ($request->rol !=null) {
