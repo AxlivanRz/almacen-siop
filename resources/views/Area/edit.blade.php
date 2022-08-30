@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="areaEdit{{$area->id_area}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="areaEditLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content" style="width: 450px">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content" >
         <div class="modal-header bg-white border-0 " style="height: 50px">
           <h5 class="modal-title" id="areaEditLabel" >Editar Área</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -30,10 +30,10 @@
                     </div>
                     <br>
                     <div class="col-12">                                          
-                        <select class="form-select form-select-sm"  name="up" id="up">
+                        <select class="form-select form-select-sm"  name="area" id="area">
                             <option selected>Seleccionar a que unidad pertence</option>
                             @foreach ($ups as $up)
-                            <option value="{{$up->id_up}}">{{$up->nombre_up}}</option>   
+                            <option value="{{$up->id_up}}">{{$up->nombre_ups}}</option>   
                             @endforeach                      
                         </select>
                     </div>                                          

@@ -1,9 +1,9 @@
 <!-- Modal -->
 <div class="modal fade" id="upEdit{{$up->id_up}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="upEditLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content" style="width: 450px">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content ">
         <div class="modal-header bg-white border-0 " style="height: 50px">
-          <h5 class="modal-title" id="upEditLabel" >Editar Unidad presupuestal</h5>
+          <h5 class="modal-title" id="upEditLabel" >Editar UP</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <div class="content" style="align-self: center">

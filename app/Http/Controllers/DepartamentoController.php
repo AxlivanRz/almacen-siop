@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Ups;
 use App\Models\Area;
+use App\Models\Departamento;
 use Illuminate\Support\Facades\DB;
-class AreaController extends Controller
+
+class DepartamentoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +18,9 @@ class AreaController extends Controller
     public function index()
     {
         $usuarios = User::get();
-        $ups = Ups::get();
-        $areas = Area::paginate(15);
-        return view('Area.index', compact(['areas','ups', 'usuarios']));
+        $areas = Area::get();
+        $departamentos = Departamento::paginate(15);
+        return view('Departamento.index', compact(['departamentos', 'areas', 'usuarios']));
     }
 
     /**
@@ -40,13 +41,13 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new Area; 
-        $create -> nombre_area = $request->nombre_ar;
-        $create -> descripcion_area = $request->desc_ar;
-        $create -> up_id = $request->up;   
+        $create = new Departamento; 
+        $create -> nombre_departamento = $request->nombre_dep;
+        $create -> descripcion_departamento = $request->desc_dep;
+        $create -> area_id = $request->area;   
         $create -> usuario_id = $request->us;    
         $create->save();
-        return redirect('/area');
+        return redirect('/departamento');
     }
 
     /**
@@ -80,17 +81,17 @@ class AreaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $edit = Area::findOrFail($id); 
-        $edit -> nombre_area = $request->nombre_ar;
-        $edit -> descripcion_area = $request->desc_ar;
-        if ($request->up !=null) {
-            $edit -> up_id = $request->up;   
+        $edit = Departamento::findOrFail($id); 
+        $edit -> nombre_departamento = $request->nombre_dep;
+        $edit -> descripcion_departamento = $request->desc_dep;
+        if ($request->area !=null) {
+            $edit -> area_id = $request->area;   
         }
         if ($request->us !=null) {
             $edit -> usuario_id = $request->us;  
         }    
         $edit->save();
-        return redirect('/area');
+        return redirect('/departamento');
     }
 
     /**
@@ -101,8 +102,8 @@ class AreaController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Area::findOrFail($id);
+        $delete = Departamento::findOrFail($id);
         $delete->delete();
-        return redirect('/area');
+        return redirect('/departamento');
     }
 }

@@ -27,16 +27,16 @@
 
     <body>
         <!-- navbar -->
-        <nav class="navbar navbar-expand-md border border-1" style="background-color:  #ffffff ; height: 70px">
-            <div class="container">
-                <span class="navbar-brand" style="font-family: 'italic'; font-size: 30px;"><u>Almacen<i>V1</i></u></span>
-                <a class="navbar-brand logo"><img src="{{ asset('../img/hm-siop-logos.png') }}" style="height: 75px;"></i></a>
+        <nav class="navbar border border-0" style="background-color:  #ffffff ;">
+            <div class="container" >
+                <a class="navbar-brand">Almacenv1</a>
+                <a class="navbar-brand mb-0 h1 mx-auto d-block"><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 75px;"></i></a>
             </div>
         </nav>
         <!-- navbar -->
         @auth                           
         <div class="d-flex align-items-start " >
-            <div class="nav d-flex flex-md-column flex-row me-auto   border border-right border-0 shadow-md p-1 mb-1 bg-white rounded " 
+            <div class="nav d-flex flex-md-column flex-row me-auto   border border-right border-0 shadow-md p-0 mb-0 bg-white rounded " 
             style="align-items: center; background-color: #FFFFFFFF; min-height: 570px;" id="sidebar" role="tablist" >
                 <p>
                     <button class="btn btn-ligth" id="prueba-dos" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
@@ -67,7 +67,7 @@
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('usuario.index')}}">Usuarios</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('up.index')}}">Ups</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('area.index')}}">Areas</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Departamentos</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('departamento.index')}}">Departamentos</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Partidas</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Proveedores</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Origen recurso</a>
@@ -112,7 +112,8 @@
                     </div>
                 </div>
             </div>
-            <div class=" me-auto  col-md-10">
+        
+            <div class="flex-center position-ref full-height me-auto col-md-10 col-10 offset-0 offset-sm-0 offset-md-0">
                 <div class="content ">
                     
                     @yield('content')
