@@ -1,0 +1,55 @@
+@extends('sideb')
+@section('content')
+<br>
+<div class="row">
+    <div class="col-3 py-2">
+        <h5><i class="far fa-file-alt"></i>&NonBreakingSpace; Partidas</h5>
+    </div>
+</div>
+<div class="container bg-white col-md-10 col-sm-12 col-11">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Abreviado</th>
+                <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#partidaCreate">
+                        <i class="far fa-plus-square"></i>
+                    </button>
+                </th>                
+            </tr>
+            </thead>
+            <tbody>            
+                @if ($partidas->isNotEmpty())
+                    @foreach ( $partidas as $partida )
+                        <tr>
+                            <th scope="row">{{$partida->id_partida}}</th>
+                            <td>{{$partida->nombre_partida}}</td>
+                            <td>{{$partida->descripcion_partida}}</td>
+                            <td>{{$partida->abreviado}}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#partidaDelete{{$partida->id_partida}}">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button> 
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#partidaEdit{{$partida->id_partida}}">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                            </td>                   
+                        </tr>                        
+                    @endforeach
+                @else
+                    <td colspan="5" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
+                @endif                            
+            </tbody>
+        </table>  
+    </div>
+    @if ($partidas->isNotEmpty())
+        @include('Partida.delete')
+        @include('Partida.edit')
+    @endif
+    @include('Partida.create')    
+</div>
+@endsection
