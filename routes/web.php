@@ -5,6 +5,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UpController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::view('/inicio', 'inicio')->name('inicio')->middleware('auth');
 Route::resource('/up', UpController::class)->middleware('auth');
 Route::resource('/area', AreaController::class)->middleware('auth');
 Route::resource('/departamento', DepartamentoController::class)->middleware('auth');
+Route::resource('/partida', PartidaController::class)->middleware('auth');
 
 
 
