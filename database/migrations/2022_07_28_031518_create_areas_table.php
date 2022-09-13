@@ -18,10 +18,9 @@ class CreateAreasTable extends Migration
             $table->string('nombre_area', 40);
             $table->string('descripcion_area', 40);
             $table->unsignedBigInteger('up_id');
-            $table->unsignedBigInteger('usuario_id');
+            $table->string('encargado_area', 40);
             $table->timestamps();
             $table->foreign('up_id')->references('id_up')->on('ups')->onDelete('cascade');
-            $table->foreign('usuario_id')->references('id_usuario')->on('users')->onDelete('cascade');
         });
     }
 

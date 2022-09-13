@@ -1,6 +1,11 @@
 @extends('sideb')
 @section('content')
 <br>
+<div class="row">
+    <div class="col-3 py-2">
+        <h5> <i class="fas fa-university"></i> &NonBreakingSpace; Unidad presupuestal</h5>
+    </div>
+</div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
     <div class="table-responsive">
         <table class="table">
@@ -44,8 +49,10 @@
         </table> 
     </div>
     @if ($ups->isNotEmpty())
-        @include('Up.delete')
-        @include('Up.edit')
+        @foreach ( $ups as $up )
+            @include('Up.delete')
+            @include('Up.edit')
+        @endforeach
     @endif
     @include('Up.create')
 </div>

@@ -17,9 +17,7 @@
 
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/iconc.js') }}" defer></script>
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
 </head>
 
     <body style="background-color: #F2F3F4  ;">
@@ -30,7 +28,7 @@
         <nav class="navbar border border-0" style="background-color:  #ffffff ;">
             <div class="container" >
                 <a class="navbar-brand">Almacenv1</a>
-                <a class="navbar-brand mb-0 h1 mx-auto d-block"><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 75px;"></i></a>
+                <a class="navbar-brand mb-0  mx-auto d-block"><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 65px;"></a>
             </div>
         </nav>
         <!-- navbar -->
@@ -66,10 +64,10 @@
                                 <div class="card card-body col-md-12 shadow-none border border-2 p-1 mb-3 bg-white rounded " style="align-content: center">
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('usuario.index')}}">Usuarios</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('up.index')}}">Ups</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('area.index')}}">Areas</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('area.index')}}">Direcciones/Unidades</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('departamento.index')}}">Departamentos</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('partida.index')}}">Partidas</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Proveedores</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('proveedor.index')}}">Proveedores</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Origen recurso</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Articulos</a>
                                 </div>

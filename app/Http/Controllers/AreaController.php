@@ -44,7 +44,7 @@ class AreaController extends Controller
         $create -> nombre_area = $request->nombre_ar;
         $create -> descripcion_area = $request->desc_ar;
         $create -> up_id = $request->up;   
-        $create -> usuario_id = $request->us;    
+        $create -> encargado_area = $request->us;    
         $create->save();
         return redirect('/area');
     }
@@ -87,7 +87,7 @@ class AreaController extends Controller
             $edit -> up_id = $request->up;   
         }
         if ($request->us !=null) {
-            $edit -> usuario_id = $request->us;  
+            $edit -> encargado_area = $request->us;  
         }    
         $edit->save();
         return redirect('/area');

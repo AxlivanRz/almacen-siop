@@ -11,11 +11,11 @@
                         <form action="{{route('up.store')}}" method="POST">
                             @csrf
                         <div class="col-12">
-                            <label >Nombre </label>                
+                            <label >Nombre de la UP </label>                
                             <input type="text mb-3" class="form-control"  id="nombre_up" name="nombre_up" style="height: 35px">
                         </div>
                         <div class="col-12">
-                            <label >Descripción</label>
+                            <label >Unidad presupuestal</label>
                             <input type="text" class="form-control" id ="desc_up" name ="desc_up" style="height: 35px">
                         </div>
                         <div class="col-12">

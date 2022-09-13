@@ -47,8 +47,10 @@
         </table>  
     </div>
     @if ($partidas->isNotEmpty())
-        @include('Partida.delete')
-        @include('Partida.edit')
+        @foreach ( $partidas as $partida )
+            @include('Partida.delete')
+            @include('Partida.edit')
+        @endforeach
     @endif
     @include('Partida.create')    
 </div>

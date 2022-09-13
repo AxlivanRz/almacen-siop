@@ -11,7 +11,7 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up() 
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id_usuario');
@@ -20,8 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('segundo_apellido');
             $table->string('nombre_usuario')->unique();
             $table->string('contrasena');
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->unsignedBigInteger('departamento_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('area_id')->references('id_area')->on('areas')->onDelete('cascade');
+            $table->foreign('departamento_id')->references('id_departamento')->on('departamentos')->onDelete('cascade');
         });
     }
 

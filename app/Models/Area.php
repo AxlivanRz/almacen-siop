@@ -22,7 +22,7 @@ class Area extends Model
         'nombre_area',
         'descripcion_area',
         'up_id',
-        'usuario_id',
+        'encargado_area',
     ];
 
 }

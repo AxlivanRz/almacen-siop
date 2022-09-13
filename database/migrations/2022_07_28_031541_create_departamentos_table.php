@@ -18,10 +18,9 @@ class CreateDepartamentosTable extends Migration
             $table->string('nombre_departamento', 40);
             $table->string('descripcion_departamento', 40);
             $table->unsignedBigInteger('area_id');
-            $table->unsignedBigInteger('usuario_id');
+            $table->string('encargado_departamento', 40);
             $table->timestamps();
             $table->foreign('area_id')->references('id_area')->on('areas')->onDelete('cascade');
-            $table->foreign('usuario_id')->references('id_usuario')->on('users')->onDelete('cascade');
         });
     }
 

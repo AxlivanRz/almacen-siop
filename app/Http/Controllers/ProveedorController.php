@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Area;
-use App\Models\Departamento;
+use App\Models\Proveedores;
 use Illuminate\Support\Facades\DB;
-
-class DepartamentoController extends Controller
+class ProveedorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +14,8 @@ class DepartamentoController extends Controller
      */
     public function index()
     {
-        $usuarios = User::get();
-        $areas = Area::get();
-        $departamentos = Departamento::paginate(15);
-        return view('Departamento.index', compact(['departamentos', 'areas', 'usuarios']));
+        $proveedores = Proveedores::paginate(15);
+        return view('Proveedor.index', compact(['proveedores']));
     }
 
     /**
@@ -41,13 +36,18 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new Departamento; 
-        $create -> nombre_departamento = $request->nombre_dep;
-        $create -> descripcion_departamento = $request->desc_dep;
-        $create -> area_id = $request->area;   
-        $create -> encargado_departamento = $request->us;    
+        $create = new Proveedores;
+        $create -> razon_social = $request->razon;
+        $create -> calle = $request->calle;
+        $create -> colonia = $request->colonia;
+        $create -> codigo_postal = $request->codigo_postal;
+        $create -> poblacion = $request->poblacion;
+        $create -> estado = $request->estado;
+        $create -> pais = $request->pais;
+        $create -> telefono = $request->telefono;
+        $create -> email_proveedor = $request->email_proveedor;
         $create->save();
-        return redirect('/departamento');
+        return redirect('/proveedor');
     }
 
     /**
@@ -58,7 +58,7 @@ class DepartamentoController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -81,17 +81,18 @@ class DepartamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $edit = Departamento::findOrFail($id); 
-        $edit -> nombre_departamento = $request->nombre_dep;
-        $edit -> descripcion_departamento = $request->desc_dep;
-        if ($request->area !=null) {
-            $edit -> area_id = $request->area;   
-        }
-        if ($request->us !=null) {
-            $edit -> encargado_departamento = $request->us;  
-        }    
+        $edit = Proveedores::findOrFail($id);
+        $edit -> razon_social = $request->razon;
+        $edit -> calle = $request->calle;
+        $edit -> colonia = $request->colonia;
+        $edit -> codigo_postal = $request->codigo_postal;
+        $edit -> poblacion = $request->poblacion;
+        $edit -> estado = $request->estado;
+        $edit -> pais = $request->pais;
+        $edit -> telefono = $request->telefono;
+        $edit -> email_proveedor = $request->email_proveedor;
         $edit->save();
-        return redirect('/departamento');
+        return redirect('/proveedor');
     }
 
     /**
@@ -102,8 +103,8 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Departamento::findOrFail($id);
+        $delete = Proveedores::findOrFail($id);
         $delete->delete();
-        return redirect('/departamento');
+        return redirect('/proveedor');
     }
 }

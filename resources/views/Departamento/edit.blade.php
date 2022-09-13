@@ -16,19 +16,14 @@
                         <input type="text mb-3" class="form-control"  id="nombre_dep" name="nombre_dep" style="height: 35px" value="{{$departamento->nombre_departamento}}">
                     </div>
                     <div class="col-12">
-                        <label >Descripción</label>
+                        <label >Siglas</label>
                         <input type="text" class="form-control" id ="desc_dep" name ="desc_dep" style="height: 35px" value="{{$departamento->descripcion_departamento}}">
                     </div>         
-                    <br> 
-                    <div class="col-12">         
-                        <select class="form-select form-select-sm"  name="us" id="us">                        
-                            <option selected>Seleccionar un responsable del área</option>
-                            @foreach ($usuarios as $usuario)
-                            <option value="{{$usuario->id_usuario}}">{{$usuario->nombre}} {{$usuario->primer_apellido}}</option>   
-                            @endforeach                     
-                        </select>
+                    <div class="col-12">
+                        <label >Responsable del departamento</label>
+                        <input type="text" class="form-control" name="us" id="us" style="height: 35px" value="{{$departamento->encargado_departamento}}">
                     </div>
-                    <br>
+                    <label>Área</label>
                     <div class="col-12">                                          
                         <select class="form-select form-select-sm"  name="area" id="area">
                             <option selected>Seleccionar al área que pertenece</option>

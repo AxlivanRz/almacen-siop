@@ -22,6 +22,6 @@ class Departamento extends Model
         'nombre_departamento',
         'descripcion_departamento',
         'area_id',
-        'usuario_id',
+        'encargado_departamento',
     ];
 }

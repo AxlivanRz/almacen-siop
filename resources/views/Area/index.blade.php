@@ -1,6 +1,11 @@
 @extends('sideb')
 @section('content')
 <br>
+<div class="row">
+    <div class="col-3 py-2">
+        <h5> <i class="fas fa-university"></i> &NonBreakingSpace; Direcciones/Unidades</h5>
+    </div>
+</div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
     <div class="table-responsive">
         <table class="table ">
@@ -8,7 +13,7 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">Siglas</th>
                 <th scope="col">Encargado</th>
                 <th scope="col">Unidad presupuestal</th>
                 <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -25,13 +30,14 @@
                             <th scope="row">{{$area->id_area}}</th>
                             <td>{{$area->nombre_area}}</td>
                             <td>{{$area->descripcion_area}}</td>
-                            @foreach ($usuarios as $usuario )
+                            {{-- @foreach ($usuarios as $usuario )
                                 @if ($usuario->id_usuario == $area->usuario_id)
                                 <td>{{$usuario->nombre_usuario}}</td>                                 
                                 @else
                                 <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de usuario</span></td> 
                                 @endif
-                            @endforeach
+                            @endforeach --}}
+                            <td>{{$area->encargado_area}}</td>
                             @foreach ($ups as $up )
                                 @if ($up->id_up == $area->up_id)  
                                 <td>{{$up->nombre_ups}}</td>                              
@@ -47,17 +53,19 @@
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                             </td>                   
-                        </tr>                       
+                        </tr>                    
                     @endforeach
                 @else
-                    <td colspan="5" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
+                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
                 @endif                            
             </tbody>
         </table>
-    </div>  
-    @if ($areas->isNotEmpty())
-        @include('Area.delete')
-        @include('Area.edit')
+    </div>
+    @if ($areas->isNotEmpty())  
+        @foreach ($areas as $area )
+            @include('Area.delete')
+            @include('Area.edit')   
+        @endforeach
     @endif
     @include('Area.create')   
 </div>

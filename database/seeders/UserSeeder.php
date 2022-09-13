@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'nombre' => 'Administrador',
             'primer_apellido' => 'pruebas',
             'segundo_apellido' => 'dos',
-            'nombre_usuario' => 'Admin',
+            'nombre_usuario' => 'Admin',            
             'contrasena' => Hash::make('a123456'),
         ]);
         DB::table('rol_usuarios')->insert([
