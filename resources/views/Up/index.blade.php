@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-3 py-2">
-        <h5> <i class="fas fa-university"></i> &NonBreakingSpace; Unidad presupuestal</h5>
+        <h5> <i class="fas fa-university fa-2x"></i> &NonBreakingSpace; Unidad presupuestal</h5>
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
@@ -12,8 +12,8 @@
             <thead>
                 <tr>
                     <th scope="col">Id</th>
+                    <th scope="col">Unidad presupuestal</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
                     <th scope="col">Iniciales</th>
                     <th scope="col" style="width: 150px;">Acciones&nbsp;
                         <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#upCreate">
@@ -27,9 +27,9 @@
                 @if ($ups->isNotEmpty())
                     @foreach ( $ups as $up )
                         <tr>
-                            <th scope="row">{{$up->id_up}}</th>
-                            <td>{{$up->nombre_ups}}</td>
+                            <th scope="row">{{$up->id_up}}</th>                            
                             <td>{{$up->descripcion_ups}}</td>
+                            <td>{{$up->nombre_ups}}</td>
                             <td>{{$up->iniciales}}</td>
                             <td >                                
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#upDelete{{$up->id_up}}">
@@ -47,6 +47,7 @@
                 @endif                            
             </tbody>
         </table> 
+        <div class = "d-flex">{{$ups->links()}}</div>
     </div>
     @if ($ups->isNotEmpty())
         @foreach ( $ups as $up )

@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-3 py-2">
-        <h5><i class="far fa-file-alt"></i>&NonBreakingSpace; Partidas</h5>
+        <h5><i class="far fa-file-alt fa-2x"></i>&NonBreakingSpace; Partidas presupuestales</h5>
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
@@ -12,9 +12,9 @@
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Abreviado</th>
+                <th scope="col">Clave partida</th>
+                <th scope="col">Nombre de partida</th>
+                <th scope="col">Iniciales de partida</th>
                 <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#partidaCreate">
                         <i class="far fa-plus-square"></i>
@@ -27,8 +27,8 @@
                     @foreach ( $partidas as $partida )
                         <tr>
                             <th scope="row">{{$partida->id_partida}}</th>
-                            <td>{{$partida->nombre_partida}}</td>
                             <td>{{$partida->descripcion_partida}}</td>
+                            <td>{{$partida->nombre_partida}}</td>
                             <td>{{$partida->abreviado}}</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#partidaDelete{{$partida->id_partida}}">
@@ -45,6 +45,7 @@
                 @endif                            
             </tbody>
         </table>  
+        <div class = "d-flex">{{$partidas->links()}}</div>
     </div>
     @if ($partidas->isNotEmpty())
         @foreach ( $partidas as $partida )

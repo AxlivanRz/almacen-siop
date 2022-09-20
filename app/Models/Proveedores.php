@@ -20,6 +20,7 @@ class Proveedores extends Model
      */
     protected $fillable = [
         'razon_social',
+        'nombre_empresa',
         'calle',
         'colonia',
         'codigo_postal',

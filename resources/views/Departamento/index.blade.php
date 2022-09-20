@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-3 py-2">
-        <h5> <i class="fas fa-university"></i> &NonBreakingSpace; Departamento</h5>
+        <h5> <i class="fas fa-university fa-2x"></i> &NonBreakingSpace; Departamento</h5>
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-sm modal-dialog-aentered modal-dialog-scrollable">
       <div class="modal-content ">
         <div class="modal-header bg-white border-0 " style="height: 50px">
-          <h5 class="modal-title" id="partidaEditLabel" >Editar partida</h5>
+          <h5 class="modal-title" id="partidaEditLabel" >Editar partida presupuestal</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <div class="content" style="align-self: center">
@@ -12,15 +12,15 @@
                         @csrf 
                         @method('PUT')
                         <div class="col-12">
-                            <label >Nombre </label>                
-                            <input type="text mb-3" class="form-control"  id="nombre_partida" name="nombre_partida" style="height: 35px" value="{{$partida->nombre_partida}}">
-                        </div>
-                        <div class="col-12">
-                            <label >Descripción</label>
+                            <label >Clave de partida</label>
                             <input type="text" class="form-control" id ="desc_partida" name ="desc_partida" style="height: 35px" value="{{$partida->descripcion_partida}}">
                         </div>
                         <div class="col-12">
-                            <label >Abreviado</label>
+                            <label >Nombre de partida</label>                
+                            <input type="text mb-3" class="form-control"  id="nombre_partida" name="nombre_partida" style="height: 35px" value="{{$partida->nombre_partida}}">
+                        </div>
+                        <div class="col-12">
+                            <label >Iniciales de partida</label>
                             <input type="text" class="form-control" id ="abreviado" name ="abreviado" style="height: 35px" value="{{$partida->abreviado}}">
                         </div>               
                 </div>

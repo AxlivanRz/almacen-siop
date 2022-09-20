@@ -9,14 +9,14 @@
                 <div class="content" style="align-self: center">
                     <div class="modal-body">
                         <form action="{{route('up.store')}}" method="POST">
-                            @csrf
-                        <div class="col-12">
-                            <label >Nombre de la UP </label>                
-                            <input type="text mb-3" class="form-control"  id="nombre_up" name="nombre_up" style="height: 35px">
-                        </div>
+                            @csrf                        
                         <div class="col-12">
                             <label >Unidad presupuestal</label>
                             <input type="text" class="form-control" id ="desc_up" name ="desc_up" style="height: 35px">
+                        </div>
+                        <div class="col-12">
+                            <label >Nombre de la UP </label>                
+                            <input type="text mb-3" class="form-control"  id="nombre_up" name="nombre_up" style="height: 35px">
                         </div>
                         <div class="col-12">
                             <label >Iniciales</label>

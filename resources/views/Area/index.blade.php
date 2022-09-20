@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-3 py-2">
-        <h5> <i class="fas fa-university"></i> &NonBreakingSpace; Direcciones/Unidades</h5>
+        <h5> <i class="fas fa-university fa-2x"></i> &NonBreakingSpace; Direcciones/Unidades</h5>
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
@@ -30,19 +30,14 @@
                             <th scope="row">{{$area->id_area}}</th>
                             <td>{{$area->nombre_area}}</td>
                             <td>{{$area->descripcion_area}}</td>
-                            {{-- @foreach ($usuarios as $usuario )
-                                @if ($usuario->id_usuario == $area->usuario_id)
-                                <td>{{$usuario->nombre_usuario}}</td>                                 
-                                @else
-                                <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de usuario</span></td> 
-                                @endif
-                            @endforeach --}}
                             <td>{{$area->encargado_area}}</td>
                             @foreach ($ups as $up )
                                 @if ($up->id_up == $area->up_id)  
-                                <td>{{$up->nombre_ups}}</td>                              
+                                 <td>{{$up->nombre_ups}}</td>                              
                                 @else
-                                <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de up</span></td> 
+                                    @if ($area->up_id == null)
+                                        <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de up</span></td> 
+                                    @endif
                                 @endif
                             @endforeach                                                
                             <td>

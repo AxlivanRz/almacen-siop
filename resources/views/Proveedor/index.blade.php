@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-3 py-2">
-        <h5> <i class="fas fa-people-carry"></i> &NonBreakingSpace; Proveedores</h5>
+        <h5> <i class="fas fa-people-carry fa-2x"></i> &NonBreakingSpace; Proveedores</h5>
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
@@ -13,6 +13,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Razón social</th>
+                    <th scope="col">Nombre de la empresa</th>
                     <th scope="col">Teléfono</th>
                     <th scope="col">Email</th>
                     <th scope="col" style="width: 150px;">Acciones&nbsp;
@@ -29,6 +30,7 @@
                         <tr>
                             <th scope="row">{{$proveedor->id_proveedor}}</th>
                             <td>{{$proveedor->razon_social}}</td>
+                            <td>{{$proveedor->nombre_empresa}}</td>
                             <td>{{$proveedor->telefono}}</td>
                             <td>{{$proveedor->email_proveedor}}</td>
                             <td >                                
@@ -45,10 +47,11 @@
                         </tr>
                     @endforeach
                 @else
-                    <td colspan="5" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
+                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
                 @endif                            
             </tbody>
-        </table> 
+        </table>
+        <div class = "d-flex">{{$proveedores->links()}}</div> 
     </div>
     @if ($proveedores->isNotEmpty())
         @foreach ( $proveedores as $proveedor )

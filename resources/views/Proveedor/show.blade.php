@@ -12,6 +12,10 @@
                             <input type="text mb-3" class="form-control"  id="razon" name="razon" style="height: 35px" value="{{$proveedor->razon_social}}" disabled>
                         </div>
                         <div class="col-12">
+                            <label >Nombre de la empresa</label>                
+                            <input type="text mb-3" class="form-control"  id="razon" name="razon" style="height: 35px" value="{{$proveedor->nombre_empresa}}" disabled>
+                        </div>
+                        <div class="col-12">
                             <label >Calle</label>
                             <input type="text" class="form-control" id ="calle" name ="calle" style="height: 35px" value="{{$proveedor->calle}}" disabled>
                         </div>

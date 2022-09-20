@@ -16,19 +16,25 @@
                         <input type="text mb-3" class="form-control"  id="nombre_ar" name="nombre_ar" style="height: 35px" value="{{$area->nombre_area}}">
                     </div>
                     <div class="col-12">
-                        <label >Siglas</label>
+                        <label >Siglas</label> 
                         <input type="text" class="form-control" id ="desc_ar" name ="desc_ar" style="height: 35px" value="{{$area->descripcion_area}}">
                     </div>         
                     <div class="col-12">
                         <label >Responsable del área</label>
-                        <input type="text" class="form-control" name="us" id="us" style="height: 35px" value="{{$area->responsable_area}}">
+                        <input type="text" class="form-control" name="us" id="us" style="height: 35px" value="{{$area->encargado_area}}">
                     </div>
                     <label >Unidad presupuestal</label>
                     <div class="col-12">                                          
-                        <select class="form-select form-select-sm"  name="area" id="area">
-                            <option selected>Seleccionar a que unidad pertence</option>
+                        <select class="form-select form-select-sm"  name="up" id="up">
+                            @foreach ($ups as $up )
+                                @if ($up->id_up == $area->up_id)  
+                                    <option selected value="{{$up->id_up}}">{{$up->nombre_ups}}</option>
+                                @endif
+                            @endforeach 
                             @foreach ($ups as $up)
-                            <option value="{{$up->id_up}}">{{$up->nombre_ups}}</option>   
+                                @if ($up->id_up != $area->up_id)
+                                    <option value="{{$up->id_up}}">{{$up->nombre_ups}}</option>
+                                @endif   
                             @endforeach                      
                         </select>
                     </div>                                          
@@ -37,7 +43,7 @@
             <div class="d-flex justify-content-center align-items-center " style="height: 85px">
                 <div class="modal-footer bg-white border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cerrar</button>
-                    <button type="submit" class="btn btn-outline-success">Crear</button>
+                    <button type="submit" class="btn btn-outline-primary">Editar</button>
                 </div>
             </div>
         </form>
