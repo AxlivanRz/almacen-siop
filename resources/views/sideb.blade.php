@@ -33,16 +33,16 @@
         </nav>
         <!-- navbar -->
         @auth                           
-        <div class="d-flex align-items-start " >
+        <div class="d-flex align-items-start ">
             <div class="nav d-flex flex-md-column flex-row me-auto   border border-right border-0 shadow-md p-0 mb-0 bg-white rounded " 
-            style="align-items: center; background-color: #FFFFFFFF; min-height: 570px;" id="sidebar" role="tablist" >
+            style="align-items: center; background-color: #FFFFFFFF; min-height: 570px; " id="sidebar" role="tablist">
                 <p>
-                    <button class="btn btn-ligth" id="prueba-dos" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
-                        <i id="icon" class="fa-solid fa-bars"></i>
+                    <button class="btn btn-ligth" id="prueba-dos" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"  aria-expanded="true" aria-controls="collapseWidthExample">
+                        <i id="icon" class="fa-solid fa-angles-left"></i>
                     </button>
                 </p>
                 <div style="min-height: 120px; ">
-                    <div class="collapse collapse-horizontal " id="collapseWidthExample">
+                    <div class="collapse collapse-horizontal show" id="collapseWidthExample">
                         <div class="card card-body  border border-0" style="width: 185px;">
                             <p>
                                 <button class="btn btn-sm border border-0 btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#drop4" aria-expanded="false" aria-controls="drop4">
@@ -69,7 +69,7 @@
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('partida.index')}}">Partidas presupuestales</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('proveedor.index')}}">Proveedores</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('recurso.index')}}">Origen recurso</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Articulos</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('articulo.index')}}">Articulos</a>
                                 </div>
                             </div>
                             <p>

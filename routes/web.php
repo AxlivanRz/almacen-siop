@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\OrigenRecursoController;
+use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::resource('/up', UpController::class)->middleware('auth');
 Route::resource('/area', AreaController::class)->middleware('auth');
 Route::resource('/departamento', DepartamentoController::class)->middleware('auth');
 Route::resource('/partida', PartidaController::class)->middleware('auth');
+Route::resource('/articulo', ArticuloController::class)->middleware('auth');
 Route::resource('/proveedor', ProveedorController::class)->middleware('auth');
 Route::resource('/recurso', OrigenRecursoController::class)->middleware('auth');
 

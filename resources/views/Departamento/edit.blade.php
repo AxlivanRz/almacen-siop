@@ -26,10 +26,16 @@
                     <label>Área</label>
                     <div class="col-12">                                          
                         <select class="form-select form-select-sm"  name="area" id="area">
-                            <option selected>Seleccionar al área que pertenece</option>
+                            @foreach ($areas as $area )
+                            @if ($area->id_area == $departamento->area_id)  
+                                <option selected value="{{$area->id_area}}">{{$area->nombre_area}}</option>
+                            @endif
+                            @endforeach 
                             @foreach ($areas as $area)
-                            <option value="{{$area->id_area}}">{{$area->nombre_area}}</option>   
-                            @endforeach                      
+                                @if ($area->id_area != $departamento->area_id)
+                                    <option value="{{$area->id_area}}">{{$area->nombre_area}}</option>
+                                @endif   
+                            @endforeach                    
                         </select>
                     </div>                                          
                 </div>

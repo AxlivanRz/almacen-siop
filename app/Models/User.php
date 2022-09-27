@@ -26,6 +26,8 @@ class User extends Authenticatable
         'primer_apellido',
         'segundo_apellido',
         'nombre_usuario',
+        'area_id',
+        'departamento_id',
         'contrasena',
     ];
 

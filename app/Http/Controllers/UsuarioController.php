@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Rol;
+use App\Models\Area;
+use App\Models\Departamento;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,11 +35,12 @@ class UsuarioController extends Controller
             ->where('id_rol', '2')
             ->get();
         }
-        $user['user'] = User::paginate(15);
-        
+        $user['user'] = User::get();
+        $areas = Area::get();
+        $departamentos = Departamento::get();
     
         //return view ('Usuario.index', ['roles' => $roles]); 
-        return view('Usuario.index', $user ,  compact(['roles']));
+        return view('Usuario.index', $user ,  compact(['roles', 'areas', 'departamentos']));
     }
 
     /**
@@ -71,8 +74,16 @@ class UsuarioController extends Controller
         $create -> segundo_apellido = $request->segundo;       
         $create -> nombre_usuario = $request->username;
         $create -> contrasena = Hash::make($request->contrasena);
-        $create->save();
-        if ($request->rol !=null) {
+        $create->save(); 
+        if ($request->areaus!=null && $request->areaus != 0) {
+            $create -> area_id = $request->areaus; 
+            $create->save(); 
+        }
+        if ($request->departamento !=null && $request->departamento != 0) {
+            $create -> departamento_id = $request->departamento;
+            $create->save(); 
+        }
+        if ($request->rol !=null) { 
             $create->roles()->attach($request->rol);
             $create->save();
         }
@@ -119,6 +130,20 @@ class UsuarioController extends Controller
             $edit->contrasena = Hash::make($request->contrasena);
         }else{
             $edit->contrasena =$request->contra2;
+        }
+        if ($request->areaus != null) {
+            $edit -> area_id = $request->areaus; 
+            $edit->save(); 
+        }
+        if ($request->departamento != null) {
+            $id = $request->departamento;
+            $ida = DB::table('departamentos')
+            ->select('area_id')
+            ->where('id_departamento', $id)
+            ->get();
+            $edit -> area_id = $ida; 
+            $edit -> departamento_id = $id;
+            $edit->save(); 
         }
         $edit->roles()->detach();
         if ($request->rol !=null) {
