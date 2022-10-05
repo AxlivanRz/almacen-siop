@@ -19,10 +19,10 @@ class CreateEntradaArticulosTable extends Migration
             $table->string('descuento');
             $table->string('precio');
             $table->unsignedBigInteger('articulo_id');
-            $table->unsignedBigInteger('factura_id');
+            $table->unsignedBigInteger('encabezado_id');
             $table->timestamps();
             $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
-            $table->foreign('factura_id')->references('id_factura')->on('facturas')->onDelete('cascade');
+            $table->foreign('encabezado_id')->references('id_encabezado_factura')->on('encabezado_facturas')->onDelete('cascade');
         });
     }
 

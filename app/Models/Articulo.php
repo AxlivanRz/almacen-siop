@@ -19,8 +19,12 @@ class Articulo extends Model
      * @var array
      */
     protected $fillable = [
+        'clave_articulo',
         'nombre_articulo',
-        'unidad_medida',
+        'foto_articulo',
+        'ubicacion',
+        'observaciones',
+        'medida_id',
         'partida_id',
     ];
 }

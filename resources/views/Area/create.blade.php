@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="areaCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="areaCreateLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header bg-white border-0 " style="height: 50px">
           <h5 class="modal-title" id="userCreateLabel" >Crear Dirección/Unidad</h5>

@@ -17,7 +17,7 @@ class Factura extends Model
      * The attributes that are mass assignable.
      *
      * @var array
-     */
+     */ 
     protected $fillable = [
         'imp_iva',
         'imp_total',

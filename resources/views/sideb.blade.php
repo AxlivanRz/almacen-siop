@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Sistema de Administración de Insumos</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="../css/bootstrap-tagsinput.css">  
-    <script src="{{ asset('js/jquery.min.js') }}" defer></script>
-    <script src="../js/bootstrap-tagsinput.js"></script>
-
-
+    @yield('scripts')
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/iconc.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -27,7 +22,7 @@
         <!-- navbar -->
         <nav class="navbar border border-0" style="background-color:  #ffffff ;">
             <div class="container" >
-                <a class="navbar-brand">Almacenv1</a>
+                <a class="navbar-brand">SIADIN</a>
                 <a class="navbar-brand mb-0  mx-auto d-block"><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 65px;"></a>
             </div>
         </nav>
@@ -69,6 +64,7 @@
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('partida.index')}}">Partidas presupuestales</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('proveedor.index')}}">Proveedores</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('recurso.index')}}">Origen recurso</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('unidadesmedicion.index')}}">Unidades de medida</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('articulo.index')}}">Articulos</a>
                                 </div>
                             </div>
@@ -79,7 +75,7 @@
                             </p>
                             <div class="collapse" id="drop1">
                                 <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Alta factura</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('encabezado.index')}}">Alta factura</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Consultar facturas</a>
                                 </div>
                             </div>

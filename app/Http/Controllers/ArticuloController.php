@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Partida;
 use App\Models\Articulo;
+use App\Models\UnidadMedida;
 
 
 class ArticuloController extends Controller
@@ -17,8 +18,9 @@ class ArticuloController extends Controller
     public function index()
     {
         $partidas = Partida::get();
+        $medidas = UnidadMedida::get();
         $articulos = Articulo::paginate(15);
-        return view('Articulo.index', compact(['articulos', 'partidas']));
+        return view('Articulo.index', compact(['articulos', 'partidas', 'medidas']));
     }
 
     /**
@@ -41,8 +43,14 @@ class ArticuloController extends Controller
     {
         $create = new Articulo;
         $create -> nombre_articulo = $request->nombreAr;
-        $create -> unidad_medida = $request->unidad;
+        $create -> clave_articulo = $request->clave;
+        $create -> ubicacion = $request->ubicacion;
+        $create -> observaciones = $request->observaciones;
+        $create -> medida_id = $request->medida;
         $create -> partida_id = $request->partida;
+        if ($request->hasFile('foto_articulo')) {
+            $create['foto_articulo']=$request->file('foto_articulo')->store('uploads', 'public');
+        }
         $create->save();
         return redirect('/articulo');
     }
@@ -80,9 +88,15 @@ class ArticuloController extends Controller
     {
         $edit = Articulo::findOrFail($id);
         $edit -> nombre_articulo = $request->nombreAr;
-        $edit -> unidad_medida = $request->unidad;
+        $edit -> clave_articulo = $request->clave;
+        $edit -> ubicacion = $request->ubicacion;
+        $edit -> observaciones = $request->observaciones;
+        $edit -> medida_id = $request->medida;
         if ($request->partida !=null) {
             $edit -> partida_id = $request->partida;
+        }
+        if ($request->hasFile('foto')) {
+            $edit['foto_articulo']=$request->file('foto')->store('uploads', 'public');
         }
         $edit->save();
         return redirect('/articulo');
@@ -99,5 +113,10 @@ class ArticuloController extends Controller
         $delete = Articulo::findOrFail($id); 
         $delete->delete();
         return redirect('/articulo');
+    }
+    public function getArticulo(){
+        $articulos[] = array();
+        $query = Articulo::get();
+        return ($query);
     }
 }

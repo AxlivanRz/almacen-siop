@@ -22,6 +22,7 @@ class EncabezadoFactura extends Model
         'fecha',
         'numero_factura',
         'folio',
+        'respaldo_factura',
         'proveedor_id',
     ];
 }

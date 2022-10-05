@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EntradaArticulo extends Model
+class UnidadMedida extends Model
 {
     use HasFactory;
-    protected $table = "entrada_articulos";
-    protected $primaryKey = 'id_precio_entrada';
+    protected $table = "unidad_medidas";
+    protected $primaryKey = 'id_medida';
     public $incrementing = true;
-    public $timestamps = true; 
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
@@ -19,10 +19,7 @@ class EntradaArticulo extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad',
-        'descuento',
-        'precio',
-        'articulo_id',
-        'encabezado_id', 
+        'nombre_medida',
+        'abreviado',
     ];
 }

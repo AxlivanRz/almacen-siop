@@ -15,9 +15,10 @@ class CreateEncabezadoFacturasTable extends Migration
     {
         Schema::create('encabezado_facturas', function (Blueprint $table) {
             $table->bigIncrements('id_encabezado_factura');
-            $table->string('fecha');
+            $table->date('fecha');
             $table->string('numero_factura');
             $table->string('folio');
+            $table->string('respaldo_factura');
             $table->unsignedBigInteger('proveedor_id');
             $table->timestamps();
             $table->foreign('proveedor_id')->references('id_proveedor')->on('proveedores')->onDelete('cascade');
