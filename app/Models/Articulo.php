@@ -25,6 +25,7 @@ class Articulo extends Model
         'ubicacion',
         'observaciones',
         'medida_id',
+        'nombre_med',
         'partida_id',
     ];
 }

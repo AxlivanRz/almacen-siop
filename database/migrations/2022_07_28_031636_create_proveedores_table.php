@@ -23,7 +23,7 @@ class CreateProveedoresTable extends Migration
             $table->string('poblacion', 50);
             $table->string('estado', 50);
             $table->string('pais', 50);
-            $table->integer('telefono')->unsigned();
+            $table->bigInteger('telefono')->unsigned();
             $table->string('email_proveedor', 50);
             $table->timestamps();
         });

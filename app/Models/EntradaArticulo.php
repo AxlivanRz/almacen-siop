@@ -21,7 +21,9 @@ class EntradaArticulo extends Model
     protected $fillable = [
         'cantidad',
         'descuento',
+        'base',
         'precio',
+        'imp_unitario',
         'articulo_id',
         'encabezado_id', 
     ];

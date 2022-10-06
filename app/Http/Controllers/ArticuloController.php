@@ -47,6 +47,9 @@ class ArticuloController extends Controller
         $create -> ubicacion = $request->ubicacion;
         $create -> observaciones = $request->observaciones;
         $create -> medida_id = $request->medida;
+        $idmed = $request->medida;
+        $nombremed = UnidadMedida::findOrFail($idmed);
+        $create -> nombre_med = $nombremed->nombre_medida;
         $create -> partida_id = $request->partida;
         if ($request->hasFile('foto_articulo')) {
             $create['foto_articulo']=$request->file('foto_articulo')->store('uploads', 'public');
@@ -92,6 +95,9 @@ class ArticuloController extends Controller
         $edit -> ubicacion = $request->ubicacion;
         $edit -> observaciones = $request->observaciones;
         $edit -> medida_id = $request->medida;
+        $idmed = $request->medida;
+        $nombremed = UnidadMedida::findOrFail($idmed);
+        $edit -> nombre_med = $nombremed->nombre_medida;
         if ($request->partida !=null) {
             $edit -> partida_id = $request->partida;
         }

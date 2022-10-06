@@ -12,7 +12,7 @@ class EncabezadoFactura extends Model
     protected $primaryKey = 'id_encabezado_factura';
     public $incrementing = true;
     public $timestamps = true;
-
+ 
     /**
      * The attributes that are mass assignable.
      *

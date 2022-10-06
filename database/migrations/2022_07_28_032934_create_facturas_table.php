@@ -15,14 +15,11 @@ class CreateFacturasTable extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->bigIncrements('id_factura');
-            $table->string('imp_iva');
-            $table->string('imp_total');
-            $table->string('imp_unitario');
-            $table->string('imp_factura');
-            $table->unsignedBigInteger('articulo_id');
+            $table->double('iva');
+            $table->double('imp_total');
+            $table->double('imp_iva');
             $table->unsignedBigInteger('encabezado_id');
             $table->timestamps();
-            $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade')->onDelete('cascade');
             $table->foreign('encabezado_id')->references('id_encabezado_factura')->on('encabezado_facturas')->onDelete('cascade');
         });
     }

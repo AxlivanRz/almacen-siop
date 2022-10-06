@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\EncabezadoFactura;
 use App\Models\Factura;
 use App\Models\Proveedores;
+use App\Models\EntradaArticulo;
+use App\Models\Articulo;
 
 class EncabezadoController extends Controller
 {
@@ -17,9 +19,11 @@ class EncabezadoController extends Controller
     public function index()
     {
         $encabezados = EncabezadoFactura::paginate(15);
-        $facturas = factura::get();
+        $facturas = Factura::get();
         $proveedores = Proveedores::get();
-        return view ('Factura.index', compact(['facturas', 'encabezados', 'proveedores']));
+        $entradas = EntradaArticulo::get();
+        $articulos = Articulo::get();
+        return view ('Factura.index', compact(['facturas', 'encabezados', 'proveedores', 'entradas', 'articulos']));
     }
 
     /**
@@ -44,8 +48,11 @@ class EncabezadoController extends Controller
         $create -> fecha = $request->fecha;
         $create -> numero_factura = $request->numerof;
         $create -> folio = $request->folio;
-        $create -> respaldo_factura = $request->archivo;
+        if ($request->hasFile('archivo')) {
+            $create['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
+        }
         $create -> proveedor_id = $request->proveedor;
+        $create ->save();
         return redirect('/encabezado');
     }
 

@@ -93,4 +93,9 @@ class UnidadMedidaController extends Controller
         $delete->delete();
         return redirect('/unidadesmedicion');
     }
+    public function getMedida(){
+        $medidas[] = array();
+        $query = UnidadMedida::get();
+        return ($query);
+    }
 }

@@ -21,9 +21,7 @@ class Factura extends Model
     protected $fillable = [
         'imp_iva',
         'imp_total',
-        'imp_unitario',
-        'imp_factura',
-        'articulo_id',
+        'iva',
         'encabezado_id',
     ];
 }

@@ -12,7 +12,7 @@
                         @csrf
                     <div class="col-12">
                         <label >Fecha</label>
-                        <input type="date" class="form-control" id ="fecha" name ="fecha" style="height: 35px">
+                        <input type="date" class="form-control" id ="fecha" name ="fecha" data-inputmask-inputformat="dd/mm/yyyy" style="height: 35px">
                     </div>
                     <div class="col-12">
                         <label >Número de factura</label>                

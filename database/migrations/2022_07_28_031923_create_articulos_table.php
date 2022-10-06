@@ -20,6 +20,7 @@ class CreateArticulosTable extends Migration
             $table->string('ubicacion');
             $table->string('observaciones');
             $table->unsignedBigInteger('medida_id'); 
+            $table->string('nombre_med');
             $table->unsignedBigInteger('partida_id');   
             $table->string('foto_articulo');         
             $table->timestamps();

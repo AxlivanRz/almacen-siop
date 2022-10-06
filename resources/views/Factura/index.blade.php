@@ -33,28 +33,35 @@
                                  <td>{{$proveedor->nombre_empresa}}</td>                              
                                 @else
                                     @if ($encabezado->proveedor_id == null)
-                                        <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de up</span></td> 
+                                        <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de provedor</span></td> 
                                     @endif
                                 @endif
                             @endforeach
                             @if ($facturas->isNotEmpty())
                                 @foreach ($facturas as $factura )
-                                    @if ($factura->encabezado_id == $encabezado->id_encabezado)  
+                                    @if ($factura->encabezado_id == $encabezado->id_encabezado_factura)  
                                         <td>$ {{$factura->imp_total}}</td>                              
                                     @else
                                         <td colspan="1" style="text-align: center"> 
-                                            <a href="{{ route('factura.form2',$encabezado->id_encabezado)}}" class="btn btn-outline-warning">Continuar con el registro</a>
+                                            <a href="{{ route('factura.form2',$encabezado->id_encabezado_factura)}}" class="btn btn-outline-warning">Continuar con el registro</a>
                                         </td> 
                                     @endif
                                 @endforeach
+                            @else
+                                <td colspan="1" > 
+                                    <a href="{{ route('factura.form2',$encabezado->id_encabezado_factura)}}" class="btn btn-outline-info">Continuar con el registro</a>
+                                </td> 
                             @endif               
                             <td>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#">
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#facturaShow{{$encabezado->id_encabezado_factura}}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                {{-- <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button> 
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#">
                                     <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
+                                </button> --}}
                             </td>                   
                         </tr>                    
                     @endforeach
@@ -64,8 +71,9 @@
             </tbody>
         </table>
     </div>
-    @if ($encabezados->isNotEmpty())  
-        @foreach ($encabezados as $encabezado )
+    @if ($encabezados->isNotEmpty())   
+        @foreach ($encabezados as $encabezado)
+            @include('Factura.show')
         @endforeach
     @endif
     @include('Factura.create')   
