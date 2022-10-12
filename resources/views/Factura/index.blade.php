@@ -16,46 +16,36 @@
                 <th scope="col">Proveedor</th>
                 <th scope="col">Monto total</th>
                 <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#encabezadoCreate">
+                    <a href="{{ route('factura.create')}}" class="btn btn-success">
                         <i class="far fa-plus-square"></i>
-                    </button>
+                    </a>
                 </th>               
             </tr>
             </thead>
             <tbody>            
-                @if ($encabezados->isNotEmpty())
-                    @foreach ( $encabezados as $encabezado )
+                @if ($facturas->isNotEmpty())
+                    @foreach ( $facturas as $factura )
                         <tr>
-                            <th scope="row">{{$encabezado->folio}}</th>
-                            <td>{{$encabezado->fecha}}</td>
+                            <th scope="row">{{$factura->folio}}</th>
+                            <td>{{$factura->fecha}}</td>
                             @foreach ($proveedores as $proveedor )
-                                @if ($proveedor->id_proveedor == $encabezado->proveedor_id)  
+                                @if ($proveedor->id_proveedor == $factura->proveedor_id)  
                                  <td>{{$proveedor->nombre_empresa}}</td>                              
                                 @else
-                                    @if ($encabezado->proveedor_id == null)
+                                    @if ($factura->proveedor_id == null)
                                         <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de provedor</span></td> 
                                     @endif
                                 @endif
                             @endforeach
-                            @if ($facturas->isNotEmpty())
-                                @foreach ($facturas as $factura )
-                                    @if ($factura->encabezado_id == $encabezado->id_encabezado_factura)  
-                                        <td>$ {{$factura->imp_total}}</td>                              
-                                    @else
-                                        <td colspan="1" style="text-align: center"> 
-                                            <a href="{{ route('factura.form2',$encabezado->id_encabezado_factura)}}" class="btn btn-outline-warning">Continuar con el registro</a>
-                                        </td> 
-                                    @endif
-                                @endforeach
-                            @else
-                                <td colspan="1" > 
-                                    <a href="{{ route('factura.form2',$encabezado->id_encabezado_factura)}}" class="btn btn-outline-info">Continuar con el registro</a>
-                                </td> 
-                            @endif               
+                            <td>{{$factura->imp_total}}</td>  
                             <td>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#facturaShow{{$encabezado->id_encabezado_factura}}">
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-primary">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                
                                 {{-- <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button> 
@@ -71,11 +61,10 @@
             </tbody>
         </table>
     </div>
-    @if ($encabezados->isNotEmpty())   
-        @foreach ($encabezados as $encabezado)
+    @if ($facturas->isNotEmpty())   
+        @foreach ($facturas as $encabezado)
             @include('Factura.show')
         @endforeach
     @endif
-    @include('Factura.create')   
 </div>
 @endsection

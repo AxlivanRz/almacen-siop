@@ -28,7 +28,7 @@
                         <tr>
                             <th scope="row">{{$articulo->id_articulo}}</th>
                             <td>{{$articulo->nombre_articulo}}</td>
-                            <td>{{$articulo->unidad_medida}}</td>
+                            <td>{{$articulo->nombre_med}}</td> 
                             @foreach ($partidas as $partida )
                                 @if ($partida->id_partida == $articulo->partida_id)  
                                  <td>{{$partida->nombre_partida}}</td>                              

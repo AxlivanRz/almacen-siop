@@ -25,6 +25,6 @@ class EntradaArticulo extends Model
         'precio',
         'imp_unitario',
         'articulo_id',
-        'encabezado_id', 
+        'factura_id', 
     ];
 }

@@ -15,16 +15,15 @@ class CreateEntradaArticulosTable extends Migration
     {
         Schema::create('entrada_articulos', function (Blueprint $table) {
             $table->bigIncrements('id_precio_entrada');
-            $table->bigInteger('cantidad');
+            $table->integer('cantidad');
             $table->double('descuento');
             $table->double('base');
             $table->double('precio');
             $table->double('imp_unitario');
             $table->unsignedBigInteger('articulo_id');
-            $table->unsignedBigInteger('encabezado_id');
+            $table->bigInteger('factura_id')->unsigned();
             $table->timestamps();
             $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
-            $table->foreign('encabezado_id')->references('id_encabezado_factura')->on('encabezado_facturas')->onDelete('cascade');
         });
     }
 

@@ -19,9 +19,13 @@ class Factura extends Model
      * @var array
      */ 
     protected $fillable = [
+        'folio',
+        'fecha',
+        'numero_factura',
+        'respaldo_factura',
         'imp_iva',
         'imp_total',
         'iva',
-        'encabezado_id',
+        'proveedor_id',
     ];
 }

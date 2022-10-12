@@ -10,7 +10,6 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\OrigenRecursoController;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\UnidadMedidaController;
-use App\Http\Controllers\EncabezadoController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\Auth\LoginController;
 /*
@@ -41,11 +40,8 @@ Route::resource('/articulo', ArticuloController::class)->middleware('auth');
 Route::resource('/proveedor', ProveedorController::class)->middleware('auth');
 Route::resource('/recurso', OrigenRecursoController::class)->middleware('auth');
 Route::resource('/unidadesmedicion', UnidadMedidaController::class)->middleware('auth');
-Route::resource('/encabezado', EncabezadoController::class)->middleware('auth');
 
 Route::resource('/factura', FacturaController::class)->middleware('auth');
-Route::get('/factura/form2/{id}', [FacturaController::class, 'formfactura'])->name('factura.form2');
-
 
 
 
