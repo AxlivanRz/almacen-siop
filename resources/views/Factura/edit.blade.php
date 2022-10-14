@@ -10,6 +10,9 @@
                     @csrf
                     @method('PUT')
                     <?php $contador = 0; ?>
+                    <div id="eliminados" name="eliminados">
+
+                    </div>
                     <div class="form-group row">
                         <div class="form-group col-3">
                             <label >Fecha</label>
@@ -43,16 +46,16 @@
                     </div>
                     <div class="form-group">
                         <input type="number" name="contador_producto" id="contador_producto" hidden >
-                        <div id="relationship">
+                        <div id="relationship" name="relationship">
                             @foreach ($entradas as $entrada)
                                 @foreach ($articulos as $articulo)
                                     @if ($articulo->id_articulo == $entrada->articulo_id)
                                         <?php $contador++;?>
                                         <div id="newpro" name= "newpro" class="newpro">
-                                            <input type="text" id="id_entrada" name="id_entrada[]" value="{{$entrada->id_precio_entrada}}" hidden>
                                             <h5 class="border-top mt-4">Producto</h5>
                                             <div class="row d-flex align-items-end">
                                                 <div class="form-group col-3">
+                                                    <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id_precio_entrada}}" hidden>
                                                     <label>Articulo</label> 
                                                     <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
                                                         @if ($articulo->id_articulo == $entrada->articulo_id)  
@@ -148,7 +151,7 @@
                                 </button>
                             </div>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-danger" onClick="delete_last()"id="btn_delete" style="display:none">
+                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none">
                                     <i class="fas fa-minus-circle"></i> Eliminar el último producto
                                 </button>
                             </div>
@@ -336,9 +339,27 @@
             document.getElementById("relationship").appendChild(div);
             document.getElementById("contador_producto").value = parent;            
         }        
-
+        var incrementC = 0;
+        function get_delete() {
+            var valoredit = document.getElementById("contador_edit").value; 
+            if ( parent <= valoredit) {
+                var bandera = document.getElementById('id_entrada' + parent).value;
+                incrementC++;
+                var eliminado = document.createElement("input");
+                eliminado.name = "elimado[]";
+                eliminado.id = "eliminado" + incrementC;
+                eliminado.type = "number";
+                eliminado.min = "0";
+                eliminado.hidden = "true";
+                document.getElementById("eliminados").appendChild(eliminado);
+                var hola = document.getElementById('eliminado' + incrementC).value = bandera;
+                valoredit--; 
+                document.getElementById("contador_edit").value = valoredit;
+                console.log(hola);
+            }
+        }
         function delete_last() {
-            if (parent > 1) {
+            if (parent > 1) {  
                 $(".newpro").last().remove();   
             }
             parent--;

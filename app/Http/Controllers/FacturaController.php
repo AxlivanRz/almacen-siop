@@ -97,7 +97,8 @@ class FacturaController extends Controller
         ->select('numero_factura')
         ->where('id_factura', $id)->get();
         $articulos = Articulo::get();
-        $entradas = EntradaArticulo::get();
+        //$entradas = EntradaArticulo::get();
+        $entradas = DB::table('entrada_articulos')->orderBy('id_precio_entrada', 'asc')->get();
         return view('Factura.edit', compact(['factura', 'entradas', 'proveedores', 'articulos']));
     }
 
@@ -110,37 +111,65 @@ class FacturaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // foreach($request->get('id_entrada') as $key1 => $value1){ 
-        //     $entrada_edit = EntradaArticulo::findOrFail($entrada_id);
-        //     $entrada_edit->factura_id = $request->numerof;
-        //     $entrada_edit->cantidad = $request->get('cantidadkey')[$key1];
-        //     $entrada_edit->descuento = $request->get('descuentokey')[$key1];
-        //     $entrada_edit->base = $request->get('basekey')[$key1];
-        //     $entrada_edit->precio = $request->get('preciokey')[$key1];
-        //     $entrada_edit->articulo_id = $request->get('articulokey')[$key1];
-        //     $entrada_edit->imp_unitario = $request->get('unitariokey')[$key1];
-        //     $entrada_edit->save();
-        // }
-        foreach($request->get('id_entrada') as $key => $value){           
-            $numerof = $request->numerof;         
-            $entrada_id = $value;   
+        if ($request->get('elimado') != null) {
+            foreach($request->get('elimado') as $key1 => $value1){ 
+                $delete = EntradaArticulo::findOrFail($value1);
+                $delete->delete();
+            }
+        }
+        foreach($request->get('articulokey') as $key => $value){           
+            $numerof = $request->numerof; 
             $cantidadkey = $request->get('cantidadkey')[$key];
             $descuentokey = $request->get('descuentokey')[$key];
             $basekey = $request->get('basekey')[$key];
             $preciokey = $request->get('preciokey')[$key];
-            $articulokey= $request->get('articulokey')[$key];
+            $articulokey= $value;
             $unitariokey = $request->get('unitariokey')[$key];
-            $entradas = EntradaArticulo::updateOrCreate(
-                ['id_precio_entrada' =>  $entrada_id],
-                [
-                'factura_id' =>  $numerof,
-                'cantidad' =>  $cantidadkey,
-                'descuento' => $descuentokey,
-                'base' =>  $basekey,
-                'precio' => $preciokey,
-                'articulo_id' => $articulokey,
-                'imp_unitario' => $unitariokey
-            ]);
+            if (isset($request->get('id_entrada')[$key])) {
+                $entrada_id = $request->get('id_entrada')[$key];
+                $entrada = EntradaArticulo::firstOrNew(['id_precio_entrada' =>  $entrada_id]);
+                $entrada->factura_id = $numerof;
+                $entrada->cantidad = $cantidadkey;
+                $entrada->descuento = $descuentokey;
+                $entrada->base = $basekey;
+                $entrada->precio = $preciokey;
+                $entrada->articulo_id = $articulokey;
+                $entrada->imp_unitario = $unitariokey;
+                $entrada->save();
+            }else{
+                $create = new EntradaArticulo;
+                $create->factura_id = $numerof;
+                $create->cantidad = $cantidadkey;
+                $create->descuento = $descuentokey;
+                $create->base = $basekey;
+                $create->precio = $preciokey;
+                $create->articulo_id = $articulokey;
+                $create->imp_unitario = $unitariokey;
+                $create->save();
+            }
+            // if (empty($request->get('id_entrada')[$key])) {
+            // $create = new EntradaArticulo;
+            // $create->factura_id = $numerof;
+            // $create->cantidad = $cantidadkey;
+            // $create->descuento = $descuentokey;
+            // $create->base = $basekey;
+            // $create->articulo_id = $articulokey;
+            // $create->imp_unitario = $unitariokey;
+            // }else{
+
+            //     $entrada_id = $request->get('id_entrada')[$key];
+            //     $entradas = EntradaArticulo::updateOrCreate(
+            //     ['id_precio_entrada' =>  $entrada_id],
+            //     [
+            //     'factura_id' =>  $numerof,
+            //     'cantidad' =>  $cantidadkey,
+            //     'descuento' => $descuentokey,
+            //     'base' =>  $basekey,
+            //     'precio' => $preciokey,
+            //     'articulo_id' => $articulokey,
+            //     'imp_unitario' => $unitariokey
+            // ]);  
+            //} 
         }
     
         $edit_factura = Factura::findOrFail($id);
