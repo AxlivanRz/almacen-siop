@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateValeSurtidosTable extends Migration
+class CreateValeArticulosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateValeSurtidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('vale_surtidos', function (Blueprint $table) {
-            $table->bigIncrements('id_surtido');
-            $table->double('total')->unsigned();
-            $table->dateTime('fecha');
+        Schema::create('vale_articulos', function (Blueprint $table) {
             $table->unsignedBigInteger('vale_id');
-            $table->unsignedBigInteger('capturista_id');
+            $table->unsignedBigInteger('articulo_id');
+            $table->integer('cantidad')->unsigned();
             $table->timestamps();
             $table->foreign('vale_id')->references('id_vale')->on('vales')->onDelete('cascade');
-            $table->foreign('capturista_id')->references('id_usuario')->on('users')->onDelete('cascade');
+            $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
+            $table->primary(['vale_id', 'articulo_id']);
         });
     }
 
@@ -32,6 +31,6 @@ class CreateValeSurtidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vale_surtidos');
+        Schema::dropIfExists('vale_articulos');
     }
 }

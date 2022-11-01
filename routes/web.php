@@ -11,7 +11,9 @@ use App\Http\Controllers\OrigenRecursoController;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\ValeController;
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,25 +25,29 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-
-Route::resource('/usuario', UsuarioController::class)->middleware('auth');
+if (Auth::check()) {
+    return redirect('/Inicio');
+}
+Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::view('/', 'Login.inicio2')->name('usuario.login')->middleware('guest');
-Route::view('/inicio', 'inicio')->name('inicio')->middleware('auth');
+Route::view('/inicio', 'inicio')->name('inicio')->middleware('rol:ti,admin,alm');
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
+Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
 
-Route::resource('/up', UpController::class)->middleware('auth');
-Route::resource('/area', AreaController::class)->middleware('auth');
-Route::resource('/departamento', DepartamentoController::class)->middleware('auth');
-Route::resource('/partida', PartidaController::class)->middleware('auth');
-Route::resource('/articulo', ArticuloController::class)->middleware('auth');
-Route::resource('/proveedor', ProveedorController::class)->middleware('auth');
-Route::resource('/recurso', OrigenRecursoController::class)->middleware('auth');
-Route::resource('/unidadesmedicion', UnidadMedidaController::class)->middleware('auth');
+Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/area', AreaController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/departamento', DepartamentoController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/partida', PartidaController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/articulo', ArticuloController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/proveedor', ProveedorController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/recurso', OrigenRecursoController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/unidadesmedicion', UnidadMedidaController::class)->middleware('rol:ti,admin,alm');
+Route::resource('/vales', ValeController::class);
 
-Route::resource('/factura', FacturaController::class)->middleware('auth');
+Route::resource('/factura', FacturaController::class)->middleware('rol:ti,admin,alm');
 
 
 

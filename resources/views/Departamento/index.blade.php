@@ -35,7 +35,9 @@
                                 @if ($area->id_area == $departamento->area_id)  
                                 <td>{{$area->nombre_area}}</td>                              
                                 @else
+                                @if ( $departamento->area_id == null)
                                 <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de área</span></td> 
+                                @endif
                                 @endif
                             @endforeach                                                
                             <td>

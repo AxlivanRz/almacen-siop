@@ -28,4 +28,8 @@ class Articulo extends Model
         'nombre_med',
         'partida_id',
     ];
+    public function vales()
+    {
+        return $this->belongsToMany(Vale::class, 'vale_articulos', 'vale_id', 'articulo_id');
+    }
 }

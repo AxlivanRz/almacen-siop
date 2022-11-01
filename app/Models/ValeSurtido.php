@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ValeSurtido extends Model
 {
-    use HasFactory;
+    use HasFactory, SurtirAndEntrada;
     protected $table = "vale_surtidos";
     protected $primaryKey = 'id_surtido';
     public $incrementing = true;
@@ -19,11 +19,9 @@ class ValeSurtido extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad',
-        'precio_unitario',
         'total',
         'fecha',
-        'articulo_id',
         'vale_id',
+        'capturista_id'
     ];
 }

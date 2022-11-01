@@ -25,8 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        $this->registerPolicies();
-
         Gate::define('isTi', function ($user){
             return $user->roles->first()->slug == 'ti';
         });

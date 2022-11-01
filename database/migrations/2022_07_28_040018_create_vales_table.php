@@ -15,14 +15,14 @@ class CreateValesTable extends Migration
     {
         Schema::create('vales', function (Blueprint $table) {
             $table->bigIncrements('id_vale');
-            $table->string('cantidad');
-            $table->string('status');
-            $table->string('fecha');
-            $table->unsignedBigInteger('articulo_id');
-            $table->unsignedBigInteger('area_id');
+            $table->integer('status')->unsigned();
+            $table->dateTime('fecha');
+            $table->dateTime('fecha_aprovado')->nullable();
+            $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('administrador_id')->nullable();
             $table->timestamps();
-            $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
-            $table->foreign('area_id')->references('id_area')->on('areas')->onDelete('cascade');
+            $table->foreign('usuario_id')->references('id_usuario')->on('users')->onDelete('cascade');
+            $table->foreign('administrador_id')->references('id_usuario')->on('users')->onDelete('cascade');
         });
     }
 

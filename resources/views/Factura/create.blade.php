@@ -40,7 +40,8 @@
                     <div id="relationship">
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row border-top mt-3">
+                    <h5 class="card-title">Total Factura</h5>
                     <div class="form-group col-3">  
                         <label for="impfactura">Importe total IVA</label>
                         <input id="impfactura" type="number" class="form-control" id="impfactura" name="impfactura" step="any" required autofocus>
@@ -51,8 +52,8 @@
                     </div>
                     <div class="col-4">
                         <div class="mb-3">
-                            <label for="archivo" class="form-label">Respaldo de factura</label>
-                            <input class="form-control form-control-sm" id="archivo" name="archivo" type="file">
+                            <label for="archivo">Respaldo de factura</label>
+                            <input class="form-control" id="archivo" name="archivo" type="file">
                         </div>
                     </div>     
                 </div>
@@ -221,7 +222,7 @@
             formGroup4.className = "form-group";
             column6.appendChild(formGroup4);
             var label = document.createElement("label");
-            label.innerHTML = "Impuesto Unitario";
+            label.innerHTML = "Importe Unitario";
             formGroup4.appendChild(label);
             var unitario = document.createElement("input");
             unitario.className = "form-control";
@@ -240,7 +241,7 @@
             formGroup5.className = "form-group";
             column7.appendChild(formGroup5);
             var label = document.createElement("label");
-            label.innerHTML = "Precio";
+            label.innerHTML = "Precio unitario";
             formGroup5.appendChild(label);
             var precio = document.createElement("input");
             precio.className = "form-control";
@@ -251,6 +252,41 @@
             precio.min = "0";
             precio.value = "0";
             formGroup5.appendChild(precio);
+
+            var column8 = document.createElement("div");
+            column8.className = "col-2";
+            row.appendChild(column8);
+            var formGroup6 = document.createElement("div");
+            formGroup6.className = "form-group";
+            column8.appendChild(formGroup6);
+            var label = document.createElement("label");
+            label.innerHTML = "Precio Total";
+            formGroup6.appendChild(label);
+            var precioT = document.createElement("input");
+            precioT.className = "form-control";
+            precioT.name = "preciototalkey[]";
+            precioT.id = "preciototal" + parent;
+            precioT.type = "number";
+            precioT.step = "any";
+            precioT.min = "0";
+            precioT.value = "0";
+            formGroup6.appendChild(precioT);
+
+            var column9 = document.createElement("div");
+            column9.className = "col-2";
+            row.appendChild(column9);
+            var formGroup7 = document.createElement("div");
+            formGroup7.className = "form-group";
+            column9.appendChild(formGroup7);
+            var label = document.createElement("label");
+            label.innerHTML = "Caducidad";
+            formGroup7.appendChild(label);
+            var caducidad = document.createElement("input");
+            caducidad.className = "form-control";
+            caducidad.name = "caducidad[]";
+            caducidad.id = "caducidad" + parent;
+            caducidad.type = "date";
+            formGroup7.appendChild(caducidad);
 
             div.appendChild(row);
             document.getElementById("relationship").appendChild(div);
@@ -277,6 +313,8 @@
                 document.getElementById('unitario' + contador).value = unitario;
                 var finalsuma1 = (Number(unitario) + Number(base)- Number(descuento));
                 document.getElementById('precio' + contador).value = finalsuma1;
+                var preciototal = document.getElementById('preciototal' + contador);
+                preciototal.value = (Number(finalsuma1) * Number(cantidad));
            }else{
                 for ( i = 0; i <= contador; i++) {
                     var descuento = document.getElementById('descuento' + contador).value;
@@ -287,6 +325,8 @@
                     document.getElementById('unitario' + contador).value = unitario;
                     var finalsuma1 = (Number(unitario) + Number(base)) - Number(descuento);
                     document.getElementById('precio' + contador).value = finalsuma1;
+                    var preciototal = document.getElementById('preciototal' + contador);
+                    preciototal.value = (Number(finalsuma1) * Number(cantidad));
                 }
             }
         }
@@ -301,6 +341,8 @@
                 document.getElementById('unitario' + contador).value = unitario;
                 var finalsuma1 = (Number(unitario) + Number(base) - Number(descuento));
                 document.getElementById('precio' + contador).value = finalsuma1;
+                var preciototal = document.getElementById('preciototal' + contador);
+                preciototal.value = (Number(finalsuma1) * Number(cantidad));
                 contador--;
             }
         }

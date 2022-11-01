@@ -77,11 +77,11 @@
                                                     <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
                                                 </div>
                                                 <div class="form-group col-2">
-                                                    <label>Base</label>
+                                                    <label> Precio Base</label>
                                                     <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
                                                 </div>
                                                 <div class="form-group col-2">
-                                                    <label>Descuento</label>
+                                                    <label>Descuento $</label>
                                                     <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
                                                 </div>
                                                 <div class="form-group col-2">
@@ -89,11 +89,11 @@
                                                     <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
                                                 </div>
                                                 <div class="form-group col-2">
-                                                    <label>Impuesto Unitario</label>
+                                                    <label>Importe Unitario</label>
                                                     <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
                                                 </div>
                                                 <div class="form-grop col-2">
-                                                    <label>Precio</label>
+                                                    <label>Precio unitario</label>
                                                     <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
                                                 </div>
                                             </div>
@@ -103,7 +103,9 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="form-group row border-top mt-4">
+                    
+                    <div class="form-group row border-top mt-3">
+                        <h5 class="card-title">Total Factura</h5>
                         @if (isset($factura->respaldo_factura))
                             <div class="form-group col-2 d-flex  align-items-end" >
                                 <label for="archivo" class="col-form-label">
@@ -149,9 +151,9 @@
                                 <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();cuentas();" style="display:block" >
                                     <i class="fas fa-plus"></i> Agregar producto
                                 </button>
-                            </div>
+                            </div> 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none">
+                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none" disabled="{{ isset($libro->Autor == 0)?false:'true'}}">
                                     <i class="fas fa-minus-circle"></i> Eliminar el último producto
                                 </button>
                             </div>
@@ -238,6 +240,7 @@
             cantidad.type = "number";
             cantidad.min = "0";
             cantidad.value = "0";
+            
             column3.appendChild(cantidad);
 
             var column3 = document.createElement("div");
@@ -323,7 +326,7 @@
             formGroup5.className = "form-group";
             column7.appendChild(formGroup5);
             var label = document.createElement("label");
-            label.innerHTML = "Precio";
+            label.innerHTML = "Precio Unitario";
             formGroup5.appendChild(label);
             var precio = document.createElement("input");
             precio.className = "form-control";
@@ -334,6 +337,41 @@
             precio.min = "0";
             precio.value = "0";
             formGroup5.appendChild(precio);
+
+            var column8 = document.createElement("div");
+            column8.className = "col-2";
+            row.appendChild(column8);
+            var formGroup6 = document.createElement("div");
+            formGroup6.className = "form-group";
+            column8.appendChild(formGroup6);
+            var label = document.createElement("label");
+            label.innerHTML = "Precio Total";
+            formGroup6.appendChild(label);
+            var precioT = document.createElement("input");
+            precioT.className = "form-control";
+            precioT.name = "preciototalkey[]";
+            precioT.id = "preciototal" + parent;
+            precioT.type = "number";
+            precioT.step = "any";
+            precioT.min = "0";
+            precioT.value = "0";
+            formGroup6.appendChild(precioT);
+
+            var column9 = document.createElement("div");
+            column9.className = "col-2";
+            row.appendChild(column9);
+            var formGroup7 = document.createElement("div");
+            formGroup7.className = "form-group";
+            column9.appendChild(formGroup7);
+            var label = document.createElement("label");
+            label.innerHTML = "Caducidad";
+            formGroup7.appendChild(label);
+            var caducidad = document.createElement("input");
+            caducidad.className = "form-control";
+            caducidad.name = "caducidad[]";
+            caducidad.id = "caducidad" + parent;
+            caducidad.type = "date";
+            formGroup7.appendChild(caducidad);
 
             div.appendChild(row);
             document.getElementById("relationship").appendChild(div);
@@ -381,6 +419,8 @@
                 document.getElementById('unitario' + contador).value = unitario;
                 var finalsuma1 = (Number(unitario) + Number(base)- Number(descuento));
                 document.getElementById('precio' + contador).value = finalsuma1;
+                var preciototal = document.getElementById('preciototal' + contador);
+                preciototal.value = (Number(finalsuma1) * Number(cantidad));
            }else{
                 for ( i = 0; i <= contador; i++) {
                     var descuento = document.getElementById('descuento' + contador).value;
@@ -391,6 +431,8 @@
                     document.getElementById('unitario' + contador).value = unitario;
                     var finalsuma1 = (Number(unitario) + Number(base)) - Number(descuento);
                     document.getElementById('precio' + contador).value = finalsuma1;
+                    var preciototal = document.getElementById('preciototal' + contador);
+                    preciototal.value = (Number(finalsuma1) * Number(cantidad));
                 }
             }
         }
@@ -405,6 +447,8 @@
                 document.getElementById('unitario' + contador).value = unitario;
                 var finalsuma1 = (Number(unitario) + Number(base) - Number(descuento));
                 document.getElementById('precio' + contador).value = finalsuma1;
+                var preciototal = document.getElementById('preciototal' + contador);
+                preciototal.value = (Number(finalsuma1) * Number(cantidad));
                 contador--;
             }
         }

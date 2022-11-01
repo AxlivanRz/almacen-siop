@@ -15,11 +15,17 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Unidad de medida</th>
                 <th scope="col">Partida</th>
-                <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <th scope="col" style="width: 150px;">
+                    Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </th>     
+                <th scope="col-1">
                     <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#articuloCreate">
                         <i class="far fa-plus-square"></i>
                     </button>
-                </th>               
+                    <a href="{{ route('articulo.pdf')}}" class="btn btn-sm btn-info">
+                        PDF
+                    </a>
+                </th>          
             </tr>
             </thead>
             <tbody>            
@@ -45,11 +51,15 @@
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit{{$articulo->id_articulo}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                            </td>                   
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#articuloShow{{$articulo->id_articulo}}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>       
+                            <td></td>            
                         </tr>                    
                     @endforeach
                 @else
-                    <td colspan="5" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
+                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
                 @endif                            
             </tbody>
         </table>
@@ -58,6 +68,7 @@
         @foreach ($articulos as $articulo )
             @include('Articulo.delete')
             @include('Articulo.edit')   
+            @include('Articulo.show')   
         @endforeach
     @endif
     @include('Articulo.create')   

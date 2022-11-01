@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Partida;
 use App\Models\Articulo;
 use App\Models\UnidadMedida;
-
+use PDF;
 
 class ArticuloController extends Controller
 {
@@ -124,5 +124,12 @@ class ArticuloController extends Controller
         $articulos[] = array();
         $query = Articulo::get();
         return ($query);
+    }
+    public function pdf(){
+        $articulos = Articulo::paginate();
+        $pdf = PDF::loadView('Articulo.pdfV', ['articulos'=>$articulos]);
+        //$pdf->set_paper ('a4','landscape');
+        return $pdf->stream();
+        //return view ('Articulo.pdf', compact('articulos'));
     }
 }

@@ -30,29 +30,30 @@
                     <div class="col-12">
                         <label >Contraseña</label>
                         <input type="password" class="form-control" id ="contrasena" name = "contrasena" style="height: 35px">
-                    </div>             
-                    <input type="tex" hidden value="{{$us->contrasena}}" id="contra2" name="contra2">       
+                    </div>                   
                     <label for="basic-url" class="form-label">Rol de usuario</label>
                     <div class="input-group mb-2">
                         <span class="input-group-text"  id="basic-addon2"><i class="fas fa-user-tag"></i></span>
                         <select class="form-select" style="height: 37px" name="rol" id="rol">
-                            <option selected>Seleccione un Rol</option>
-                            @foreach ($roles as $rl)
-                                <option value="{{$rl->id_rol}}">{{$rl->nombre_rol}}</option>  
-                            @endforeach
+                            @if ( $us->roles->isNotEmpty())
+                                @foreach ( $us->roles as $rol )
+                                <option selected value="{{$rol->id_rol}}">
+                                    {{$rol->nombre_rol}}
+                                </option>
+                                @endforeach
+                            @endif
+                                @foreach ($roles as $rl)
+                                    @if ($rol->id_rol != $rl->id_rol)
+                                        <option value="{{$rl->id_rol}}">
+                                            {{$rl->nombre_rol}}
+                                        </option>  
+                                    @endif
+                                @endforeach
                         </select>
                     </div> 
                     <label> Selecciona a que división pertenece</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="division" value="1" onchange="javascript:radioae()" >
-                        <label class="form-check-label" for="1">Dirección/Unidad</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="division" value="2" onchange="javascript:radiobe()" >
-                        <label class="form-check-label" for="2">Departamento</label>
-                    </div> 
                     @if ($us->area_id != null)
-                        <div class="col-12" id="area" name = "area" style="display: block">
+                        <div class="col-12" id="area" name = "area">
                             <label>Dirección/Unidad</label>
                             <select class="form-select form-select-sm"  name="areaus" id="areaus">
                                     @foreach ($areas as $area )
@@ -68,8 +69,21 @@
                             </select>
                         </div>
                     @else
-                        @if ($us->departamento_id != null)
-                        <div class="col-12" id="depa" name = "depa" style = "display: block">
+                        <div class="col-12" id="area" name = "area">
+                            <label>Dirección/Unidad</label>
+                            <select class="form-select form-select-sm"  name="areaus" id="areaus">
+                                <option value="0" selected>Seleccione una Dirección</option>
+                                    @foreach ($areas as $area)
+                                        <option value="{{$area->id_area}}">{{$area->nombre_area}}</option>
+                                    @endforeach                      
+                            </select>
+                        </div>
+                    @endif
+                    <div style="text-align: center">
+                    <label>O</label>
+                    </div>
+                    @if ($us->departamento_id != null)
+                        <div class="col-12" id="depa" name = "depa">
                             <label>Departamento</label>
                             <select class="form-select form-select-sm"  name="departamento" id="departamento">
                                 @foreach ($departamentos as $departamento)
@@ -84,24 +98,16 @@
                                 @endforeach                 
                             </select>
                         </div>   
-                        @else
-                            <div class="col-12" id="depa" name = "depa" style = "display: none">
-                                <label>Departamento</label>
-                                <select class="form-select form-select-sm"  name="departamento" id="departamento">
-                                    @foreach ($departamentos as $departamento)
-                                        <option value="{{$departamento->id_departamento}}">{{$departamento->nombre_departamento}}</option>
-                                    @endforeach                 
-                                </select>
-                            </div> 
-                            <div class="col-12" id="area" name = "area" style="display: none">
-                                <label>Dirección/Unidad</label>
-                                <select class="form-select form-select-sm"  name="areaus" id="areaus">
-                                        @foreach ($areas as $area)
-                                            <option value="{{$area->id_area}}">{{$area->nombre_area}}</option>
-                                        @endforeach                      
-                                </select>
-                            </div>
-                        @endif
+                    @else
+                        <div class="col-12" id="depa" name = "depa">
+                            <label>Departamento</label>
+                            <select class="form-select form-select-sm"  name="departamento" id="departamento">
+                                <option value="0" selected>Seleccione un Departamento</option>
+                                @foreach ($departamentos as $departamento)
+                                    <option value="{{$departamento->id_departamento}}">{{$departamento->nombre_departamento}}</option>
+                                @endforeach                 
+                            </select>
+                        </div> 
                     @endif                 
                 </div>
             </div>
@@ -116,23 +122,3 @@
       </div>
     </div>
 </div>
-<script type="text/javascript">
-    function radioae() {
-        element = document.getElementById('division').value;
-        area = document.getElementById('area');
-        depar = document.getElementById('depa');
-        if (element.checked = 1) {
-            area.style.display='block';
-            depar.style.display='none';
-        }
-    }
-    function radiobe() {
-        element = document.getElementById('division').value;
-        area = document.getElementById('area');
-        depar = document.getElementById('depa');
-        if (element.checked = 2) {
-            area.style.display='none';
-            depar.style.display='block';              
-        }
-    }
-</script>

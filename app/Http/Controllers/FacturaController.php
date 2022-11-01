@@ -54,6 +54,7 @@ class FacturaController extends Controller
             $entrada_create->base = $request->get('basekey')[$key];
             $entrada_create->precio = $request->get('preciokey')[$key];
             $entrada_create->articulo_id = $value;
+            $entrada_create->caducidad = $request->get('caducidad')[$key];
             $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
             $entrada_create->save();
         }
@@ -116,7 +117,9 @@ class FacturaController extends Controller
                 $delete = EntradaArticulo::findOrFail($value1);
                 $delete->delete();
             }
-        }
+        } 
+        $edit_factura = Factura::findOrFail($id);
+        $booleano =  $edit_factura->confirmed;
         foreach($request->get('articulokey') as $key => $value){           
             $numerof = $request->numerof; 
             $cantidadkey = $request->get('cantidadkey')[$key];
@@ -124,6 +127,7 @@ class FacturaController extends Controller
             $basekey = $request->get('basekey')[$key];
             $preciokey = $request->get('preciokey')[$key];
             $articulokey= $value;
+            $cantidadkey = $request->get('caducidad')[$key];
             $unitariokey = $request->get('unitariokey')[$key];
             if (isset($request->get('id_entrada')[$key])) {
                 $entrada_id = $request->get('id_entrada')[$key];
@@ -135,6 +139,11 @@ class FacturaController extends Controller
                 $entrada->precio = $preciokey;
                 $entrada->articulo_id = $articulokey;
                 $entrada->imp_unitario = $unitariokey;
+                if ($booleano == 0) {
+                    $entrada->existencia = $cantidadkey;
+                }
+                $entrada->caducidad = $cantidadkey;
+               
                 $entrada->save();
             }else{
                 $create = new EntradaArticulo;
@@ -145,34 +154,13 @@ class FacturaController extends Controller
                 $create->precio = $preciokey;
                 $create->articulo_id = $articulokey;
                 $create->imp_unitario = $unitariokey;
+                $create->caducidad = $cantidadkey;
+                $create->existencia = $cantidadkey;
                 $create->save();
             }
-            // if (empty($request->get('id_entrada')[$key])) {
-            // $create = new EntradaArticulo;
-            // $create->factura_id = $numerof;
-            // $create->cantidad = $cantidadkey;
-            // $create->descuento = $descuentokey;
-            // $create->base = $basekey;
-            // $create->articulo_id = $articulokey;
-            // $create->imp_unitario = $unitariokey;
-            // }else{
-
-            //     $entrada_id = $request->get('id_entrada')[$key];
-            //     $entradas = EntradaArticulo::updateOrCreate(
-            //     ['id_precio_entrada' =>  $entrada_id],
-            //     [
-            //     'factura_id' =>  $numerof,
-            //     'cantidad' =>  $cantidadkey,
-            //     'descuento' => $descuentokey,
-            //     'base' =>  $basekey,
-            //     'precio' => $preciokey,
-            //     'articulo_id' => $articulokey,
-            //     'imp_unitario' => $unitariokey
-            // ]);  
-            //} 
+            
         }
-    
-        $edit_factura = Factura::findOrFail($id);
+        
         $edit_factura -> fecha = $request->fecha;
         $edit_factura -> numero_factura = $request->numerof;
         $edit_factura -> folio = $request->folio;

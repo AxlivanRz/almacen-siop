@@ -39,19 +39,12 @@
                             @endforeach
                             <td>{{$factura->imp_total}}</td>  
                             <td>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#">
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#facturaShow{{$factura->id_factura}}">
                                     <i class="fas fa-eye"></i>
                                 </button>
                                 <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-primary">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
-                                
-                                {{-- <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button> 
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button> --}}
                             </td>                   
                         </tr>                    
                     @endforeach

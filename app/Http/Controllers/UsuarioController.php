@@ -126,24 +126,22 @@ class UsuarioController extends Controller
         $edit -> primer_apellido = $request->primer;
         $edit -> segundo_apellido = $request->segundo;       
         $edit -> nombre_usuario = $request->username;
-        if ($edit->contrasena !=null) {
+        $contrasena1 = $edit->contrasena;
+        if ($request->contrasena !=null) {
             $edit->contrasena = Hash::make($request->contrasena);
         }else{
-            $edit->contrasena =$request->contra2;
+            $edit->contrasena =$contrasena1;
         }
-        if ($request->areaus != null) {
+        if ($request->areaus != 0 && $edit->departamento_id != null || $edit->area_id != $request->areaus && $request->areaus != 0) {
+            $edit -> departamento_id = null;
             $edit -> area_id = $request->areaus; 
             $edit->save(); 
-        }
-        if ($request->departamento != null) {
-            $id = $request->departamento;
-            $ida = DB::table('departamentos')
-            ->select('area_id')
-            ->where('id_departamento', $id)
-            ->get();
-            $edit -> area_id = $ida; 
-            $edit -> departamento_id = $id;
-            $edit->save(); 
+        }else{
+            if ($request->departamento != 0 && $edit->area_id != null || $edit->departamento_id != $request->departamento && $request->departamento != 0) {
+                $edit -> area_id = null;
+                $edit -> departamento_id = $request->departamento;
+                $edit->save(); 
+            }
         }
         $edit->roles()->detach();
         if ($request->rol !=null) {

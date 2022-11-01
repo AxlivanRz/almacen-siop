@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sistema de Administración de Insumos</title>
+    <title>SIADIN</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Styles -->
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/img/ico.png') }}">
+    <link rel="shortcut icon" sizes="162x162" href="{{ asset('/img/ico.png') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('scripts')
-    
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/iconc.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -52,13 +53,18 @@
                             </p>
                             <br>
                             <p>
+                                <a href="{{route('inicio')}}" class= "btn btn-md border border-0 btn-outline-dark" type="button">Inicio</a>
+                            </p>
+                            <p>
                                 <button class="btn btn-md border border-0 btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#drop" aria-expanded="false" aria-controls="drop" >
                                 Catálogos
                                 </button>
                             </p>
                             <div class="collapse" id="drop" >
                                 <div class="card card-body col-md-12 shadow-none border border-2 p-1 mb-3 bg-white rounded " style="align-content: center">
+                                    @canany(['isAdmin', 'isTi']) 
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('usuario.index')}}">Usuarios</a>
+                                    @endcanany
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('up.index')}}">Ups</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('area.index')}}">Direcciones/Unidades</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('departamento.index')}}">Departamentos</a>
@@ -152,8 +158,7 @@
                             <form action="{{route('logout')}}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-success">Sí</button>
-                              </form>
-                            
+                            </form>
                         </div>
                     </div>
               </div>

@@ -22,6 +22,7 @@ class CreateFacturasTable extends Migration
             $table->double('iva');
             $table->double('imp_total');
             $table->double('imp_iva');
+            $table->boolean('confirmed')->default(0);
             $table->unsignedBigInteger('proveedor_id');
             $table->timestamps();
             $table->foreign('proveedor_id')->references('id_proveedor')->on('proveedores')->onDelete('cascade');

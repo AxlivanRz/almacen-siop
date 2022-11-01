@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vale extends Model
 {
-    use HasFactory;
+    use HasFactory, ValesAndArticulos;
     protected $table = "vales";
     protected $primaryKey = 'id_vale';
     public $incrementing = true;
@@ -19,10 +19,10 @@ class Vale extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad',
         'status',
         'fecha',
-        'articulo_id',
-        'area_id',
+        'fecha_aprovado',
+        'usuario_id',
+        'administrador_id'
     ];
 }

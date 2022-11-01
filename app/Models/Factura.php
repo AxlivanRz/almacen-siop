@@ -26,6 +26,7 @@ class Factura extends Model
         'imp_iva',
         'imp_total',
         'iva',
+        'confirmed',
         'proveedor_id',
     ];
 }
