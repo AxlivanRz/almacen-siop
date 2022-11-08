@@ -56,6 +56,7 @@ class FacturaController extends Controller
             $entrada_create->articulo_id = $value;
             $entrada_create->caducidad = $request->get('caducidad')[$key];
             $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
+            $entrada_create->existencia = $request->get('cantidadkey')[$key];
             $entrada_create->save();
         }
         $factura_create = new Factura();
@@ -127,7 +128,9 @@ class FacturaController extends Controller
             $basekey = $request->get('basekey')[$key];
             $preciokey = $request->get('preciokey')[$key];
             $articulokey= $value;
-            $cantidadkey = $request->get('caducidad')[$key];
+            if ($request->get('caducidad') != null) {
+                $caducidadkey = $request->get('caducidad')[$key];
+            }
             $unitariokey = $request->get('unitariokey')[$key];
             if (isset($request->get('id_entrada')[$key])) {
                 $entrada_id = $request->get('id_entrada')[$key];
@@ -142,8 +145,9 @@ class FacturaController extends Controller
                 if ($booleano == 0) {
                     $entrada->existencia = $cantidadkey;
                 }
-                $entrada->caducidad = $cantidadkey;
-               
+                if( $request->get('caducidad') != null){
+                    $entrada->caducidad = $caducidadkey;
+                }
                 $entrada->save();
             }else{
                 $create = new EntradaArticulo;
@@ -154,7 +158,9 @@ class FacturaController extends Controller
                 $create->precio = $preciokey;
                 $create->articulo_id = $articulokey;
                 $create->imp_unitario = $unitariokey;
-                $create->caducidad = $cantidadkey;
+                if( $request->get('caducidad') != null){
+                    $entrada->caducidad = $caducidadkey;
+                }
                 $create->existencia = $cantidadkey;
                 $create->save();
             }

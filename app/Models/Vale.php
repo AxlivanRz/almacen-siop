@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Laravel\Sanctum\HasApiTokens;
+use App\Traits\ValesAndArticulos;
 class Vale extends Model
 {
-    use HasFactory, ValesAndArticulos;
+    use HasFactory, ValesAndArticulos, HasApiTokens;
     protected $table = "vales";
     protected $primaryKey = 'id_vale';
     public $incrementing = true;

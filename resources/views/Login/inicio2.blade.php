@@ -8,7 +8,7 @@
           <div class="card-body p-10 text-center" style="height: 400px; align-self: center">
 
             <div class="mb-md-5 mt-md-8 pb-6" >
-              <form action="/login" method="post">
+              <form action="/" method="post">
               @csrf
               <h4 class="fw-bold mb-2 text-uppercase">¡Bienvenido!</h4>
               <br>

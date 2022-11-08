@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Vale;
 use App\Models\Articulo;
 use App\Models\EntradaArticulo;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +22,9 @@ class ValeController extends Controller
         $vales = Vale::paginate(15);
         $entradas = EntradaArticulo::get();
         $articulos = Articulo::get();
-        return [$vales, $entradas, $articulos] ;
+        return view('Vale.index', compact('articulos'));
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *
@@ -31,7 +32,10 @@ class ValeController extends Controller
      */
     public function create()
     {
-        //
+        $entradas = EntradaArticulo::get();
+        $articulos = Articulo::get();
+        $thisUser = auth()->user();
+        return view('Vale.create', compact(['articulos', 'thisUser']));
     }
 
     /**
@@ -46,7 +50,7 @@ class ValeController extends Controller
         $createVale->status = 1;
         $createVale->fecha = $request->fecha;
         if (Gate::allows('isVal')) {
-            $createVale->usuario_id = $request->usuario_id;
+            $createVale->usuario_id =  Auth::user()->id_usuario;
         }
         $createVale->save();
         if ($request->articulokey !=null) { 
@@ -55,7 +59,7 @@ class ValeController extends Controller
                 $createVale->save();
             }
         }
-        return $createVale; 
+        return response($createVale, 201); 
     }
 
     /**

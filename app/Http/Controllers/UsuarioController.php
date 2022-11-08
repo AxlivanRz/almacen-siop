@@ -69,7 +69,7 @@ class UsuarioController extends Controller
     public function store( Request $request)
     {
         $create = new User; 
-        $create -> nombre = $request->nombre_us;
+        $create -> name = $request->nombre_us;
         $create -> primer_apellido = $request->primer;
         $create -> segundo_apellido = $request->segundo;       
         $create -> nombre_usuario = $request->username;
@@ -122,7 +122,7 @@ class UsuarioController extends Controller
     public function update(Request $request, $id)
     {
         $edit = User::findOrFail($id);
-        $edit -> nombre = $request->nombre_us;
+        $edit -> name = $request->nombre_us;
         $edit -> primer_apellido = $request->primer;
         $edit -> segundo_apellido = $request->segundo;       
         $edit -> nombre_usuario = $request->username;

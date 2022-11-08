@@ -1,10 +1,12 @@
 @extends('sideb')
 @section('content')
+@canany(['isAdmin', 'isTi', 'isAlm'])
 <div class="row">
     <div class="col-3 py-3 mt-2">
         <h5> <i class="fa-regular fa-file-lines fa-2x"></i> &NonBreakingSpace; Vales / {{Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->nombre_rol : "" }}</h5>
     </div>
 </div>
+@endcanany
 <div class="row"> 
     @canany(['isAdmin', 'isTi'])
         <div class="col-3">

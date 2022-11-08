@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SIADIN</title>
+    
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Styles -->
@@ -12,24 +13,46 @@
     <link rel="shortcut icon" sizes="162x162" href="{{ asset('/img/ico.png') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('scripts')
+    @yield('scriptsApi')
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/iconc.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
-
     <body style="background-color: #F2F3F4  ;">
     </body>
 
     <body>
         <!-- navbar -->
-        <nav class="navbar border border-0" style="background-color:  #ffffff ;">
-            <div class="container" >
-                <a class="navbar-brand">SIADIN</a>
-                <a class="navbar-brand mb-0  mx-auto d-block"><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 65px;"></a>
+        <nav class="navbar navbar-expand-lg" style="background-color:  #ffffff ;">
+            <div class="container-fluid">
+              <a class="navbar-brand mx-5 mb-0 px-5">SIADIN</a>
+              @can('isVal')
+              <a class="navbar-brand mx-4 mb-0 px-5" href="{{url('/api/vale')}}">Vales</a>
+              @endcan
+              <a class="navbar-brand mb-0 px-5 "><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 65px;"></a>
+              <a class="navbar-brand mx-5 px-5 mb-0"></a>
+              @can('isVal')
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav mb-0 mx-5">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-large"></i>&nbsp;{{ Auth::user()->name}} {{Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->nombre_rol : "" }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink" style="text-align: center">
+                        <li><a class="btn btn-outline-danger border border-0 shadow-none p-0 mb-0 rounded" data-bs-toggle="modal" data-bs-target="#userLogout" type="button">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+                </div>
+              @endcan
             </div>
-        </nav>
+          </nav>
         <!-- navbar -->
-        @auth                           
+        @auth
+        @canany(['isAdmin', 'isTi', 'isAlm']) 
         <div class="d-flex align-items-start ">
             <div class="nav d-flex flex-md-column flex-row me-auto   border border-right border-0 shadow-md p-0 mb-0 bg-white rounded " 
             style="align-items: center; background-color: #FFFFFFFF; min-height: 570px; " id="sidebar" role="tablist">
@@ -43,7 +66,7 @@
                         <div class="card card-body  border border-0" style="width: 185px;">
                             <p>
                                 <button class="btn btn-sm border border-0 btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#drop4" aria-expanded="false" aria-controls="drop4">
-                                    <i class="fa-solid fa-user-large"></i>&nbsp;{{ Auth::user()->nombre}} {{Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->nombre_rol : "" }}
+                                    <i class="fa-solid fa-user-large"></i>&nbsp;{{ Auth::user()->name}} {{Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->nombre_rol : "" }}
                                 </button>                               
                                 <div class="collapse" id="drop4">
                                     <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
@@ -87,18 +110,6 @@
                                 </div>
                             </div>
                             <p>
-                                <button class="btn btn-md border border-0 btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#drop2" aria-expanded="false" aria-controls="drop2">
-                                Vales
-                                </button>
-                            </p>
-                            <div class="collapse" id="drop2">
-                                <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Surtir vale</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Vales surtidos</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Mis vales</a>
-                                </div>
-                            </div>
-                            <p>
                                 <button class="btn btn-md border border-0 btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#drop3" aria-expanded="false" aria-controls="drop3">
                                 Consultas
                                 </button>
@@ -113,7 +124,7 @@
                     </div>
                 </div>
             </div>
-        
+            @endcanany
             <div class="flex-center position-ref full-height me-auto col-md-10 col-10 offset-0 offset-sm-0 offset-md-0">
                 <div class="content ">
                     
@@ -130,7 +141,7 @@
                 </div>
             </div>
         @endauth
-        </div>
+        </div> 
         @auth
         <!-- Logout Modal-->
         <div class="modal fade" id="userLogout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="userLogoutLabel" aria-hidden="true">

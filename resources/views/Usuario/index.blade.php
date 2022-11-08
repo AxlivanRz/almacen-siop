@@ -28,7 +28,7 @@
                     @foreach ( $user as $us )
                         <tr>
                             <th scope="row">{{$us->id_usuario}}</th>
-                            <td>{{$us->nombre}}</td>
+                            <td>{{$us->name}}</td>
                             <td>{{$us->nombre_usuario}}</td>
                             <td>
                                 @if ( $us->roles->isNotEmpty())

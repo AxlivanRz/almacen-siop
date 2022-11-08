@@ -13,7 +13,7 @@
                         @method('PUT')
                     <div class="col-12">
                         <label >Nombre </label>                
-                        <input type="text mb-3" class="form-control"  id="nombre_us" name="nombre_us" style="height: 35px" value="{{$us->nombre}}">
+                        <input type="text mb-3" class="form-control"  id="nombre_us" name="nombre_us" style="height: 35px" value="{{$us->name}}">
                     </div>
                     <div class="col-12">
                         <label >Primer Apellido</label>

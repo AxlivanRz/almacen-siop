@@ -11,7 +11,6 @@
                     @method('PUT')
                     <?php $contador = 0; ?>
                     <div id="eliminados" name="eliminados">
-
                     </div>
                     <div class="form-group row">
                         <div class="form-group col-3">
@@ -153,7 +152,7 @@
                                 </button>
                             </div> 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none" disabled="{{ isset($libro->Autor == 0)?false:'true'}}">
+                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none">
                                     <i class="fas fa-minus-circle"></i> Eliminar el último producto
                                 </button>
                             </div>
