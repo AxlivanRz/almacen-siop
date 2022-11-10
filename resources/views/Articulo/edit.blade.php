@@ -1,12 +1,12 @@
 <!-- Modal -->
-<div class="modal fade" id="articuloEdit{{$articulo->id_articulo}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloEditLabel" aria-hidden="true">
+<div class="modal fade" id="articuloEdit{{$articulo->id}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloEditLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-white border-0 " >
                 <h5 class="modal-title" id="departamentoEditLabel" >Editar artículo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('articulo.update',$articulo->id_articulo)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('articulo.update',$articulo->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf 
                 @method('PUT')
                 <div class="content" style="align-self: center">

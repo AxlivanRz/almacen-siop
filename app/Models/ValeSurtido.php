@@ -11,7 +11,7 @@ class ValeSurtido extends Model
     protected $table = "vale_surtidos";
     protected $primaryKey = 'id_surtido';
     public $incrementing = true;
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,7 @@ class ValeSurtido extends Model
     protected $fillable = [
         'total',
         'fecha',
-        'vale_id',
+        'vale_id',  
         'capturista_id'
     ];
 }

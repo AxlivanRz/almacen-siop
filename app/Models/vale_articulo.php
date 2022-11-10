@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 class vale_articulo extends Model
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory;
     protected $table = "vale_articulos";
-    protected $primaryKey = ['vale_id', 'articulo_id'];
+    protected $primaryKey = 'id_pedido';
     public $incrementing = true;
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -19,14 +19,8 @@ class vale_articulo extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad'
+        'cantidad',
+        'vale_id',
+        'articulo_id'
     ];
-    public function vales()
-    {
-        return $this->belongsToMany(Vale::class, 'vales', 'vale_id');
-    }
-    public function articulos()
-    {
-        return $this->belongsToMany(Articulo::class, 'articulos', 'articulo_id');
-    } 
 }

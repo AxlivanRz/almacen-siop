@@ -4,38 +4,41 @@
     <div class="col-2"></div>
     <div class="col-8">
       <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Crear Vale</h5>
-            <div class="row ">
-                <input type="number" id="contador_producto" hidden>
-                <div class="form-group" id="producto">
-                </div>
-            </div>
-            <div class="row py-2 border-top mt-3" >
-                <div class="margin">
-                    <div class="btn-group m-4">
-                        <button type="submit" class="btn btn-success" id="agre_btn" style="display:none">
-                            Agregar
-                        </button>
-                    </div>
-                    <div class="btn-group m-4">
-                        <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
-                            Finalizar
-                        </button>
-                    </div>
-                    <div class="btn-group ">
-                        <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block">
-                            <i class="fas fa-plus"></i> Agregar producto
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger" id="btn_delete" onClick="delete_last()" style="display:block">
-                            <i class="fas fa-minus-circle"></i> Eliminar el último producto
-                        </button>
+        <form action="{{route('vale.store')}}" method="post">
+            @csrf
+            <div class="card-body">
+            <h5 class="card-title">Crear Vale</h5>
+                <div class="row ">
+                    <input type="number" id="contador_producto" hidden>
+                    <div class="form-group" id="producto">
                     </div>
                 </div>
+                <div class="row py-2 border-top mt-3" >
+                    <div class="margin">
+                        <div class="btn-group m-4">
+                            <button type="submit" class="btn btn-success" id="agre_btn" style="display:none">
+                                Agregar
+                            </button>
+                        </div>
+                        <div class="btn-group m-4">
+                            <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
+                                Finalizar
+                            </button>
+                        </div>
+                        <div class="btn-group ">
+                            <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block">
+                                <i class="fas fa-plus"></i> Agregar producto
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger" id="btn_delete" onClick="delete_last()" style="display:block">
+                                <i class="fas fa-minus-circle"></i> Eliminar el último producto
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
       </div>
     </div>
 </div>
@@ -83,7 +86,7 @@
                     $.each(articulos, function(key, value) {
                         var option = document.createElement("option");
                         option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
-                        option.value = value['id_articulo'];
+                        option.value = value['id'];
                         select.add(option);
                         formGroup1.appendChild(select);
                     })
@@ -124,5 +127,5 @@
             document.getElementById("fin_btn").style.display = "none";
             document.getElementById("agre_btn").style.display = "block";
         }
-        setInterval(retroceso, 1000);
     </script>
+@endsection

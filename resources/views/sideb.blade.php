@@ -27,7 +27,7 @@
             <div class="container-fluid">
               <a class="navbar-brand mx-5 mb-0 px-5">SIADIN</a>
               @can('isVal')
-              <a class="navbar-brand mx-4 mb-0 px-5" href="{{url('/api/vale')}}">Vales</a>
+              <a class="navbar-brand mx-4 mb-0 px-5 btn btn-sm btn-outline-success border border-0 shadow-none rounded" href="{{route('vale.index')}}">Vales</a>
               @endcan
               <a class="navbar-brand mb-0 px-5 "><img class="img-fluid" src="{{ asset('../img/hm-siop-logos.png') }}" style="max-height: 65px;"></a>
               <a class="navbar-brand mx-5 px-5 mb-0"></a>
@@ -88,7 +88,7 @@
                                     @canany(['isAdmin', 'isTi']) 
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('usuario.index')}}">Usuarios</a>
                                     @endcanany
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('up.index')}}">Ups</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('up.index')}}">Unidades Presupuestales</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('area.index')}}">Direcciones/Unidades</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('departamento.index')}}">Departamentos</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('partida.index')}}">Partidas presupuestales</a>
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
                                     <br>
-                                 <h5 style="color: dark; text-align: center;">¿Desea salir, {{ Auth::user()->nombre}}?</h5>                    
+                                 <h5 style="color: dark; text-align: center;">¿Desea salir {{ Auth::user()->name}}?</h5>                    
                         </div>
                     </div>
                     <div class="d-flex justify-content-center align-items-center " style="height: 85px">

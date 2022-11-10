@@ -7,7 +7,7 @@ trait ValesAndArticulos{
     /**
      * @return mixeds
      */
-    public function entradas()
+    public function articulos()
     {
         return $this->belongsToMany(Articulo::class, 'vale_articulos', 'vale_id', 'articulo_id', 'cantidad');
     }  

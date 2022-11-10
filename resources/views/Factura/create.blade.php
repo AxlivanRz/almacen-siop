@@ -136,7 +136,7 @@
                     $.each(articulos, function(key, value) {
                         var option = document.createElement("option");
                         option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
-                        option.value = value['id_articulo'];
+                        option.value = value['id'];
                         select.add(option);
                         formGroup1.appendChild(select);
                     })

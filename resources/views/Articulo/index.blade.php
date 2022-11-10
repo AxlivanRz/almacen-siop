@@ -32,7 +32,7 @@
                 @if ($articulos->isNotEmpty())
                     @foreach ( $articulos as $articulo )
                         <tr>
-                            <th scope="row">{{$articulo->id_articulo}}</th>
+                            <th scope="row">{{$articulo->id}}</th>
                             <td>{{$articulo->nombre_articulo}}</td>
                             <td>{{$articulo->nombre_med}}</td> 
                             @foreach ($partidas as $partida )
@@ -45,13 +45,13 @@
                                 @endif
                             @endforeach                                                
                             <td>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#articuloDelete{{$articulo->id_articulo}}">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#articuloDelete{{$articulo->id}}">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button> 
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit{{$articulo->id_articulo}}">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit{{$articulo->id}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#articuloShow{{$articulo->id_articulo}}">
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#articuloShow{{$articulo->id}}">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </td>       

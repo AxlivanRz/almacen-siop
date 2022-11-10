@@ -25,7 +25,7 @@ class CreateEntradaArticulosTable extends Migration
             $table->date('caducidad')->nullable();
             $table->integer('existencia')->unsigned();
             $table->timestamps();
-            $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
+            $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
         });
     }
 

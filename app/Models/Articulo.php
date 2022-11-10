@@ -9,7 +9,7 @@ class Articulo extends Model
 {
     use HasFactory;
     protected $table = "articulos";
-    protected $primaryKey = 'id_articulo';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
 
@@ -28,8 +28,7 @@ class Articulo extends Model
         'nombre_med',
         'partida_id',
     ];
-    public function vales()
-    {
-        return $this->belongsToMany(Vale::class, 'vale_articulos', 'vale_id', 'articulo_id');
+    public function vales (){
+        return $this->belongsToMany(Vale::class, 'vale_articulos');
     }
 }

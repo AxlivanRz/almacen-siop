@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ValeController extends Controller
 {
@@ -20,9 +21,7 @@ class ValeController extends Controller
     public function index()
     {
         $vales = Vale::paginate(15);
-        $entradas = EntradaArticulo::get();
-        $articulos = Articulo::get();
-        return view('Vale.index', compact('articulos'));
+        return view('Vale.index', compact('vales'));
     }
  
     /**
@@ -33,9 +32,7 @@ class ValeController extends Controller
     public function create()
     {
         $entradas = EntradaArticulo::get();
-        $articulos = Articulo::get();
-        $thisUser = auth()->user();
-        return view('Vale.create', compact(['articulos', 'thisUser']));
+        return view('Vale.create', compact(['entradas']));
     }
 
     /**
@@ -47,19 +44,23 @@ class ValeController extends Controller
     public function store(Request $request)
     {
         $createVale = new Vale;
+        $date = Carbon::now()->isoFormat('YYYY/MM/DD');
         $createVale->status = 1;
-        $createVale->fecha = $request->fecha;
+        $createVale->fecha = $date;
+        $createVale->fecha_aprovado = null;
         if (Gate::allows('isVal')) {
-            $createVale->usuario_id =  Auth::user()->id_usuario;
+            $createVale->usuario_id = $request->user()->id_usuario;
+            $createVale->administrador_id = null;
         }
         $createVale->save();
-        if ($request->articulokey !=null) { 
+        if ($request->get('articulokey') !=null) { 
             foreach($request->get('articulokey') as $key => $value){
-                $createVale->articulos()->attach($value, ['cantidad' => $request->get('cantidad')]);
+                $cantidad = $request->get('cantidadkey')[$key];
+                $createVale->articulos()->attach( $value, ['cantidad' => $cantidad]);
                 $createVale->save();
             }
         }
-        return response($createVale, 201); 
+        return redirect ('/vale'); 
     }
 
     /**

@@ -15,7 +15,7 @@
                             </div>
                         </div>
                             <br>
-                         <h5 style="color: dark; text-align: center;">¿Está seguro de eliminar al usuario {{$us->nombre}}?</h5>                    
+                         <h5 style="color: dark; text-align: center;">¿Está seguro de eliminar al usuario {{$us->name}}?</h5>                    
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center " style="height: 85px">

@@ -48,7 +48,7 @@
                         <div id="relationship" name="relationship">
                             @foreach ($entradas as $entrada)
                                 @foreach ($articulos as $articulo)
-                                    @if ($articulo->id_articulo == $entrada->articulo_id)
+                                    @if ($articulo->id == $entrada->articulo_id)
                                         <?php $contador++;?>
                                         <div id="newpro" name= "newpro" class="newpro">
                                             <h5 class="border-top mt-4">Producto</h5>
@@ -57,14 +57,14 @@
                                                     <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id_precio_entrada}}" hidden>
                                                     <label>Articulo</label> 
                                                     <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
-                                                        @if ($articulo->id_articulo == $entrada->articulo_id)  
-                                                            <option selected value="{{$articulo->id_articulo}}">
+                                                        @if ($articulo->id == $entrada->articulo_id)  
+                                                            <option selected value="{{$articulo->id}}">
                                                                 {{$articulo->nombre_articulo}}
                                                             </option>
                                                         @endif
                                                         @foreach ($articulos as $articulo)
-                                                            @if ($articulo->id_articulo != $entrada->articulo_id)
-                                                                <option value="{{$articulo->id_articulo}}">
+                                                            @if ($articulo->id != $entrada->articulo_id)
+                                                                <option value="{{$articulo->id}}">
                                                                     {{$articulo->nombre_articulo}}
                                                                 </option>
                                                             @endif  
@@ -220,7 +220,7 @@
                     $.each(articulos, function(key, value) {
                         var option = document.createElement("option");
                         option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
-                        option.value = value['id_articulo'];
+                        option.value = value['id'];
                         select.add(option);
                         formGroup1.appendChild(select);
                     })

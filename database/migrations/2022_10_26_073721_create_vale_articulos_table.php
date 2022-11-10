@@ -14,13 +14,12 @@ class CreateValeArticulosTable extends Migration
     public function up()
     {
         Schema::create('vale_articulos', function (Blueprint $table) {
-            $table->unsignedBigInteger('vale_id');
+            $table->bigIncrements('id_pedido');
             $table->unsignedBigInteger('articulo_id');
+            $table->unsignedBigInteger('vale_id');
             $table->integer('cantidad')->unsigned();
-            $table->timestamps();
-            $table->foreign('vale_id')->references('id_vale')->on('vales')->onDelete('cascade');
-            $table->foreign('articulo_id')->references('id_articulo')->on('articulos')->onDelete('cascade');
-            $table->primary(['vale_id', 'articulo_id']);
+            $table->foreign('vale_id')->references('id')->on('vales')->onDelete('cascade');
+            $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
         });
     }
 

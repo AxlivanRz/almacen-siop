@@ -28,7 +28,6 @@ class LoginController extends Controller
             if(Hash::check($contraIn, $contraseniaU)){
                 Auth::login($user);
                 $request->session()->regenerate();
-                $token = $user->createToken('auth_token')->plainTextToken;
                 return redirect( route('inicio'));
                 }
                 throw ValidationException::withMessages([
@@ -41,10 +40,5 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
-    }
-    public function apiLogin(Request $request){
-        $request->validate([
-
-        ]);
     }
 }

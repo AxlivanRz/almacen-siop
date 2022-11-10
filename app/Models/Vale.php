@@ -4,16 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens;
-use App\Traits\ValesAndArticulos;
 class Vale extends Model
 {
-    use HasFactory, ValesAndArticulos, HasApiTokens;
+    use HasFactory;
     protected $table = "vales";
-    protected $primaryKey = 'id_vale';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -26,4 +23,7 @@ class Vale extends Model
         'usuario_id',
         'administrador_id'
     ];
+    public function articulos (){
+        return $this->belongsToMany(Articulo::class, 'vale_articulos');
+    }
 }

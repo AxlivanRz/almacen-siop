@@ -20,7 +20,7 @@ class CreateValeSurtidosTable extends Migration
             $table->unsignedBigInteger('vale_id');
             $table->unsignedBigInteger('capturista_id');
             $table->timestamps();
-            $table->foreign('vale_id')->references('id_vale')->on('vales')->onDelete('cascade');
+            $table->foreign('vale_id')->references('id')->on('vales')->onDelete('cascade');
             $table->foreign('capturista_id')->references('id_usuario')->on('users')->onDelete('cascade');
         });
     }

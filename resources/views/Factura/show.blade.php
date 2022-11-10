@@ -35,14 +35,14 @@
                 </div>
                 @foreach ($entradas as $entrada)
                     @foreach ($articulos as $articulo)
-                        @if ($articulo->id_articulo == $entrada->articulo_id)
+                        @if ($articulo->id == $entrada->articulo_id)
                             <h5 class="border-top mt-4">Producto</h5>
                             <div class="row d-flex align-items-end">
                                 <div class="form-group col-3">
                                     <label>Articulo</label> 
                                     <select class="form-control" name="articulokey[]" id="artparent" disabled>
-                                        @if ($articulo->id_articulo == $entrada->articulo_id)  
-                                            <option selected value="{{$articulo->id_articulo}}">
+                                        @if ($articulo->id == $entrada->articulo_id)  
+                                            <option selected value="{{$articulo->id}}">
                                                 {{$articulo->nombre_articulo}}
                                             </option>
                                         @endif   

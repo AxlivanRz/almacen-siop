@@ -14,7 +14,7 @@ class CreateValesTable extends Migration
     public function up()
     {
         Schema::create('vales', function (Blueprint $table) {
-            $table->bigIncrements('id_vale');
+            $table->id();
             $table->integer('status')->unsigned();
             $table->dateTime('fecha');
             $table->dateTime('fecha_aprovado')->nullable();

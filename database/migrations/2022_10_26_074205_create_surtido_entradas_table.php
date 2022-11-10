@@ -17,7 +17,6 @@ class CreateSurtidoEntradasTable extends Migration
             $table->unsignedBigInteger('surtido_id');
             $table->unsignedBigInteger('entrada_id');
             $table->integer('cantidad')->unsigned();
-            $table->timestamps();
             $table->foreign('surtido_id')->references('id_surtido')->on('vale_surtidos')->onDelete('cascade');
             $table->foreign('entrada_id')->references('id_precio_entrada')->on('entrada_articulos')->onDelete('cascade');
             $table->primary(['surtido_id', 'entrada_id']);
