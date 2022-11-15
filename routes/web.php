@@ -12,6 +12,7 @@ use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\ValeController;
+use App\Http\Controllers\SurtirController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 /*
@@ -33,8 +34,9 @@ Route::post('/', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::view('/', 'Login.inicio2')->name('usuario.login')->middleware('guest');
-Route::view('/inicio', 'inicio')->name('inicio')->middleware('rol:ti,admin,alm,user');
+Route::get('/inicio', [SurtirController::class, 'indexS'])->name('inicio')->middleware('rol:ti,admin,alm,user');
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
+Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
 
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
@@ -45,13 +47,9 @@ Route::resource('/articulo', ArticuloController::class)->middleware('rol:ti,admi
 Route::resource('/proveedor', ProveedorController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/recurso', OrigenRecursoController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/unidadesmedicion', UnidadMedidaController::class)->middleware('rol:ti,admin,alm');
-Route::get('vale', [ValeController::class, 'index'])->name('vale.index')->middleware('rol:user');
-Route::get('vale/create', [ValeController::class, 'create'])->name('vale.create')->middleware('rol:user');
-Route::get('vale/{id}', [ValeController::class, 'show'])->name('vale.show')->middleware('rol:user');
-Route::post('vale/store', [ValeController::class, 'store'])->name('vale.store')->middleware('rol:user');
-Route::put('vale/edit/{id}',[ValeController::class, 'update'])->name('vale.update')->middleware('rol:user');
+Route::resource('/vale', ValeController::class)->middleware('rol:user');
 Route::resource('/factura', FacturaController::class)->middleware('rol:ti,admin,alm');
-
+Route::resource('/surtir', SurtirController::class)->middleware('rol:ti,admin');
 
 
 

@@ -4,17 +4,51 @@
     <div class="col-2"></div>
     <div class="col-8">
       <div class="card">
-        <form action="{{route('vale.store')}}" method="post">
+        <form action="{{route('surtir.update',$vale->id)}}" method="post">
             @csrf
+            @method('PUT')
+            <?php $contador = 0; ?>
             <div class="card-body">
-            <h5 class="card-title">Crear Vale</h5>
+            <h5 class="card-title">Editar Vale</h5>
                 <div class="row ">
                     <input type="number" id="contador_producto" hidden>
                     <div class="form-group" id="producto">
+                        @foreach ($valeArticulos as $vArticulo)
+                            <?php $contador++;?>
+                            <div id="newpro" name= "newpro" class="newpro">
+                                <h5 class="border-top mt-4">Producto</h5>
+                                <div class="row d-flex align-items-end"> 
+                                    <div class="form-group col-5">
+                                        @if ($vale->articulos->isNotEmpty())
+                                            @if ($valeArticulos !=null)
+                                                <label>Articulo</label> 
+                                                <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">                                                    
+                                                    <option selected value="{{$vArticulo->id}}">
+                                                        {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
+                                                    </option>                                                   
+                                                    @foreach ($articulos as $articulo)
+                                                        @if ($articulo->id != $vArticulo->id)
+                                                            <option value="{{$articulo->id}}">
+                                                                {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
+                                                            </option>
+                                                        @endif  
+                                                    @endforeach     
+                                                </select>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    <div class="form-group col-5">
+                                        <label>Cantidad</label>
+                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}">
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="row py-2 border-top mt-3" >
                     <div class="margin">
+                        <input type="text" value="{{$contador}}" id= "contador_edit" hidden>
                         <div class="btn-group m-4">
                             <button type="submit" class="btn btn-success" id="agre_btn" style="display:none">
                                 Agregar
@@ -43,23 +77,30 @@
     </div>
 </div>
 @endsection
-@section('scriptsApi')
+@section('editarSurtir')
     <script>
         function load() {
-            producto();
+            contadoredit();
         }
-        window.onload = load;
         var parent = 0;
+        window.onload = load;
+        function contadoredit(){
+            var valoredit = document.getElementById("contador_edit").value;
+            parent = Number(valoredit);
+            document.getElementById("contador_producto").value = parent; 
+            if (parent > 1) {
+                document.getElementById("btn_delete").style.display = "block";
+            }
+        }
         function producto() {
             parent++;
             if (parent > 1) {
                 document.getElementById("btn_delete").style.display = "block";
             }
             var div = document.createElement("div");
-            var header = document.createElement("h5");
-            header.innerHTML = "Producto";
-            header.className = "border-top mt-2 py-2";
-            div.appendChild(header);
+            div.id = "newpro";
+            div.className = "newpro";
+            div.name = "newppro"; 
 
             var row = document.createElement("div");
             row.className = "row d-flex align-items-end";
@@ -109,18 +150,18 @@
 
             div.appendChild(row);
             document.getElementById("producto").appendChild(div);
-            document.getElementById("contador_producto").value = parent;            
-        }                    
+            document.getElementById("contador_producto").value = parent;  
+        }        
         function delete_last() {
+            if (parent > 1) {  
+                $(".newpro").last().remove();   
+            }
             parent--;
-            var divElement = document.querySelector('#producto');
-            divElement.removeChild(divElement.lastElementChild);
             if (parent == 1) {
                 document.getElementById("btn_delete").style.display = "none";
             }
-            document.getElementById("contador_producto").value = parent;
+            document.getElementById("contador_producto").value = parent;  
         }
-        
         function final() {
             document.getElementById("btn_delete").style.display = "none";
             document.getElementById("agregar_btn").style.display = "none";

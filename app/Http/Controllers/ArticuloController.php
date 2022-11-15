@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Partida;
 use App\Models\Articulo;
 use App\Models\UnidadMedida;
+use App\Models\EntradaArticulo;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class ArticuloController extends Controller
@@ -124,6 +126,16 @@ class ArticuloController extends Controller
         $articulos[] = array();
         $query = Articulo::get();
         return ($query);
+    }
+    public function getExistencia(){
+        
+        $entradas = EntradaArticulo::get();
+        $articulos = '';
+        foreach ($entradas as $entrada) {
+            $articulos = DB::table('articulos')
+            ->where('id', $entrada->id)->get();
+        }
+        return($articulos);
     }
     public function pdf(){
         $articulos = Articulo::paginate();

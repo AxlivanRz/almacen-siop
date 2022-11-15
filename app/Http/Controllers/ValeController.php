@@ -44,7 +44,7 @@ class ValeController extends Controller
     public function store(Request $request)
     {
         $createVale = new Vale;
-        $date = Carbon::now()->isoFormat('YYYY/MM/DD, h:mm:ss a');
+        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
         $createVale->status = 1;
         $createVale->fecha = $date;
         $createVale->fecha_aprovado = null;
@@ -71,7 +71,10 @@ class ValeController extends Controller
      */
     public function show($id)
     {
-        //
+        $vale = Vale::findOrFail($id);
+        $entradas = EntradaArticulo::get();
+        $valeArticulos = $vale->articulos;
+        return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos'])); 
     }
 
     /**
@@ -82,7 +85,16 @@ class ValeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $vale = Vale::findOrFail($id);
+        $entradas = EntradaArticulo::get();
+        $valeArticulos = $vale->articulos;
+        $articulos = '';
+        foreach ($entradas as $entrada) {
+            $articulos = DB::table('articulos')
+            ->where('id', $entrada->id)->get();
+        }
+        return view('Vale.edit', compact(['vale', 'entradas', 'valeArticulos', 'articulos'])); 
+
     }
 
     /**
@@ -94,21 +106,21 @@ class ValeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $editVale = Vale::findOrFail($id);
         if (Gate::allows('isVal') && Auth::user()->id_usuario == $editVale->usuario_id && $editVale->status == 1) {
-            $editVale = Vale::findOrFail($id);
             $editVale->status = 1;
             $editVale->save();
             $editVale->articulos()->detach();
             if ($request->articulokey !=null) { 
                 foreach($request->get('articulokey') as $key => $value){
-                    $editVale->articulos()->attach($value, ['cantidad' => $request->get('cantidad')]);
+                    $cantidad = $request->get('cantidadkey')[$key];
+                    $editVale->articulos()->attach($value, ['cantidad' => $cantidad]);
                     $editVale->save();
                 }
             }
-            return $editVale;
+            return redirect('/vale');
         } 
     }
-
     /**
      * Remove the specified resource from storage.
      *

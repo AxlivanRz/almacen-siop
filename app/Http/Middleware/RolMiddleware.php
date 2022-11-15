@@ -21,7 +21,7 @@ class RolMiddleware
                     return $next($request);
                 }
             }
-            return redirect('/inicio');
+            return route('inicio');
         }
         return redirect('/');
     }

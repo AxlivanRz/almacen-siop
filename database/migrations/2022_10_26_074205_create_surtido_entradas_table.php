@@ -14,12 +14,12 @@ class CreateSurtidoEntradasTable extends Migration
     public function up()
     {
         Schema::create('surtido_entradas', function (Blueprint $table) {
-            $table->unsignedBigInteger('surtido_id');
+            $table->bigIncrements('id_surtido');
             $table->unsignedBigInteger('entrada_id');
+            $table->unsignedBigInteger('surtir_id');
             $table->integer('cantidad')->unsigned();
-            $table->foreign('surtido_id')->references('id_surtido')->on('vale_surtidos')->onDelete('cascade');
-            $table->foreign('entrada_id')->references('id_precio_entrada')->on('entrada_articulos')->onDelete('cascade');
-            $table->primary(['surtido_id', 'entrada_id']);
+            $table->foreign('surtir_id')->references('id')->on('vale_surtidos')->onDelete('cascade');
+            $table->foreign('entrada_id')->references('id')->on('entrada_articulos')->onDelete('cascade');
         });
     }
 

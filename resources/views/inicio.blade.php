@@ -11,11 +11,14 @@
     @canany(['isAdmin', 'isTi'])
         <div class="col-3">
             <div class="card text-white bg-danger">
-                <div class="card-header border-0" style="text-align: center">En espera de confirmación de Administrador</div>
+                <div class="card-header border-0" style="text-align: center">En espera de confirmación de un Administrador</div>
                 <div class="card-body"  style="text-align: center">
                     <i class="fa-solid fa-triangle-exclamation fa-5x"></i>
-                    <h5 class="card-title">Cantidad</h5>
-                    <p class="card-text"></p>
+                    @foreach ($vales as $vale)
+                        @if ($vale->status == 1)
+                            <a class="card-text" href="{{route('surtir.index')}}">: {{count($vale)}} Vales</a>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -26,8 +29,11 @@
                 <div class="card-header border-0" style="text-align: center; color: white">En espera de confirmación del usuario</div>
                 <div class="card-body" style="text-align: center">
                     <i class="fa-solid fa-exclamation fa-5x" style="color: white"></i>
-                <h5 class="card-title" style="color: white">Cantidad</h5>
-                <p class="card-text"></p>
+                    @foreach ($vales as $vale)
+                        @if ($vale->status == 2)
+                            <a class="card-text" href="{{route('surtir.index')}}">: {{count($vale)}} Vales</a>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -36,8 +42,11 @@
                 <div class="card-header border-0" style="text-align: center">Listos para surtir</div>
                 <div class="card-body" style="text-align: center">
                     <i class="fa-regular fa-clock fa-5x"></i>
-                    <h5 class="card-title">Cantidad</h5>
-                    <p class="card-text"></p>
+                    @foreach ($vales as $vale)
+                    @if ($vale->status == 3)
+                        <a class="card-text" href="{{route('surtir.index')}}">: {{count($vale)}} Vales</a>
+                    @endif
+                @endforeach
                 </div>
             </div>
         </div>

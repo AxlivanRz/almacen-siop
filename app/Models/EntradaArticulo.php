@@ -9,7 +9,7 @@ class EntradaArticulo extends Model
 {
     use HasFactory;
     protected $table = "entrada_articulos";
-    protected $primaryKey = 'id_precio_entrada';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true; 
 

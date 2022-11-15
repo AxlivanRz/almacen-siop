@@ -100,7 +100,7 @@ class FacturaController extends Controller
         ->where('id_factura', $id)->get();
         $articulos = Articulo::get();
         //$entradas = EntradaArticulo::get();
-        $entradas = DB::table('entrada_articulos')->orderBy('id_precio_entrada', 'asc')->get();
+        $entradas = DB::table('entrada_articulos')->orderBy('id', 'asc')->get();
         return view('Factura.edit', compact(['factura', 'entradas', 'proveedores', 'articulos']));
     }
 
@@ -134,7 +134,7 @@ class FacturaController extends Controller
             $unitariokey = $request->get('unitariokey')[$key];
             if (isset($request->get('id_entrada')[$key])) {
                 $entrada_id = $request->get('id_entrada')[$key];
-                $entrada = EntradaArticulo::firstOrNew(['id_precio_entrada' =>  $entrada_id]);
+                $entrada = EntradaArticulo::firstOrNew(['id' =>  $entrada_id]);
                 $entrada->factura_id = $numerof;
                 $entrada->cantidad = $cantidadkey;
                 $entrada->descuento = $descuentokey;

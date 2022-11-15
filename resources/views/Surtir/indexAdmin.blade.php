@@ -16,7 +16,8 @@
                         <th scope="col">Id</th>
                         <th scope="col">Fecha de Solicitado</th>
                         <th scope="col">Cantidad de articulos</th>
-                        <th scope="col">Estatus</th>
+                        <th scope="col">Solicitante</th>
+                        <th scope="col">Sección a la que pertenece</th>
                         <th scope="col" style="width: 150px;">Acciones&nbsp;
                             <a type="button" class="btn btn-tool btn-sm btn-success" href="{{route('vale.create')}}">
                                 <i class="far fa-plus-square"></i>
@@ -28,39 +29,43 @@
                 <tbody>
                     @if ($vales->isNotEmpty())
                         @foreach ( $vales as $vale )
-                            @if ($vale->usuario_id == Auth::user()->id_usuario)
+                            @if ($vale->status == 1)
                             <tr>
                                 <th scope="row">{{$vale->id}}</th>                            
                                 <td>{{$vale->fecha}}</td>
                                 <td>Contiene: {{count($vale->articulos)}} articulos</td>
-                                {{-- If para el Estatus del vale --}}
-                                    @if ($vale->status == 1)
-                                    <td style="text-align: top"><i class="fa-solid fa-circle fa-2x" style="color: red"></i></td>
+                                @foreach ($usuarios as $usuario )
+                                    @if ($usuario->id_usuario == $vale->usuario_id)
+                                    <td>{{$usuario->name}} {{$usuario->primer_apellido}}</td>
                                     @endif
-                                    @if ($vale->status == 2)
-                                    <td><i class="fa-solid fa-circle" style="color: rgb(255, 230, 0)"></i></td>
+                                    @if ($usuario->area_id != null)
+                                        @foreach ($areas as $area )
+                                            @if ($usuario->area_id == $area->id_area)
+                                                <td>{{$area->nombre_area}}</td>
+                                            @endif
+                                        @endforeach
                                     @endif
-                                    @if ($vale->status == 3)
-                                    <td><i class="fa-solid fa-circle" style="color: rgb(29, 92, 249)"></i></td>
+                                    @if ($usuario->departamento_id != null)
+                                        @foreach ($departamentos as $departamento )
+                                            @if ($usuario->departamento_id == $departamento->id_departamento)
+                                                <td>{{$departamento->nombre_departamento}}</td>
+                                            @endif
+                                        @endforeach
                                     @endif
-                                {{-- Termino del If para el Estatus del vale --}}
-                                <td>                                                           
-                                    <a href="{{route('vale.edit',$vale->id)}}" class="btn btn-primary btn-sm">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>   
-                                    <a href="{{route('vale.show',$vale->id)}}" class="btn btn-info btn-sm">
+                                @endforeach
+                                <td>                                                            
+                                    <a href="{{route('surtir.editAdmin',$vale->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>
                                     </a>                              
                                 </td>                   
                             </tr>     
                             @else
-                            <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitas un vale</span></td>
+                            <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
                             @endif
                         @endforeach   
                     @else
-                    <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitas un vale</span></td>
+                    <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
                     @endif
-                            
                 </tbody>
             </table> 
         </div>

@@ -54,7 +54,7 @@
                                             <h5 class="border-top mt-4">Producto</h5>
                                             <div class="row d-flex align-items-end">
                                                 <div class="form-group col-3">
-                                                    <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id_precio_entrada}}" hidden>
+                                                    <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                     <label>Articulo</label> 
                                                     <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
                                                         @if ($articulo->id == $entrada->articulo_id)  

@@ -14,7 +14,7 @@ class CreateEntradaArticulosTable extends Migration
     public function up()
     {
         Schema::create('entrada_articulos', function (Blueprint $table) {
-            $table->bigIncrements('id_precio_entrada');
+            $table->id();
             $table->integer('cantidad')->unsigned();
             $table->double('descuento');
             $table->double('base');

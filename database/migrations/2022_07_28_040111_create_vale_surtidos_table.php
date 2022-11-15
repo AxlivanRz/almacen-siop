@@ -14,10 +14,9 @@ class CreateValeSurtidosTable extends Migration
     public function up()
     {
         Schema::create('vale_surtidos', function (Blueprint $table) {
-            $table->bigIncrements('id_surtido');
+            $table->id();
             $table->double('total')->unsigned();
             $table->dateTime('fecha');
-            $table->unsignedBigInteger('vale_id');
             $table->unsignedBigInteger('capturista_id');
             $table->timestamps();
             $table->foreign('vale_id')->references('id')->on('vales')->onDelete('cascade');

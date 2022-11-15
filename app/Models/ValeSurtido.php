@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ValeSurtido extends Model
 {
-    use HasFactory, SurtirAndEntrada;
+    use HasFactory;
     protected $table = "vale_surtidos";
-    protected $primaryKey = 'id_surtido';
+    protected $primaryKey = 'id';
     public $incrementing = true;
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +20,7 @@ class ValeSurtido extends Model
      */
     protected $fillable = [
         'total',
-        'fecha',
-        'vale_id',  
+        'fecha', 
         'capturista_id'
     ];
 }

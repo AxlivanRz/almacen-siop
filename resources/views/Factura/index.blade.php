@@ -55,7 +55,7 @@
         </table>
     </div>
     @if ($facturas->isNotEmpty())   
-        @foreach ($facturas as $encabezado)
+        @foreach ($facturas as $factura)
             @include('Factura.show')
         @endforeach
     @endif

@@ -9,7 +9,7 @@ class surtido_entrada extends Model
 {
     use HasFactory;
     protected $table = "surtido_entradas";
-    protected $primaryKey = ['surtido_id', 'entrada_id'];
+    protected $primaryKey = 'id_surtido';
     public $incrementing = true;
     public $timestamps = true;
     /**
@@ -18,17 +18,10 @@ class surtido_entrada extends Model
      * @var array
      */
     protected $fillable = [
-        'cantidad'
+        'cantidad',
+        'entrada_id',
+        'surtir_id',
     ];
-    public function surtir()
-    {
-        return $this->belongsToMany(ValeSurtido::class, 'vale_surtidos', 'surtido_id');
-    }
-    public function entradas()
-    {
-        return $this->belongsToMany(EntradaArticulo::class, 'entrada_articulos', 'entrada_id');
-    }
-
 }
 
     
