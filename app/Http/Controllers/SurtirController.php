@@ -8,6 +8,11 @@ use App\Models\vale_articulo;
 use App\Models\Factura;
 use App\Models\EntradaArticulo;
 use App\Models\ValeSurtido;
+use App\Models\User;
+use App\Models\Area;
+use App\Models\Departamento;
+use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SurtirController extends Controller
@@ -20,7 +25,13 @@ class SurtirController extends Controller
     public function indexS(){
         $vales = Vale::get();
         $surtidos = ValeSurtido::get();
-        return view('inicio', compact('vales'));
+        $statusUno = DB::table('vales')
+        ->where('status', 1)->get();
+        $statusDos = DB::table('vales')
+        ->where('status', 2)->get();
+        $statusTres = DB::table('vales')
+        ->where('status', 3)->get();
+        return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres']));
     }
     public function indexAdmin(){
         $usuarios = User::get();
@@ -31,7 +42,11 @@ class SurtirController extends Controller
     }
     public function index()
     {
-       
+        $usuarios = User::get();
+        $areas = Area::get();
+        $departamentos = Departamento::get();
+        $vales = Vale::get();
+        return view('Surtir.index', compact(['vales', 'usuarios', 'areas', 'departamentos']));
     }
 
     /**
@@ -43,6 +58,17 @@ class SurtirController extends Controller
     {
         //
     }
+    public function createV($id)
+    {
+        $facturas = Factura::get();
+        $vale = Vale::findOrFail($id);
+        $valeArticulos = $vale->articulos;
+        $entradas = EntradaArticulo::get();
+        $articulos = DB::table('articulos')
+        ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
+        ->get();
+        return view('Surtir.create', compact(['vale', 'valeArticulos', 'articulos', 'entradas', 'facturas'])); 
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -50,6 +76,10 @@ class SurtirController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function storeV(Request $request)
+    {
+        //
+    }
     public function store(Request $request)
     {
         //
@@ -80,11 +110,9 @@ class SurtirController extends Controller
     {
         $vale = Vale::findOrFail($id);
         $valeArticulos = $vale->articulos;
-        $articulos = '';
-        foreach ($entradas as $entrada) {
-            $articulos = DB::table('articulos')
-            ->where('id', $entrada->id)->get();
-        }
+        $articulos = DB::table('articulos')
+        ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
+        ->get();
         return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'articulos'])); 
     }
 
@@ -97,12 +125,12 @@ class SurtirController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (Gate::allows('isAdmin')) {
+        
             $editVale = Vale::findOrFail($id);
             $editVale->status = 2;
             $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
             $editVale->fecha_aprovado = $date;
-            $createVale->administrador_id = $request->user()->id_usuario;
+            $editVale->administrador_id = $request->user()->id_usuario;
             $editVale->save();
             $editVale->articulos()->detach();
             if ($request->articulokey !=null) { 
@@ -112,8 +140,8 @@ class SurtirController extends Controller
                     $editVale->save();
                 }
             }
-            return redirect('/vale');
-        }
+            return redirect('/vale/confirmacion');
+        
     }
 
     /**

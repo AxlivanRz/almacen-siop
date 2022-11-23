@@ -7,7 +7,6 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-2"></div>
     <div class="container bg-white col-10">
         <div class="table-responsive">
             <table class="table">
@@ -18,12 +17,7 @@
                         <th scope="col">Cantidad de articulos</th>
                         <th scope="col">Solicitante</th>
                         <th scope="col">Sección a la que pertenece</th>
-                        <th scope="col" style="width: 150px;">Acciones&nbsp;
-                            <a type="button" class="btn btn-tool btn-sm btn-success" href="{{route('vale.create')}}">
-                                <i class="far fa-plus-square"></i>
-                            </a>
-                        </th>
-                        
+                        <th scope="col" style="width: 150px;">Acciones&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,13 +48,11 @@
                                     @endif
                                 @endforeach
                                 <td>                                                            
-                                    <a href="{{route('surtir.editAdmin',$vale->id)}}" class="btn btn-info btn-sm">
-                                        <i class="fas fa-eye" style="color: white"></i>
+                                    <a href="{{route('surtir.editAdmin',$vale->id)}}" class="btn btn-primary btn-sm">
+                                        <i class="fa-regular fa-pen-to-square"></i>
                                     </a>                              
                                 </td>                   
                             </tr>     
-                            @else
-                            <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
                             @endif
                         @endforeach   
                     @else

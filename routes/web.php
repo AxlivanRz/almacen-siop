@@ -38,6 +38,11 @@ Route::get('/inicio', [SurtirController::class, 'indexS'])->name('inicio')->midd
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
+Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin');
+Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'editAdmin'])->name('surtir.editAdmin');
+Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit');
+Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale');
+Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');
 
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/area', AreaController::class)->middleware('rol:ti,admin,alm');
@@ -50,7 +55,6 @@ Route::resource('/unidadesmedicion', UnidadMedidaController::class)->middleware(
 Route::resource('/vale', ValeController::class)->middleware('rol:user');
 Route::resource('/factura', FacturaController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/surtir', SurtirController::class)->middleware('rol:ti,admin');
-
 
 
 

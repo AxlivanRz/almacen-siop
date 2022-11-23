@@ -129,13 +129,15 @@ class ArticuloController extends Controller
     }
     public function getExistencia(){
         
-        $entradas = EntradaArticulo::get();
-        $articulos = '';
-        foreach ($entradas as $entrada) {
-            $articulos = DB::table('articulos')
-            ->where('id', $entrada->id)->get();
-        }
-        return($articulos);
+        $entradas = EntradaArticulo::get(); 
+        $articulos[] = array();
+        $query1 = DB::table('articulos')
+        ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
+        ->where('entrada_articulos.existencia', '>',  0)
+        ->distinct()
+        ->get();
+        $query2 = $query1->unique('nombre_articulo');
+        return ($query2);
     }
     public function pdf(){
         $articulos = Articulo::paginate();

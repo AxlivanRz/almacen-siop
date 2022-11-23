@@ -131,4 +131,11 @@ class ValeController extends Controller
     {
         //
     }
+    public function Vsubmit($id)
+    {
+        $submitVale = Vale::findOrFail($id);
+        $submitVale->status = 3;
+        $submitVale->save();
+        return redirect('/vale');
+    }
 }

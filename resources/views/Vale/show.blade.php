@@ -6,6 +6,9 @@
       <div class="card">
         <div class="card-body">
         <h5 class="card-title">Información del Vale</h5>
+        <form action="{{route('vale.submit',$vale->id)}}" method="post">
+            @csrf
+            @method('PUT')
             <div class="row ">
                 <div class="form-group row">
                     <div class="form-group col-4">
@@ -20,7 +23,7 @@
                         @if ($vale->status == 2)
                         <input class="form-control" type="text" value = "Validado por el Administrador" disabled>
                         @endif
-                        @if ($vale->status == 3)
+                        @if ($vale->status == 4)
                         <input class="form-control" type="text" value = "Surtido por Almacén" disabled>
                         @endif
                     </div>
@@ -55,8 +58,14 @@
                             </div>
                         </div>
                     @endforeach
+                    @if ($vale->status == 2)
+                    <div class="form-group col-2 my-2">
+                        <button type="submit" class="btn btn-success">Confirmar</button>
+                    </div>
+                    @endif
                 </div>
             </div>
+        </form>
         </div>
       </div>
     </div>

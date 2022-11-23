@@ -38,10 +38,10 @@
                                     <td style="text-align: top"><i class="fa-solid fa-circle fa-2x" style="color: red"></i></td>
                                     @endif
                                     @if ($vale->status == 2)
-                                    <td><i class="fa-solid fa-circle" style="color: rgb(255, 230, 0)"></i></td>
+                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(255, 230, 0)"></i></td>
                                     @endif
                                     @if ($vale->status == 3)
-                                    <td><i class="fa-solid fa-circle" style="color: rgb(29, 92, 249)"></i></td>
+                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(29, 92, 249)"></i></td>
                                     @endif
                                 {{-- Termino del If para el Estatus del vale --}}
                                 <td>                                                           

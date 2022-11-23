@@ -42,7 +42,7 @@
                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#facturaShow{{$factura->id_factura}}">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-primary">
+                                <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-sm btn-primary">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                             </td>                   
