@@ -58,7 +58,6 @@
                     </div>     
                 </div>
             </div>
-            <!-- /.Personas con las que vive -->
         </div>
         <div class="row py-2">
             <div class="margin">

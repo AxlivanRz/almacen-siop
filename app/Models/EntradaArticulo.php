@@ -31,6 +31,6 @@ class EntradaArticulo extends Model
     ];
     public function surtir()
     {
-        return $this->belongsToMany(ValeSurtido::class, 'vale_surtidos', 'surtido_id', 'entrada_id');
+        return $this->belongsToMany(ValeSurtido::class, 'surtido_entradas');
     }
 }

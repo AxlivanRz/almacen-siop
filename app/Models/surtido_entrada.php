@@ -11,7 +11,7 @@ class surtido_entrada extends Model
     protected $table = "surtido_entradas";
     protected $primaryKey = 'id_surtido';
     public $incrementing = true;
-    public $timestamps = true;
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -19,8 +19,8 @@ class surtido_entrada extends Model
      */
     protected $fillable = [
         'cantidad',
-        'entrada_id',
-        'surtir_id',
+        'entrada_articulo_id',
+        'vale_surtido_id'
     ];
 }
 

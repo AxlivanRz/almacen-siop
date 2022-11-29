@@ -24,6 +24,6 @@ class Vale extends Model
         'administrador_id'
     ];
     public function articulos (){
-        return $this->belongsToMany(Articulo::class, 'vale_articulos')->withPivot('cantidad');;
+        return $this->belongsToMany(Articulo::class, 'vale_articulos')->withPivot('cantidad');
     }
 }

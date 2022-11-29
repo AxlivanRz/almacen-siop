@@ -31,7 +31,16 @@ class SurtirController extends Controller
         ->where('status', 2)->get();
         $statusTres = DB::table('vales')
         ->where('status', 3)->get();
-        return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres']));
+        $surtido = DB::table('vales')
+        ->where('status', 4)->get();
+        return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres', 'surtido']));
+    }
+    public function indexSurtido(){
+        $usuarios = User::get();
+        $areas = Area::get();
+        $departamentos = Departamento::get();
+        $surtidos = ValeSurtido::get();
+        return view('Surtir.indexSurtidos', compact(['surtidos', 'usuarios', 'areas', 'departamentos']));
     }
     public function indexAdmin(){
         $usuarios = User::get();
@@ -69,6 +78,12 @@ class SurtirController extends Controller
         ->get();
         return view('Surtir.create', compact(['vale', 'valeArticulos', 'articulos', 'entradas', 'facturas'])); 
     }
+    public function getFactura(Request $request){
+        $entrada = DB::table('entrada_articulos')
+        ->where('id', $request->id)
+        ->get();
+        return  $entrada;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -76,13 +91,32 @@ class SurtirController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeV(Request $request)
+    public function storeV(Request $request, $id)
     {
-        //
+        $createSurtido = new ValeSurtido;
+        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
+        $vale = Vale::findOrFail($id);
+        $vale->status = 4;
+        $vale->save();
+        $createSurtido->fecha = $date;
+        $createSurtido->total = $request->total;
+        $createSurtido->vale_id = $id;
+        if (Gate::allows('isAlm')) {
+            $createSurtido->capturista_id = $request->user()->id_usuario;
+        }
+        $createSurtido->save();
+        if ($request->get('entrada') !=null) { 
+            foreach($request->get('entrada') as $key => $value){
+                $cantidad = $request->get('cantidad')[$key];
+                $createSurtido->entradas()->attach( $value, ['cantidad' => $cantidad]);
+                $createSurtido->save();
+            }
+        }
+        return redirect ('/inicio'); 
     }
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -126,21 +160,21 @@ class SurtirController extends Controller
     public function update(Request $request, $id)
     {
         
-            $editVale = Vale::findOrFail($id);
-            $editVale->status = 2;
-            $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
-            $editVale->fecha_aprovado = $date;
-            $editVale->administrador_id = $request->user()->id_usuario;
-            $editVale->save();
-            $editVale->articulos()->detach();
-            if ($request->articulokey !=null) { 
-                foreach($request->get('articulokey') as $key => $value){
-                    $cantidad = $request->get('cantidadkey')[$key];
-                    $editVale->articulos()->attach($value, ['cantidad' => $cantidad]);
-                    $editVale->save();
-                }
+        $editVale = Vale::findOrFail($id);
+        $editVale->status = 2;
+        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
+        $editVale->fecha_aprovado = $date;
+        $editVale->administrador_id = $request->user()->id_usuario;
+        $editVale->save();
+        $editVale->articulos()->detach();
+        if ($request->articulokey !=null) { 
+            foreach($request->get('articulokey') as $key => $value){
+                $cantidad = $request->get('cantidadkey')[$key];
+                $editVale->articulos()->attach($value, ['cantidad' => $cantidad]);
+                $editVale->save();
             }
-            return redirect('/vale/confirmacion');
+        }
+        return redirect('/vale/confirmacion');
         
     }
 

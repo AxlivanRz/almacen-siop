@@ -21,6 +21,10 @@ class ValeSurtido extends Model
     protected $fillable = [
         'total',
         'fecha', 
-        'capturista_id'
+        'capturista_id',
+        'vale_id'
     ];
+    public function entradas (){
+        return $this->belongsToMany(EntradaArticulo::class, 'surtido_entradas')->withPivot('cantidad');
+    }
 }

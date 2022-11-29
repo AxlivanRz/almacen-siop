@@ -49,8 +49,9 @@
                 <div class="card-header border-0" style="text-align: center">Surtidos</div>
                 <div class="card-body" style="text-align: center">
                     <i class="fa-solid fa-check fa-5x"></i>
-                    <h5 class="card-title">Cantidad</h5>
-                    <p class="card-text"></p>
+                    <p>
+                        <a class="card-text" style="color: white" href="{{route('surtir.indexSurtido')}}">Cantidad de vales: {{count($surtido)}}</a>
+                    </p>
                 </div>
             </div>
         </div>
