@@ -43,21 +43,26 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new Articulo;
-        $create -> nombre_articulo = $request->nombreAr;
-        $create -> clave_articulo = $request->clave;
-        $create -> ubicacion = $request->ubicacion;
-        $create -> observaciones = $request->observaciones;
-        $create -> medida_id = $request->medida;
-        $idmed = $request->medida;
-        $nombremed = UnidadMedida::findOrFail($idmed);
-        $create -> nombre_med = $nombremed->nombre_medida;
-        $create -> partida_id = $request->partida;
-        if ($request->hasFile('foto_articulo')) {
-            $create['foto_articulo']=$request->file('foto_articulo')->store('uploads', 'public');
+        try {
+            $create = new Articulo;
+            $create -> nombre_articulo = $request->nombreAr;
+            $create -> clave_articulo = $request->clave;
+            $create -> ubicacion = $request->ubicacion;
+            $create -> observaciones = $request->observaciones;
+            $create -> medida_id = $request->medida;
+            $idmed = $request->medida;
+            $nombremed = UnidadMedida::findOrFail($idmed);
+            $create -> nombre_med = $nombremed->nombre_medida;
+            $create -> partida_id = $request->partida;
+            if ($request->hasFile('foto_articulo')) {
+                $create['foto_articulo']=$request->file('foto_articulo')->store('uploads', 'public');
+            }
+            $create->save();
+            return redirect('/articulo')->with('exito',  $create->nombre_articulo.' se guardo con éxito');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/articulo'->with('no', 'Algo salio mal'));
         }
-        $create->save();
-        return redirect('/articulo');
     }
 
     /**
@@ -91,23 +96,28 @@ class ArticuloController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $edit = Articulo::findOrFail($id);
-        $edit -> nombre_articulo = $request->nombreAr;
-        $edit -> clave_articulo = $request->clave;
-        $edit -> ubicacion = $request->ubicacion;
-        $edit -> observaciones = $request->observaciones;
-        $edit -> medida_id = $request->medida;
-        $idmed = $request->medida;
-        $nombremed = UnidadMedida::findOrFail($idmed);
-        $edit -> nombre_med = $nombremed->nombre_medida;
-        if ($request->partida !=null) {
-            $edit -> partida_id = $request->partida;
+        try {
+            $edit = Articulo::findOrFail($id);
+            $edit -> nombre_articulo = $request->nombreAr;
+            $edit -> clave_articulo = $request->clave;
+            $edit -> ubicacion = $request->ubicacion;
+            $edit -> observaciones = $request->observaciones;
+            $edit -> medida_id = $request->medida;
+            $idmed = $request->medida;
+            $nombremed = UnidadMedida::findOrFail($idmed);
+            $edit -> nombre_med = $nombremed->nombre_medida;
+            if ($request->partida !=null) {
+                $edit -> partida_id = $request->partida;
+            }
+            if ($request->hasFile('foto')) {
+                $edit['foto_articulo']=$request->file('foto')->store('uploads', 'public');
+            }
+            $edit->save();
+            return redirect('/articulo')->with('exito',  $edit->nombre_articulo.' se guardo con éxito');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/articulo')->with('no', 'Algo salio mal');
         }
-        if ($request->hasFile('foto')) {
-            $edit['foto_articulo']=$request->file('foto')->store('uploads', 'public');
-        }
-        $edit->save();
-        return redirect('/articulo');
     }
 
     /**
@@ -118,9 +128,14 @@ class ArticuloController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Articulo::findOrFail($id); 
-        $delete->delete();
-        return redirect('/articulo');
+        try {
+            $delete = Articulo::findOrFail($id); 
+            $delete->delete();
+            return redirect('/articulo')->with('exito',  $delete->nombre_articulo.' se elimino correctamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/articulo')->with('no',  'Algo salio mal');
+        }
     }
     public function getArticulo(){
         $articulos[] = array();

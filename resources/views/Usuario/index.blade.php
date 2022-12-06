@@ -76,6 +76,7 @@
                 @endif                            
             </tbody>
         </table>  
+        <div class = "d-flex">{{$user->links()}}</div>
     </div>
     @foreach ( $user as $us )
         @if ($user->isNotEmpty())
@@ -83,7 +84,29 @@
             @include('Usuario.edit')
         @endif 
     @endforeach
-    @include('Usuario.create')    
+    @include('Usuario.create')   
+    @if ($errors->isNotEmpty())
+        @foreach ( $errors->all() as $nuevo )
+        <script>
+            toastr.error('{{$nuevo}}');
+        </script>
+        @endforeach
+    @endif
+    @if(Session::has('delete'))
+    <script>
+        toastr.success("{!! Session::get('delete') !!}");
+    </script>
+    @endif
+    @if(Session::has('post'))
+    <script>
+        toastr.success("{!! Session::get('post') !!}");
+    </script>
+    @endif
+    @if(Session::has('put'))
+    <script>
+        toastr.info("{!! Session::get('put') !!}");
+    </script>
+    @endif
 </div>
 
 @endsection

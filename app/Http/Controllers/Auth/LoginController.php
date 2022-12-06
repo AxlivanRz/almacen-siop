@@ -16,29 +16,38 @@ class LoginController extends Controller
         
         $user = User::where('nombre_usuario', $request->nombre_usuario)->first();
         $contraIn = $request->contrasena;
-       
+        $request->validate([
+            'nombre_usuario' => 'required',
+            'contrasena' => 'required | min:6'
+        ],
+        [
+            'nombre_usuario.required' => 'Este campo NO puede estar vacío',
+            'contrasena.required' => 'Este campo NO puede estar vacío',
+            'contrasena.min' => 'La contraseña NO coincide con nuestros registros'
+        ]
+        );
         if (empty($user)){
             throw ValidationException::withMessages([
-                'nombre_usuario' =>'Estas credenciales no coinciden con nuestros registros',
+                'nombre_usuario' =>'El nombre de usuario NO coincide con nuestros registros',
             ]);  
-    
         }else{
             $contraseniaU = $user->contrasena;
             $contraIn = $request->contrasena;
             if(Hash::check($contraIn, $contraseniaU)){
                 Auth::login($user);
                 $request->session()->regenerate();
-                return redirect( route('inicio'));
-                }
-                throw ValidationException::withMessages([
-                    'contrasena' =>'Estas credenciales no coinciden con nuestros registros',
-                ]);
-        }   
+                return redirect( route('inicio'))->with('inicio', 'Inicio Sesión con éxito');
+            }
+            throw ValidationException::withMessages([
+                'contrasena' => 'La contraseña NO coincide con nuestros registros',
+            ]);
+        } 
+        
     }
     public function logout(Request $request){
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect('/')->with('fin', 'Hasta luego');
     }
 }

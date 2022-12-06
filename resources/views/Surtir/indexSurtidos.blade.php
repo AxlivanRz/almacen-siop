@@ -17,36 +17,20 @@
                         <th scope="col">Cantidad de articulos</th>
                         <th scope="col">Total del vale</th>
                         <th scope="col">Surtido por</th>
-                        <th scope="col">Sección a la que pertenece</th>
                         <th scope="col" style="width: 150px;">Acciones&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($surtidos->isNotEmpty())
                         @foreach ( $surtidos as $surtido )
-                            
                             <tr>
                                 <th scope="row">{{$surtido->id}}</th>                            
                                 <td>{{$surtido->fecha}}</td>
-                                <td>Contiene: {{count($surtido->entradas)}} articulos</td>
+                                <td>{{count($surtido->entradas)}} articulos</td>
                                 <td>$ {{$surtido->total}}</td>
                                 @foreach ($usuarios as $usuario )
                                     @if ($usuario->id_usuario == $surtido->capturista_id)
                                     <td>{{$usuario->name}} {{$usuario->primer_apellido}}</td>
-                                    @endif
-                                    @if ($usuario->area_id != null)
-                                        @foreach ($areas as $area )
-                                            @if ($usuario->area_id == $area->id_area)
-                                                <td style="text-align: center">{{$area->nombre_area}}</td>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                    @if ($usuario->departamento_id != null)
-                                        @foreach ($departamentos as $departamento )
-                                            @if ($usuario->departamento_id == $departamento->id_departamento)
-                                                <td>{{$departamento->nombre_departamento}}</td>
-                                            @endif
-                                        @endforeach
                                     @endif
                                 @endforeach
                                 <td>                                                            
@@ -58,7 +42,7 @@
                             
                         @endforeach   
                     @else
-                    <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
+                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
                     @endif
                 </tbody>
             </table> 

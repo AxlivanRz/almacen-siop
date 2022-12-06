@@ -17,9 +17,13 @@
     @yield('editarVale')
     @yield('editarSurtir')
     @yield('scriptSurtir')
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    @yield('form')
     <script src="{{ asset('js/iconc.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
     <body style="background-color: #F2F3F4  ;">
     </body>
@@ -180,4 +184,19 @@
         </div>
         @endauth
     </body>
+    @if(Session::has('inicio'))
+    <script>
+        toastr.success("{!! Session::get('inicio') !!}");
+    </script>
+    @endif
+    @if(Session::has('fin'))
+    <script>
+        toastr.info("{!! Session::get('fin') !!}");
+    </script>
+    @endif
+    @if(Session::has('rol'))
+    <script>
+        toastr.warning("{!! Session::get('fin') !!}");
+    </script>
+    @endif
 </html>

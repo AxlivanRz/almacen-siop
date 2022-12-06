@@ -23,6 +23,6 @@ class RolMiddleware
             }
             return route('inicio');
         }
-        return redirect('/');
+        return redirect('/')->width('rol', 'No tienes los permisos para acceder a esta acción');
     }
 }

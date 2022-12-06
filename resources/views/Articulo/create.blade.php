@@ -6,29 +6,33 @@
           <h5 class="modal-title" id="articuloCreateLabel" >Crear artículo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form class= "row g-3 needs-validation" action="{{route('articulo.store')}}" method="POST" enctype="multipart/form-data" novalidate>
+            @csrf
             <div class="content" style="align-self: center">
                 <div class="modal-body">
-                    <form action="{{route('articulo.store')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
                     <div class="col-12">
                         <label >Clave</label>
-                        <input type="text" class="form-control" id ="clave" name ="clave" style="height: 35px">
+                        <input type="text" class="form-control" id ="clave" name ="clave" style="height: 35px" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                     </div>
                     <div class="col-12">
                         <label >Nombre artículo</label>                
-                        <input type="text mb-3" class="form-control"  id="nombreAr" name="nombreAr" style="height: 35px">
+                        <input type="text mb-3" class="form-control"  id="nombreAr" name="nombreAr" style="height: 35px" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                     </div>
                     <div class="col-12">
                         <label >Ubicación</label>
-                        <input type="text" class="form-control" id ="ubicacion" name ="ubicacion" style="height: 35px">
+                        <input type="text" class="form-control" id ="ubicacion" name ="ubicacion" style="height: 35px" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                     </div>
                     <div class="col-12">
                         <label >Observaciones</label>
-                        <input type="text" class="form-control" id ="observaciones" name ="observaciones" style="height: 35px">
+                        <input type="text" class="form-control" id ="observaciones" name ="observaciones" style="height: 35px" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                     </div>
                     <label >Unidad de medida</label>
                     <div class="col-12">
-                        <select class="form-select form-select-sm"  name="medida" id="medida">
+                        <select class="form-select form-select-sm"  name="medida" id="medida" >
                             <option selected>Seleccionar a la partida que pertenece</option>
                             @foreach ($medidas as $medida)
                             <option value="{{$medida->id_medida}}">{{$medida->nombre_medida}}</option>   
@@ -47,7 +51,8 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="foto_articulo" class="form-label">Foto del articulo</label>
-                            <input class="form-control form-control-sm" id="foto_articulo" name="foto_articulo" type="file" accept="image/png, image/jpeg" >
+                            <input class="form-control form-control-sm" id="foto_articulo" name="foto_articulo" type="file" accept="image/png, image/jpeg" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                           </div>
                     </div>                                          
                 </div>
@@ -62,3 +67,20 @@
       </div>
     </div>
 </div>
+<script type="text/javascript">
+    (function () {
+      'use strict'
+     var forms = document.querySelectorAll('.needs-validation')
+     Array.prototype.slice.call(forms)
+         .forEach(function (form) {
+         form.addEventListener('submit', function (event) {
+             if (!form.checkValidity()) {
+             event.preventDefault()
+             event.stopPropagation()
+             }
+ 
+             form.classList.add('was-validated')
+         }, false)
+         })
+    })()
+ </script>

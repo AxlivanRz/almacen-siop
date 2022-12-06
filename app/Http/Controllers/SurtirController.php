@@ -107,7 +107,10 @@ class SurtirController extends Controller
         $createSurtido->save();
         if ($request->get('entrada') !=null) { 
             foreach($request->get('entrada') as $key => $value){
+                $entrada = EntradaArticulo::findOrFail($value);
+                $existencia = $entrada->existencia;
                 $cantidad = $request->get('cantidad')[$key];
+                $entrada->existencia = $existencia - $cantidad;
                 $createSurtido->entradas()->attach( $value, ['cantidad' => $cantidad]);
                 $createSurtido->save();
             }

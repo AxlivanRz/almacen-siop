@@ -37,12 +37,17 @@ class UpController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new Ups; 
-        $create -> nombre_ups = $request->nombre_up;
-        $create -> descripcion_ups = $request->desc_up;
-        $create -> iniciales = $request->iniciales;       
-        $create->save();
-        return redirect('/up');
+        try {
+            $create = new Ups; 
+            $create -> nombre_ups = $request->nombre_up;
+            $create -> descripcion_ups = $request->desc_up;
+            $create -> iniciales = $request->iniciales;       
+            $create->save();
+            return redirect('/up')->with('exito',  $create->nombre_ups.' se guardo con éxito');
+        } catch (\Throwable $th) {
+            return redirect('/up')->with('no',  'Algo salío mal con tu registro');
+        }
+       
     }
 
     /**
@@ -75,13 +80,18 @@ class UpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $edit = Ups::findOrFail($id);
-        $edit -> nombre_ups = $request->nombre_up;
-        $edit -> descripcion_ups = $request->desc_up;
-        $edit -> iniciales = $request->iniciales;       
-        $edit->save();
-        return redirect('/up');
+    {   
+        try {
+            $edit = Ups::findOrFail($id);
+            $edit -> nombre_ups = $request->nombre_up;
+            $edit -> descripcion_ups = $request->desc_up;
+            $edit -> iniciales = $request->iniciales;       
+            $edit->save();
+            return redirect('/up')->with('exito', 'El registro de '.$edit->nombre_ups.' se actualizo con éxito');
+        } catch (\Throwable $th) {
+            return redirect('/up')->with('no', 'Algo salío mal con tu registro');
+        }
+       
     }
 
     /**
@@ -92,8 +102,13 @@ class UpController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Ups::findOrFail($id);
-        $delete->delete();
-        return redirect('/up');
+        try {
+            $delete = Ups::findOrFail($id);
+            $delete->delete();
+            return redirect('/up')->with('exito', 'El registro de '.$delete->nombre_ups.' se elimino correctamente');
+        } catch (\Throwable $th) {
+            return redirect('/up')->with('no', 'Algo salío mal con tu registro');
+        }
+       
     }
 }

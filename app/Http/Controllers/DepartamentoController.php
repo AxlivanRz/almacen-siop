@@ -41,13 +41,18 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new Departamento; 
-        $create -> nombre_departamento = $request->nombre_dep;
-        $create -> descripcion_departamento = $request->desc_dep;
-        $create -> area_id = $request->area;   
-        $create -> encargado_departamento = $request->us;    
-        $create->save();
-        return redirect('/departamento');
+        try {
+            $create = new Departamento; 
+            $create -> nombre_departamento = $request->nombre_dep;
+            $create -> descripcion_departamento = $request->desc_dep;
+            $create -> area_id = $request->area;   
+            $create -> encargado_departamento = $request->us;    
+            $create->save();
+            return redirect('/departamento')->with('exito', $create -> nombre_departamento.' se guardo con éxito');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/departamento')->with('no', 'Algo salio mal');
+        }
     }
 
     /**
@@ -81,17 +86,22 @@ class DepartamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $edit = Departamento::findOrFail($id); 
-        $edit -> nombre_departamento = $request->nombre_dep;
-        $edit -> descripcion_departamento = $request->desc_dep;
-        if ($request->area !=null) {
-            $edit -> area_id = $request->area;   
+        try {
+            $edit = Departamento::findOrFail($id); 
+            $edit -> nombre_departamento = $request->nombre_dep;
+            $edit -> descripcion_departamento = $request->desc_dep;
+            if ($request->area !=null) {
+                $edit -> area_id = $request->area;   
+            }
+            if ($request->us !=null) {
+                $edit -> encargado_departamento = $request->us;  
+            }    
+            $edit->save();
+            return redirect('/departamento')->with('exito', 'El registro de '.$edit->nombre_departamento.' se actualizo con éxito');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/departamento')->with('no', 'Algo salio mal');
         }
-        if ($request->us !=null) {
-            $edit -> encargado_departamento = $request->us;  
-        }    
-        $edit->save();
-        return redirect('/departamento');
     }
 
     /**
@@ -102,8 +112,13 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Departamento::findOrFail($id);
-        $delete->delete();
-        return redirect('/departamento');
+        try {
+            $delete = Departamento::findOrFail($id);
+            $delete->delete();
+            return redirect('/departamento')->with('exito', $delete->nombre_departamento.' se elimino correctamente');
+        } catch (\Throwable $th) {
+            return redirect('/departamento')->with('no', 'Algo salio mal');
+        }
+        
     }
 }

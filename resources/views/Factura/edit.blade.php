@@ -397,7 +397,7 @@
         }
         function delete_last() {
             if (parent > 1) {  
-                $(".newpro").last().remove();   
+                $(".newpro").last().remove();
             }
             parent--;
             if (parent == 1) {

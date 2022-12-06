@@ -55,6 +55,7 @@
                 @endif                            
             </tbody>
         </table>
+        <div class = "d-flex">{{$areas->links()}}</div>
     </div>
     @if ($areas->isNotEmpty())  
         @foreach ($areas as $area )
@@ -63,5 +64,15 @@
         @endforeach
     @endif
     @include('Area.create')   
+    @if(Session::has('exito'))
+    <script>
+        toastr.success("{!! Session::get('exito') !!}");
+    </script>
+    @endif
+    @if(Session::has('no'))
+    <script>
+        toastr.error("{!! Session::get('no') !!}");
+    </script>
+    @endif
 </div>
 @endsection

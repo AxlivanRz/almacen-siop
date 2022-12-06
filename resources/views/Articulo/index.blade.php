@@ -63,6 +63,7 @@
                 @endif                            
             </tbody>
         </table>
+        <div class = "d-flex">{{$articulos->links()}}</div>
     </div>
     @if ($articulos->isNotEmpty())  
         @foreach ($articulos as $articulo )
@@ -71,6 +72,16 @@
             @include('Articulo.show')   
         @endforeach
     @endif
-    @include('Articulo.create')   
+    @include('Articulo.create') 
+    @if(Session::has('exito'))
+    <script>
+        toastr.success("{!! Session::get('exito') !!}");
+    </script>
+    @endif
+    @if(Session::has('no'))
+    <script>
+        toastr.error("{!! Session::get('no') !!}");
+    </script>
+    @endif  
 </div>
 @endsection

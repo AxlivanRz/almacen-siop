@@ -35,7 +35,7 @@ class UsuarioController extends Controller
             ->where('id_rol', '2')
             ->get();
         }
-        $user['user'] = User::get();
+        $user['user'] = User::paginate(15);
         $areas = Area::get();
         $departamentos = Departamento::get();
     
@@ -68,6 +68,26 @@ class UsuarioController extends Controller
      */
     public function store( Request $request)
     {
+        $request->validate([
+            'nombre_us' => 'required',
+            'primer' => 'required',
+            'username' => 'required | unique:App\Models\User,nombre_usuario| min:6',
+            'areaus' => 'required_unless:departamento,null',
+            'departamento' => 'required_unless:areaus,null',
+            'rol' => 'required',
+            'contrasena' => 'required | min:6',
+        ],
+            [
+            'nombre_us.required' => 'Este campo NO puede estar vacío',
+            'primer.required' => 'Este campo NO puede estar vacío',
+            'contrasena.required' => 'Este campo NO puede estar vacío',
+            'username.required' => 'Este campo NO puede estar vacío',
+            'areaus.required_unless' => 'Este campo NO puede estar vacío',
+            'departamento.required_unless' => 'Este campo NO puede estar vacío',
+            'rol.required' => 'Este campo NO puede estar vacío',
+            'username.unique' => 'El nombre de usuario ya existe',
+            'username.min' => 'El nombre de usuario debe tener minímo 6 caracteres'
+        ]);
         $create = new User; 
         $create -> name = $request->nombre_us;
         $create -> primer_apellido = $request->primer;
@@ -87,7 +107,7 @@ class UsuarioController extends Controller
             $create->roles()->attach($request->rol);
             $create->save();
         }
-        return redirect('/usuario');
+        return redirect('/usuario')->with('post',  $create->name.' se agrego con éxito');
     }
 
     /**
@@ -148,7 +168,7 @@ class UsuarioController extends Controller
             $edit->roles()->attach($request->rol);
             $edit->save();
         }
-        return redirect('/usuario');
+        return redirect('/usuario')->with('put', 'Se actualizo el registro de '.$edit->name.' con éxito');
     }
 
     /**
@@ -162,6 +182,6 @@ class UsuarioController extends Controller
         $user = User::findOrFail($id); 
         $user->roles()->detach();
         $user->delete();
-        return redirect('/usuario');
+        return redirect('/usuario')->with('delete', $user->name.' se elimino con exito');
     }
 }

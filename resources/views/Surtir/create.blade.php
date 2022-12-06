@@ -176,7 +176,6 @@
                 url: "/getFactura",
                 data:{'id': valor}
             }).done(function(data){
-                console.log(data);
                 $.each(data, function(index, element){
                     $(dato).append(
                     '<div class="form-group row">'+
