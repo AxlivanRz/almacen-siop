@@ -53,11 +53,22 @@
                 @endif                            
             </tbody>
         </table>
+        <div class = "d-flex">{{$facturas->links()}}</div>
     </div>
     @if ($facturas->isNotEmpty())   
         @foreach ($facturas as $factura)
             @include('Factura.show')
         @endforeach
+    @endif
+    @if(Session::has('exito'))
+    <script>
+        toastr.success("{!! Session::get('exito') !!}");
+    </script>
+    @endif
+    @if(Session::has('no'))
+    <script>
+        toastr.error("{!! Session::get('no') !!}");
+    </script>
     @endif
 </div>
 @endsection

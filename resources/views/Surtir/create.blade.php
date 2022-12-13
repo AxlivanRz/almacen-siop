@@ -116,6 +116,9 @@
                     '<div class="form-group col-3">' +
                         '<label>'+'Seleccionar Articulo'+'</label>' +
                         '<select class="articulo form-control form-control-sm" onChange= "getSelect(this)" name="entrada[]" id= "'+ contador +'">' +
+                            '<option value="0">' +
+                                'Selecione un articulo'  +
+                            '</option>' +
                             '@foreach ($valeArticulos as $vArticulo)' +
                                 '@foreach ( $entradas as $entrada)' +
                                     '@if ($vArticulo->id == $entrada->articulo_id)' +

@@ -36,11 +36,16 @@ class UnidadMedidaController extends Controller
      */
     public function store(Request $request)
     {
-        $create = new UnidadMedida;
-        $create->nombre_medida = $request->medida;
-        $create->abreviado = $request->abreviado;
-        $create->save();
-        return redirect('/unidadesmedicion');
+        try {
+            $create = new UnidadMedida;
+            $create->nombre_medida = $request->medida;
+            $create->abreviado = $request->abreviado;
+            $create->save();
+            return redirect('/unidadesmedicion')->with('exito', $create->nombre_medida.' se guardo con éxito');
+        } catch (\Throwable $th) {
+            return redirect('/unidadesmedicion')->with('no', 'Algo salio mal');
+        }
+       
     }
 
     /**
@@ -74,11 +79,15 @@ class UnidadMedidaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $edit = UnidadMedida::findOrFail($id);
-        $edit->nombre_medida = $request->medida;
-        $edit->abreviado = $request->abreviado;
-        $edit->save();
-        return redirect('/unidadesmedicion');
+        try {
+            $edit = UnidadMedida::findOrFail($id);
+            $edit->nombre_medida = $request->medida;
+            $edit->abreviado = $request->abreviado;
+            $edit->save();
+            return redirect('/unidadesmedicion')->with('exito', $edit->nombre_medida.' se guardo con éxito' );
+        } catch (\Throwable $th) {
+            return redirect('/unidadesmedicion')->with('no', 'Algo salio mal' );
+        }
     }
 
     /**
@@ -89,9 +98,14 @@ class UnidadMedidaController extends Controller
      */
     public function destroy($id)
     {
-        $delete = UnidadMedida::findOrFail($id);
-        $delete->delete();
-        return redirect('/unidadesmedicion');
+        try {
+            $delete = UnidadMedida::findOrFail($id);
+            $delete->delete();
+            return redirect('/unidadesmedicion')->with('exito', $delete->nombre_medida.' se elimino correctamente' );
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/unidadesmedicion')->with('no', 'Algo salio mal');
+        }
     }
     public function getMedida(){
         $medidas[] = array();

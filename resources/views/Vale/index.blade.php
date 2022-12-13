@@ -44,10 +44,12 @@
                                     <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(29, 92, 249)"></i></td>
                                     @endif
                                 {{-- Termino del If para el Estatus del vale --}}
-                                <td>                                                           
+                                <td>                  
+                                    @if ($vale->status == 1)                                   
                                     <a href="{{route('vale.edit',$vale->id)}}" class="btn btn-primary btn-sm">
                                         <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>   
+                                    </a> 
+                                    @endif
                                     <a href="{{route('vale.show',$vale->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>
                                     </a>                              

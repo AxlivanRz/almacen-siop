@@ -9,24 +9,48 @@
           <div class="row">
             <!-- Personas con las que vive -->
             <div class="col-12">
-                <form action="{{route('factura.store')}}" method="POST" enctype="multipart/form-data">
+                <form class= "row needs-validation" action="{{route('factura.store')}}" method="POST" enctype="multipart/form-data" novalidate>
                     @csrf
                 <div class="form-group row">
                     <div class="form-group col-3">
                         <label >Fecha</label>
-                        <input type="date" class="form-control" id ="fecha" name ="fecha" data-inputmask-inputformat="dd/mm/yyyy" >
+                        <input type="date" class="form-control @error('fecha') is-invalid @enderror" id ="fecha" name ="fecha"  min="{{$inicio}}" max="{{$ultimo}}" data-inputmask-inputformat="dd/mm/yyyy" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        @error('fecha')
+                            <span class="invalid-feedback">
+                                <small>
+                                    {{$message}}
+                                </small>
+                            </span>
+                        @enderror
                     </div>
                     <div class="form-group col-3">
                         <label >Número de factura</label>                
-                        <input type="text" class="form-control"  id="numerof" name="numerof" >
+                        <input type="text" class="form-control @error('numerof') is-invalid @enderror"  id="numerof" name="numerof" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        @error('numerof')
+                        <span class="invalid-feedback">
+                            <small>
+                                {{$message}}
+                            </small>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group col-3">
                         <label >Folio</label>
-                        <input type="text" class="form-control" id ="folio" name ="folio" >
+                        <input type="text" class="form-control @error('folio') is-invalid @enderror" id ="folio" name ="folio" required>
+                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        @error('folio')
+                        <span class="invalid-feedback">
+                            <small>
+                                {{$message}}
+                            </small>
+                        </span>
+                        @enderror
                     </div>         
                     <div class="form-group col-3">                                          
                         <label >Proveedor</label>                               
-                        <select class="form-select form-select-sm"  name="proveedor" id="proveedor" >
+                        <select class="form-select"  name="proveedor" id="proveedor" >
                             @foreach ($proveedores as $proveedor )
                                 <option selected value="{{$proveedor->id_proveedor}}">
                                     {{$proveedor->nombre_empresa}}
@@ -53,7 +77,8 @@
                     <div class="col-4">
                         <div class="mb-3">
                             <label for="archivo">Respaldo de factura</label>
-                            <input class="form-control" id="archivo" name="archivo" type="file">
+                            <input class="form-control" id="archivo" name="archivo" type="file" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                         </div>
                     </div>     
                 </div>
@@ -88,6 +113,25 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    (function () {
+      'use strict'
+ 
+     var forms = document.querySelectorAll('.needs-validation')
+ 
+     Array.prototype.slice.call(forms)
+         .forEach(function (form) {
+         form.addEventListener('submit', function (event) {
+             if (!form.checkValidity()) {
+             event.preventDefault()
+             event.stopPropagation()
+             }
+ 
+             form.classList.add('was-validated')
+         }, false)
+         })
+     })()
+</script>
   @endsection
   @section('scripts')
     <script>
@@ -126,7 +170,7 @@
             select.className = "form-control";
             select.name = "articulokey[]";
             select.id = "artparent" + parent;
-            select.required = "required";
+            select.required = "true";
             formGroup1.appendChild(select);
             $.ajax({ 
                 type: "GET",
@@ -155,6 +199,7 @@
             cantidad.type = "number";
             cantidad.min = "0";
             cantidad.value = "0";
+            cantidad.required = "required";
             column3.appendChild(cantidad);
 
             var column3 = document.createElement("div");
@@ -174,6 +219,7 @@
             base.step = "any";
             base.min = "0";
             base.value = "0";
+            base.required = "required";
             formGroup2.appendChild(base);
 
             var column4 = document.createElement("div");
@@ -392,3 +438,4 @@
         setInterval(retroceso, 1000);
     </script>
 @endsection
+

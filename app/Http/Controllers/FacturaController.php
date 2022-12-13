@@ -8,6 +8,7 @@ use App\Models\Factura;
 use App\Models\Proveedores;
 use App\Models\EntradaArticulo;
 use App\Models\UnidadMedida;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FacturaController extends Controller
@@ -35,7 +36,9 @@ class FacturaController extends Controller
     {
         $medidas =UnidadMedida::get();
         $proveedores = Proveedores::get();
-        return view('Factura.create', compact(['medidas', 'proveedores']));
+        $inicio = Carbon::now()->startOfMonth()->toDateString();
+        $ultimo = Carbon::now()->endOfMonth()->toDateString();
+        return view('Factura.create', compact(['medidas', 'proveedores', 'inicio', 'ultimo']));
     }
 
     /**
@@ -46,32 +49,52 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {   
-        foreach($request->get('articulokey') as $key => $value){
-            $entrada_create = new EntradaArticulo();            
-            $entrada_create->factura_id = $request->numerof;            
-            $entrada_create->cantidad = $request->get('cantidadkey')[$key];
-            $entrada_create->descuento = $request->get('descuentokey')[$key];
-            $entrada_create->base = $request->get('basekey')[$key];
-            $entrada_create->precio = $request->get('preciokey')[$key];
-            $entrada_create->articulo_id = $value;
-            $entrada_create->caducidad = $request->get('caducidad')[$key];
-            $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
-            $entrada_create->existencia = $request->get('cantidadkey')[$key];
-            $entrada_create->save();
+        try {
+            $request->validate([
+                'fecha' => 'required',
+                'archivo' => 'required',
+                'numerof' => 'required | unique:App\Models\Factura,numero_factura',
+                'folio' => 'required | unique:App\Models\Factura,folio',
+            ],
+                [
+                'fecha.required' => 'Este campo NO puede estar vacío',
+                'archivo.required' => 'Este campo NO puede estar vacío',
+                'numerof.required' => 'Este campo NO puede estar vacío',
+                'folio.required' => 'Este campo NO puede estar vacío',
+                'numerof.unique' => 'El número de la factura ya existe',
+                'folio.unique' => 'El folio de la factura ya existe',
+            ]);
+    
+            foreach($request->get('articulokey') as $key => $value){
+                $entrada_create = new EntradaArticulo();            
+                $entrada_create->factura_id = $request->numerof;            
+                $entrada_create->cantidad = $request->get('cantidadkey')[$key];
+                $entrada_create->descuento = $request->get('descuentokey')[$key];
+                $entrada_create->base = $request->get('basekey')[$key];
+                $entrada_create->precio = $request->get('preciokey')[$key];
+                $entrada_create->articulo_id = $value;
+                $entrada_create->caducidad = $request->get('caducidad')[$key];
+                $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
+                $entrada_create->existencia = $request->get('cantidadkey')[$key];
+                $entrada_create->save();
+            }
+            $factura_create = new Factura();
+            $factura_create -> fecha = $request->fecha;
+            $factura_create -> numero_factura = $request->numerof;
+            $factura_create -> folio = $request->folio;
+            if ($request->hasFile('archivo')) {
+                $factura_create['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
+            }
+            $factura_create->proveedor_id = $request->proveedor;
+            $factura_create->iva = $request->iva;
+            $factura_create->imp_iva = $request->impfactura;
+            $factura_create->imp_total = $request->total;
+            $factura_create->save();
+            return redirect ('/factura')->with('exito', 'Se guardo con exito');
+        } catch (\Throwable $th) {
+            return redirect ('/factura')->with('no', 'Algo salio mal');
         }
-        $factura_create = new Factura();
-        $factura_create -> fecha = $request->fecha;
-        $factura_create -> numero_factura = $request->numerof;
-        $factura_create -> folio = $request->folio;
-        if ($request->hasFile('archivo')) {
-            $factura_create['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
-        }
-        $factura_create -> proveedor_id = $request->proveedor;
-        $factura_create->iva = $request->iva;
-        $factura_create->imp_iva = $request->impfactura;
-        $factura_create->imp_total = $request->total;
-        $factura_create->save();
-        return redirect ('/factura');
+        
     }
 
     /**
@@ -166,7 +189,6 @@ class FacturaController extends Controller
             }
             
         }
-        
         $edit_factura -> fecha = $request->fecha;
         $edit_factura -> numero_factura = $request->numerof;
         $edit_factura -> folio = $request->folio;

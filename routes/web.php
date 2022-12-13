@@ -13,6 +13,7 @@ use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\ValeController;
 use App\Http\Controllers\SurtirController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 /*
@@ -45,6 +46,8 @@ Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('sur
 Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');
 Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
 Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido');
+Route::get('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
+Route::get('/dd', [ReporteController::class, 'pdf'])->name('reporte.pdf');
 
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/area', AreaController::class)->middleware('rol:ti,admin,alm');

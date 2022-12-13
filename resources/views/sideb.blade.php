@@ -196,7 +196,7 @@
     @endif
     @if(Session::has('rol'))
     <script>
-        toastr.warning("{!! Session::get('fin') !!}");
+        toastr.warning("{!! Session::get('rol') !!}");
     </script>
     @endif
 </html>

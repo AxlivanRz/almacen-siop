@@ -44,7 +44,7 @@ class ValeController extends Controller
     public function store(Request $request)
     {
         $createVale = new Vale;
-        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
+        $date = Carbon::now();
         $createVale->status = 1;
         $createVale->fecha = $date;
         $createVale->fecha_aprovado = null;

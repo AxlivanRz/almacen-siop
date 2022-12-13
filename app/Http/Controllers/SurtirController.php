@@ -94,7 +94,7 @@ class SurtirController extends Controller
     public function storeV(Request $request, $id)
     {
         $createSurtido = new ValeSurtido;
-        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
+        $date = Carbon::now();
         $vale = Vale::findOrFail($id);
         $vale->status = 4;
         $vale->save();
@@ -102,7 +102,7 @@ class SurtirController extends Controller
         $createSurtido->total = $request->total;
         $createSurtido->vale_id = $id;
         if (Gate::allows('isAlm')) {
-            $createSurtido->capturista_id = $request->user()->id_usuario;
+        $createSurtido->capturista_id = $request->user()->id_usuario;
         }
         $createSurtido->save();
         if ($request->get('entrada') !=null) { 
@@ -111,6 +111,7 @@ class SurtirController extends Controller
                 $existencia = $entrada->existencia;
                 $cantidad = $request->get('cantidad')[$key];
                 $entrada->existencia = $existencia - $cantidad;
+                $entrada->save();
                 $createSurtido->entradas()->attach( $value, ['cantidad' => $cantidad]);
                 $createSurtido->save();
             }
@@ -165,7 +166,7 @@ class SurtirController extends Controller
         
         $editVale = Vale::findOrFail($id);
         $editVale->status = 2;
-        $date = Carbon::now()->isoFormat('YYYY/MM/DD, kk:mm:ss');
+        $date = Carbon::now();
         $editVale->fecha_aprovado = $date;
         $editVale->administrador_id = $request->user()->id_usuario;
         $editVale->save();
