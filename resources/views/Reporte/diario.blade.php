@@ -103,10 +103,10 @@
                         <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}}</th>
                         <td class="border border-dark">{{$partida->nombre_partida}}</td>                                                    
                 @endforeach
-                @foreach ($gastos as $attribute2 => $value2)
-                    <td class="border border-dark"  scope="row">{{ is_array($value2) ? json_encode($value2) : $value2 }}</td>
-                    <td class="border border-dark">{{ is_array($value2) ? json_encode($value2) : $value2 }}</td>         
-                @endforeach
+                
+                    <td class="border border-dark"  scope="row">{{$gastos}}</td>
+                    <td class="border border-dark">{{$gastos}}</td>         
+              
                 </tr> 
             </tbody>
         </table>
