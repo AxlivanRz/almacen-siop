@@ -32,10 +32,11 @@ class ReporteController extends Controller
         ->join('articulos', 'vale_articulos.articulo_id', '=', 'articulos.id')
         ->join('partidas', 'articulos.partida_id' , '=', 'partidas.id_partida')
         ->join('users', 'vales.usuario_id' , '=', 'users.id_usuario')
-
-        ->selectRaw('SUM(DISTINCT vale_surtidos.total)')
-        //->select('vales.id','users.area_id', 'users.departamento_id', 'partidas.id_partida',  'vale_surtidos.total')
-        ->get()->toArray();
+        //->selectRaw('SUM(DISTINCT vale_surtidos.total)')
+        ->distinct()
+        ->select('vales.id','users.area_id', 'users.departamento_id', 'partidas.id_partida')
+        ->sum('vale_surtidos.total')
+        ;
         $partidas = Partida::get();
         $areas = Area::get();
         $pdf = PDF::loadView('Reporte.diario', ['areas'=>$areas, 'partidas'=>$partidas], compact('gastos'));
