@@ -131,17 +131,17 @@ class SurtirController extends Controller
      */
     public function show($id)
     {
-        $surtido = ValeSurtido::findOrFail($id);
-        $vale = Vale::findOrFail($surtido->vale_id);
-        $diferentes = DB::table('vale_articulos')
-        ->where('vale_id', '=', $id)
-        ->join('articulos', 'vale_articulos.articulo_id', '!=', 'articulos.id')
-        ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
-        ->where('entrada_articulos.existencia', '>',  0)
-        ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
-        ->get();
-        $articulos = $diferentes->unique('nombre_articulo');
-        return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'surtido']));
+        // $surtido = ValeSurtido::findOrFail($id);
+        // $vale = Vale::findOrFail($surtido->vale_id);
+        // $diferentes = DB::table('vale_articulos')
+        // ->where('vale_id', '=', $id)
+        // ->join('articulos', 'vale_articulos.articulo_id', '!=', 'articulos.id')
+        // ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
+        // ->where('entrada_articulos.existencia', '>',  0)
+        // ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
+        // ->get();
+        // $articulos = $diferentes->unique('nombre_articulo');
+        // return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'surtido']));
     }
 
     /**
