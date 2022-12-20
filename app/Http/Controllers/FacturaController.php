@@ -52,13 +52,11 @@ class FacturaController extends Controller
         try {
             $request->validate([
                 'fecha' => 'required',
-                'archivo' => 'required',
                 'numerof' => 'required | unique:App\Models\Factura,numero_factura',
                 'folio' => 'required | unique:App\Models\Factura,folio',
             ],
                 [
                 'fecha.required' => 'Este campo NO puede estar vacío',
-                'archivo.required' => 'Este campo NO puede estar vacío',
                 'numerof.required' => 'Este campo NO puede estar vacío',
                 'folio.required' => 'Este campo NO puede estar vacío',
                 'numerof.unique' => 'El número de la factura ya existe',

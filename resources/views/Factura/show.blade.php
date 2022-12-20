@@ -35,7 +35,7 @@
                 </div>
                 @foreach ($entradas as $entrada)
                     @foreach ($articulos as $articulo)
-                        @if ($articulo->id == $entrada->articulo_id)
+                        @if ($articulo->id == $entrada->articulo_id && $entrada->factura_id == $factura->numero_factura)
                             <h5 class="border-top mt-4">Producto</h5>
                             <div class="row d-flex align-items-end">
                                 <div class="form-group col-3">
@@ -53,7 +53,7 @@
                                     <input class="form-control" name="cantidadkey[]" id="cantidad" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
                                 </div>
                                 <div class="form-group col-3">
-                                    <label> Precio Base</label>
+                                    <label>Precio Base</label>
                                     <input class="form-control" name="basekey[]" id="base" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
                                 </div>
                                 <div class="form-group col-2">
@@ -65,12 +65,16 @@
                                     <input class="form-control" name="iva" id="iva" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
                                 </div>
                                 <div class="form-group col-3">
-                                    <label>Importe Unitario</label>
+                                    <label>Importe IVA</label>
                                     <input class="form-control" name="unitariokey[]" id="unitario" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
                                 </div>
                                 <div class="form-grop col-3">
                                     <label>Precio unitario</label>
                                     <input class="form-control" name="preciokey[]" id="precio" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
+                                </div>
+                                <div class="form-grop col-3">
+                                    <label>Existencia</label>
+                                    <input class="form-control" name="existencia[]" id="existencia" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
                                 </div>
                             </div>
                         @endif

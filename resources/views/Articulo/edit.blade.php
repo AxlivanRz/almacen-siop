@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-white border-0 " >
-                <h5 class="modal-title" id="departamentoEditLabel" >Editar artículo</h5>
+                <h5 class="modal-title" id="departamentoEditLabel">Editar artículo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('articulo.update',$articulo->id)}}" method="POST" enctype="multipart/form-data">
@@ -11,10 +11,9 @@
                 @method('PUT')
                 <div class="content" style="align-self: center">
                     <div class="modal-body">
-                    
                         <div class="col-12">
                             <label >Clave</label>
-                            <input type="text" class="form-control" id ="clave" name ="clave" style="height: 35px"value="{{$articulo->clave_articulo}}">
+                            <input type="number" class="form-control" id ="clave" name ="clave" style="height: 35px"value="{{$articulo->clave_articulo}}" min="0" step="any">
                         </div>
                         <div class="col-12">
                             <label >Nombre artículo</label>                

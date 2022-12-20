@@ -43,6 +43,9 @@
                                     @if ($vale->status == 3)
                                     <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(29, 92, 249)"></i></td>
                                     @endif
+                                    @if ($vale->status == 4)
+                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(2, 187, 42)"></i></td>
+                                    @endif
                                 {{-- Termino del If para el Estatus del vale --}}
                                 <td>                  
                                     @if ($vale->status == 1)                                   
@@ -55,15 +58,13 @@
                                     </a>                              
                                 </td>                   
                             </tr>     
-                            @else
-                            <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitas un vale</span></td>
                             @endif
                         @endforeach   
                     @else
                     <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitas un vale</span></td>
-                    @endif
-                            
+                    @endif      
                 </tbody>
+                <div class = "d-flex">{{$vales->links()}}</div>
             </table> 
         </div>
     </div>

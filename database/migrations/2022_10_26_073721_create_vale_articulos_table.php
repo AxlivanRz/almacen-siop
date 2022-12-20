@@ -19,7 +19,7 @@ class CreateValeArticulosTable extends Migration
             $table->unsignedBigInteger('vale_id');
             $table->integer('cantidad')->unsigned();
             $table->foreign('vale_id')->references('id')->on('vales')->onDelete('cascade');
-            $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
+            $table->foreign('articulo_id')->references('id')->on('articulos');
         });
     }
 

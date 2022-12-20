@@ -73,6 +73,13 @@
         @endforeach
     @endif
     @include('Articulo.create') 
+    @if ($errors->isNotEmpty())
+        @foreach ( $errors->all() as $nuevo )
+        <script>
+            toastr.error('{{$nuevo}}');
+        </script>
+        @endforeach
+    @endif
     @if(Session::has('exito'))
     <script>
         toastr.success("{!! Session::get('exito') !!}");

@@ -18,7 +18,7 @@ class CreateFacturasTable extends Migration
             $table->date('fecha');
             $table->bigInteger('numero_factura')->unique();
             $table->string('folio');
-            $table->string('respaldo_factura');
+            $table->string('respaldo_factura')->nullable();
             $table->double('iva');
             $table->double('imp_total');
             $table->double('imp_iva');

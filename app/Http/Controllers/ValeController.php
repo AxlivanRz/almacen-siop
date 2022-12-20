@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Vale;
-use App\Models\Articulo;
-use App\Models\EntradaArticulo;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use App\Models\EntradaArticulo;
+use App\Models\Departamento;
+use App\Models\Articulo;
+use App\Models\Vale;
+use App\Models\User;
 use Carbon\Carbon;
 
 class ValeController extends Controller
@@ -31,8 +32,7 @@ class ValeController extends Controller
      */
     public function create()
     {
-        $entradas = EntradaArticulo::get();
-        return view('Vale.create', compact(['entradas']));
+        return view('Vale.create');
     }
 
     /**
@@ -52,11 +52,18 @@ class ValeController extends Controller
             $createVale->usuario_id = $request->user()->id_usuario;
             $createVale->administrador_id = null;
         }
+        if($request->user()->area_id != null){
+            $createVale->area_id = $request->user()->area_id;
+        }
+        if($request->user()->departamento_id != null){
+            $departamento = Departamento::findOrFail($request->user()->departamento_id);
+            $createVale->area_id = $departamento->area_id;
+        }
         $createVale->save();
         if ($request->get('articulokey') !=null) { 
             foreach($request->get('articulokey') as $key => $value){
                 $cantidad = $request->get('cantidadkey')[$key];
-                $createVale->articulos()->attach( $value, ['cantidad' => $cantidad]);
+                $createVale->articulos()->attach($value, ['cantidad' => $cantidad]);
                 $createVale->save();
             }
         }
@@ -74,6 +81,7 @@ class ValeController extends Controller
         $vale = Vale::findOrFail($id);
         $entradas = EntradaArticulo::get();
         $valeArticulos = $vale->articulos;
+       
         return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos'])); 
     }
 
@@ -88,12 +96,15 @@ class ValeController extends Controller
         $vale = Vale::findOrFail($id);
         $entradas = EntradaArticulo::get();
         $valeArticulos = $vale->articulos;
-        $articulos = '';
-        foreach ($entradas as $entrada) {
-            $articulos = DB::table('articulos')
-            ->where('id', $entrada->id)->get();
-        }
-        return view('Vale.edit', compact(['vale', 'entradas', 'valeArticulos', 'articulos'])); 
+        $diferentes = DB::table('vale_articulos')
+        ->where('vale_id', '=', $id)
+        ->join('articulos', 'vale_articulos.articulo_id', '!=', 'articulos.id')
+        ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
+        ->where('entrada_articulos.existencia', '>',  0)
+        ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
+        ->get();
+        $dif2 = $diferentes->unique('nombre_articulo');
+        return view('Vale.edit', compact(['vale', 'entradas', 'valeArticulos', 'dif2'])); 
 
     }
 

@@ -39,7 +39,6 @@
                                     </a>                           
                                 </td>                   
                             </tr>     
-                            
                         @endforeach   
                     @else
                     <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>

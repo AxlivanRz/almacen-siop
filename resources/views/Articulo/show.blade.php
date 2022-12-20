@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="articuloShow{{$articulo->id_articulo}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
+<div class="modal fade" id="articuloShow{{$articulo->id}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-white border-0 " >

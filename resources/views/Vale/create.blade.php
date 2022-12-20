@@ -43,7 +43,7 @@
     </div>
 </div>
 @endsection
-@section('scriptsApi')
+@section('scriptsCV')
     <script>
         function load() {
             producto();
@@ -79,14 +79,15 @@
             select.id = "artparent" + parent;
             select.required = "required";
             formGroup1.appendChild(select);
+            var option1 = document.createElement("option");
             $.ajax({ 
                 type: "GET",
                 url: "{{ route('articulo.existencia') }}",
                 success: function(articulos) {
                     $.each(articulos, function(key, value) {
                         var option = document.createElement("option");
-                        option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
                         option.value = value['id'];
+                        option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
                         select.add(option);
                         formGroup1.appendChild(select);
                     })

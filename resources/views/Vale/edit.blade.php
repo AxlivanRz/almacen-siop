@@ -19,23 +19,17 @@
                                 <h5 class="border-top mt-4">Producto</h5>
                                 <div class="row d-flex align-items-end"> 
                                     <div class="form-group col-5">
-                                        @if ($vale->articulos->isNotEmpty())
-                                            @if ($valeArticulos !=null)
-                                                <label>Articulo</label> 
-                                                <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">                                                    
-                                                    <option selected value="{{$vArticulo->id}}">
-                                                        {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
-                                                    </option>                                                   
-                                                    @foreach ($articulos as $articulo)
-                                                        @if ($articulo->id != $vArticulo->id)
-                                                            <option value="{{$articulo->id}}">
-                                                                {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
-                                                            </option>
-                                                        @endif  
-                                                    @endforeach     
-                                                </select>
-                                            @endif
-                                        @endif
+                                        <label>Articulo</label> 
+                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">                                               
+                                            <option value="{{$vArticulo->id}}">
+                                                {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
+                                            </option>                                           
+                                            @foreach ($dif2 as $articulo1)
+                                                <option value="{{$articulo1->id}}">
+                                                    {{$articulo1->nombre_articulo}} - {{$articulo1->nombre_med}}
+                                                </option> 
+                                            @endforeach  
+                                        </select>
                                     </div>
                                     <div class="form-group col-5">
                                         <label>Cantidad</label>

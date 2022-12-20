@@ -25,6 +25,7 @@ class ReporteController extends Controller
         return view('Reporte.indexDiario');
     }
     public function pdf(){
+        $mdss = "";
         $gastos  = DB::table('surtido_entradas')
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
         ->join('vales', 'vale_surtidos.vale_id', '=', 'vales.id')
@@ -32,11 +33,11 @@ class ReporteController extends Controller
         ->join('articulos', 'vale_articulos.articulo_id', '=', 'articulos.id')
         ->join('partidas', 'articulos.partida_id' , '=', 'partidas.id_partida')
         ->join('users', 'vales.usuario_id' , '=', 'users.id_usuario')
-        //->selectRaw('SUM(DISTINCT vale_surtidos.total)')
-        ->distinct()
-        ->select('vales.id','users.area_id', 'users.departamento_id', 'partidas.id_partida')
-        ->sum('vale_surtidos.total')
-        ;
+        ->join('areas', 'users.area_id' , '=', 'areas.id_area')
+        ->selectRaw('SUM(DISTINCT vale_surtidos.total)')
+        //->select('vales.id','areas.id_area', 'partidas.id_partida')
+        ->get();
+        
         $partidas = Partida::get();
         $areas = Area::get();
         $pdf = PDF::loadView('Reporte.diario', ['areas'=>$areas, 'partidas'=>$partidas], compact('gastos'));

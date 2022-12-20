@@ -77,8 +77,7 @@
                     <div class="col-4">
                         <div class="mb-3">
                             <label for="archivo">Respaldo de factura</label>
-                            <input class="form-control" id="archivo" name="archivo" type="file" required>
-                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                            <input class="form-control" id="archivo" name="archivo" type="file">
                         </div>
                     </div>     
                 </div>
@@ -209,7 +208,7 @@
             formGroup2.className = "form-group";
             column3.appendChild(formGroup2);
             var label = document.createElement("label");
-            label.innerHTML = "Base";
+            label.innerHTML = "Precio Base";
             formGroup2.appendChild(label);
             var base = document.createElement("input");
             base.className = "form-control";
@@ -267,7 +266,7 @@
             formGroup4.className = "form-group";
             column6.appendChild(formGroup4);
             var label = document.createElement("label");
-            label.innerHTML = "Importe Unitario";
+            label.innerHTML = "Importe IVA";
             formGroup4.appendChild(label);
             var unitario = document.createElement("input");
             unitario.className = "form-control";

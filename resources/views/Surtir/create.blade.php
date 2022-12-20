@@ -71,7 +71,7 @@
                         <div class="margin">
                             <div class="btn-group m-4">
                                 <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
-                                    Finalizar
+                                    Confirmar
                                 </button>
                             </div>
                             <div class="btn-group ">

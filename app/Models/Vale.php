@@ -21,6 +21,7 @@ class Vale extends Model
         'fecha',
         'fecha_aprovado',
         'usuario_id',
+        'area_id',
         'administrador_id'
     ];
     public function articulos (){

@@ -8,6 +8,7 @@ use App\Models\Articulo;
 use App\Models\UnidadMedida;
 use App\Models\EntradaArticulo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use PDF;
 
 class ArticuloController extends Controller
@@ -43,6 +44,12 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'clave' => 'required | unique:App\Models\Articulo,clave_articulo',
+        ],
+            [
+            'clave.unique' => 'La clave del Articulo ya existe',
+        ]);
         try {
             $create = new Articulo;
             $create -> nombre_articulo = $request->nombreAr;
@@ -61,7 +68,7 @@ class ArticuloController extends Controller
             return redirect('/articulo')->with('exito',  $create->nombre_articulo.' se guardo con éxito');
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect('/articulo'->with('no', 'Algo salio mal'));
+            return redirect('/articulo')->with('no', 'Algo salio mal');
         }
     }
 
@@ -96,6 +103,14 @@ class ArticuloController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $edit1 = Articulo::findOrFail($id);
+        $request->validate([
+            
+            'clave' => Rule::unique('articulos', 'clave_articulo')->ignore($edit1->id),
+        ],
+            [
+            'clave.unique' => 'La clave del Articulo ya existe',
+        ]);
         try {
             $edit = Articulo::findOrFail($id);
             $edit -> nombre_articulo = $request->nombreAr;
@@ -149,7 +164,7 @@ class ArticuloController extends Controller
         $query1 = DB::table('articulos')
         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
         ->where('entrada_articulos.existencia', '>',  0)
-        ->distinct()
+        ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
         ->get();
         $query2 = $query1->unique('nombre_articulo');
         return ($query2);

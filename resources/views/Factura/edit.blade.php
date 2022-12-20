@@ -48,61 +48,119 @@
                         <div id="relationship" name="relationship">
                             @foreach ($entradas as $entrada)
                                 @foreach ($articulos as $articulo)
-                                    @if ($articulo->id == $entrada->articulo_id)
+                                    @if ($articulo->id == $entrada->articulo_id && $entrada->factura_id == $factura->numero_factura)
                                         <?php $contador++;?>
-                                        <div id="newpro" name= "newpro" class="newpro">
-                                            <h5 class="border-top mt-4">Producto</h5>
-                                            <div class="row d-flex align-items-end">
-                                                <div class="form-group col-3">
-                                                    <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
-                                                    <label>Articulo</label> 
-                                                    <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
-                                                        @if ($articulo->id == $entrada->articulo_id)  
-                                                            <option selected value="{{$articulo->id}}">
-                                                                {{$articulo->nombre_articulo}}
-                                                            </option>
-                                                        @endif
-                                                        @foreach ($articulos as $articulo)
-                                                            @if ($articulo->id != $entrada->articulo_id)
-                                                                <option value="{{$articulo->id}}">
+                                        @if ($entrada->existencia != $entrada->cantidad)
+                                            <div id="newpro" name= "newpro" class="newpro">
+                                                <h5 class="border-top mt-4">Producto</h5>
+                                                <div class="row d-flex align-items-end">
+                                                    <div class="form-group col-3">
+                                                        <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
+                                                        <label>Articulo</label> 
+                                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}" disabled>
+                                                            @if ($articulo->id == $entrada->articulo_id)  
+                                                                <option selected value="{{$articulo->id}}">
                                                                     {{$articulo->nombre_articulo}}
                                                                 </option>
-                                                            @endif  
-                                                        @endforeach     
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label>Cantidad</label>
-                                                    <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label> Precio Base</label>
-                                                    <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label>Descuento $</label>
-                                                    <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label>IVA %</label>
-                                                    <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label>Importe Unitario</label>
-                                                    <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
-                                                </div>
-                                                <div class="form-grop col-2">
-                                                    <label>Precio unitario</label>
-                                                    <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
+                                                            @endif
+                                                            @foreach ($articulos as $articulo)
+                                                                @if ($articulo->id != $entrada->articulo_id)
+                                                                    <option value="{{$articulo->id}}">
+                                                                        {{$articulo->nombre_articulo}}
+                                                                    </option>
+                                                                @endif  
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Cantidad</label>
+                                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label> Precio Base</label>
+                                                        <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Descuento $</label>
+                                                        <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>IVA %</label>
+                                                        <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Importe Unitario</label>
+                                                        <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Precio unitario</label>
+                                                        <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Existencia</label>
+                                                        <input class="form-control" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <div id="newpro" name= "newpro" class="newpro">
+                                                <h5 class="border-top mt-4">Producto</h5>
+                                                <div class="row d-flex align-items-end">
+                                                    <div class="form-group col-3">
+                                                        <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
+                                                        <label>Articulo</label> 
+                                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
+                                                            @if ($articulo->id == $entrada->articulo_id)  
+                                                                <option selected value="{{$articulo->id}}">
+                                                                    {{$articulo->nombre_articulo}}
+                                                                </option>
+                                                            @endif
+                                                            @foreach ($articulos as $articulo)
+                                                                @if ($articulo->id != $entrada->articulo_id)
+                                                                    <option value="{{$articulo->id}}">
+                                                                        {{$articulo->nombre_articulo}}
+                                                                    </option>
+                                                                @endif  
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Cantidad</label>
+                                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label> Precio Base</label>
+                                                        <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Descuento $</label>
+                                                        <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>IVA %</label>
+                                                        <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
+                                                    </div>
+                                                    <div class="form-group col-2">
+                                                        <label>Importe Unitario</label>
+                                                        <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Precio unitario</label>
+                                                        <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Existencia</label>
+                                                        <input class="form-control" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                       
                                     @endif
                                 @endforeach
                             @endforeach
                         </div>
                     </div>
-                    
                     <div class="form-group row border-top mt-3">
                         <h5 class="card-title">Total Factura</h5>
                         @if (isset($factura->respaldo_factura))
@@ -249,7 +307,7 @@
             formGroup2.className = "form-group";
             column3.appendChild(formGroup2);
             var label = document.createElement("label");
-            label.innerHTML = "Base";
+            label.innerHTML = "Precio Base";
             formGroup2.appendChild(label);
             var base = document.createElement("input");
             base.className = "form-control";
@@ -306,7 +364,7 @@
             formGroup4.className = "form-group";
             column6.appendChild(formGroup4);
             var label = document.createElement("label");
-            label.innerHTML = "Impuesto Unitario";
+            label.innerHTML = "Importe IVA";
             formGroup4.appendChild(label);
             var unitario = document.createElement("input");
             unitario.className = "form-control";

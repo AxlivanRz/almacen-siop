@@ -34,14 +34,14 @@
                                     @endif
                                     @if ($usuario->area_id != null)
                                         @foreach ($areas as $area )
-                                            @if ($usuario->area_id == $area->id_area)
+                                            @if ($usuario->area_id == $area->id_area && $usuario->id_usuario == $vale->usuario_id)
                                                 <td>{{$area->nombre_area}}</td>
                                             @endif
                                         @endforeach
                                     @endif
                                     @if ($usuario->departamento_id != null)
                                         @foreach ($departamentos as $departamento )
-                                            @if ($usuario->departamento_id == $departamento->id_departamento)
+                                            @if ($usuario->departamento_id == $departamento->id_departamento && $usuario->id_usuario == $vale->usuario_id)
                                                 <td>{{$departamento->nombre_departamento}}</td>
                                             @endif
                                         @endforeach

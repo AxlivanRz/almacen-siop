@@ -20,8 +20,10 @@ class CreateValesTable extends Migration
             $table->dateTime('fecha_aprovado')->nullable();
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('administrador_id')->nullable();
+            $table->unsignedBigInteger('area_id');
             $table->timestamps();
             $table->foreign('usuario_id')->references('id_usuario')->on('users')->onDelete('cascade');
+            $table->foreign('area_id')->references('id_area')->on('areas')->onDelete('cascade');
             $table->foreign('administrador_id')->references('id_usuario')->on('users')->onDelete('cascade');
         });
     }

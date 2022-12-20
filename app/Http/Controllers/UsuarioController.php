@@ -8,6 +8,7 @@ use App\Models\Area;
 use App\Models\Departamento;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -141,6 +142,14 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $edit1 = User::findOrFail($id);
+        $request->validate([
+            
+            'username' => Rule::unique('users', 'nombre_usuario')->ignore($edit1->id_usuario, 'id_usuario'),
+        ],
+            [
+            'username.unique' => 'El nombre de usuario ya existe',
+        ]);
         $edit = User::findOrFail($id);
         $edit -> name = $request->nombre_us;
         $edit -> primer_apellido = $request->primer;

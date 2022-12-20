@@ -12,6 +12,7 @@
             <thead>
             <tr>
                 <th scope="col">Folio</th>
+                <th scope="col">Número de Factura</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Monto total</th>
@@ -27,6 +28,7 @@
                     @foreach ( $facturas as $factura )
                         <tr>
                             <th scope="row">{{$factura->folio}}</th>
+                            <td>{{$factura->numero_factura}}</td>
                             <td>{{$factura->fecha}}</td>
                             @foreach ($proveedores as $proveedor )
                                 @if ($proveedor->id_proveedor == $factura->proveedor_id)  

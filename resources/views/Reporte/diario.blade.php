@@ -97,29 +97,25 @@
                 <th class="border border-dark" scope="col">Total</th>  
             </tr>
             </thead>
-            <tbody > 
-                <tr>           
+            <tbody >       
                 @foreach ( $partidas as $partida )
+                    <tr>  
                         <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}}</th>
-                        <td class="border border-dark">{{$partida->nombre_partida}}</td>                                                    
-                @endforeach
+                        <td class="border border-dark">{{$partida->nombre_partida}}</td>  
+                    </tr>                                              
+                @endforeach       
                 
-                    <td class="border border-dark"  scope="row">{{$gastos}}</td>
-                    <td class="border border-dark">{{$gastos}}</td>         
-              
-                </tr> 
+                        <td id="total">{{$gastos}}</td>       
             </tbody>
         </table>
     </main>
-        
-        <script type="text/php">
-            if ( isset($pdf) ) {
-                $pdf->page_script('
-                    $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                    $pdf->text(750, 560, "Página $PAGE_NUM de $PAGE_COUNT", $font, 10);
-                ');
-            }
-        </script>
-        
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $pdf->page_script('
+                $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+                $pdf->text(750, 560, "Página $PAGE_NUM de $PAGE_COUNT", $font, 10);
+            ');
+        }
+    </script>      
 </body>
 </html>
