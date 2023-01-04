@@ -15,14 +15,14 @@ class CreateArticulosTable extends Migration
     {
         Schema::create('articulos', function (Blueprint $table) {
             $table->id();
-            $table->integer('clave_articulo')->unsigned();
+            $table->double('clave_articulo')->unsigned()->unique();
             $table->string('nombre_articulo', 50);
             $table->string('ubicacion');
             $table->string('observaciones');
             $table->unsignedBigInteger('medida_id'); 
             $table->string('nombre_med');
             $table->unsignedBigInteger('partida_id');   
-            $table->string('foto_articulo');         
+            $table->string('foto_articulo')->nullable();         
             $table->timestamps();
             $table->foreign('medida_id')->references('id_medida')->on('unidad_medidas')->onDelete('cascade');
             $table->foreign('partida_id')->references('id_partida')->on('partidas')->onDelete('cascade');

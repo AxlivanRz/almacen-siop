@@ -11,35 +11,41 @@
             @method('PUT')
             <div class="row ">
                 <div class="form-group row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label>Fecha de solicitado</label>
-                        <input class="form-control" type="datetime" value = "{{$vale->fecha}}" disabled>
+                        <input class="form-control form-control-sm" type="datetime" value = "{{$vale->fecha}}" disabled>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label>Estatus</label>
                         @if ($vale->status == 1)
-                        <input class="form-control" type="text" value = "Enviado" disabled>
+                        <input class="form-control form-control-sm" type="text" value = "Enviado" disabled>
                         @endif
                         @if ($vale->status == 2)
-                        <input class="form-control" type="text" value = "Validado por el Administrador" disabled>
+                        <input class="form-control form-control-sm" type="text" value = "Validado por el Administrador" disabled>
                         @endif
                         @if ($vale->status == 4)
-                        <input class="form-control" type="text" value = "Surtido por Almacén" disabled>
+                        <input class="form-control form-control-sm" type="text" value = "Surtido por Almacén" disabled>
                         @endif
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         @if ($vale->fecha_aprovado != null)
                         <label>Fecha de aprobado</label>
-                        <input class="form-control" type="datetime" value = "{{$vale->fecha_aprovado}}" disabled>
+                        <input class="form-control form-control-sm" type="datetime" value ="{{$vale->fecha_aprovado}}" disabled>
                         @endif
                     </div>
+                    @if ($surtido->fecha != null)
+                        <div class="form-group col-3">
+                            <label>Fecha de surtido</label>
+                            <input class="form-control form-control-sm" type="datetime" value ="{{$surtido->fecha}}" disabled>
+                        </div>
+                    @endif
                 </div>
                 <div class="form-group">
                     @foreach ($valeArticulos as $vArticulo)
                         <div id="newpro" name= "newpro" class="newpro">
                             <h5 class="border-top mt-4">Producto</h5>
                             <div class="row d-flex align-items-end"> 
-                                <div class="form-group col-5">
+                                <div class="form-group col-4">
                                     @if ($vale->articulos->isNotEmpty())
                                         @if ($valeArticulos !=null)
                                             <label>Articulo</label> 
@@ -51,10 +57,20 @@
                                         @endif
                                     @endif
                                 </div>
-                                <div class="form-group col-5">
-                                    <label>Cantidad</label>
-                                    <input class="form-control" name="cantidadkey[]" id="cantidad" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}" disabled>
+                                <div class="form-group col-4">
+                                    <label>Cantidad solicitada</label>
+                                    <input class="form-control" name="cantidadkey[]" id="cantidad" type="number" min="{{$vArticulo->pivot->cantidad}}" value = "{{$vArticulo->pivot->cantidad}}" disabled>
                                 </div>
+                                @if ($queryEFAs != null)
+                                    @foreach ($queryEFAs as $queryEFA)
+                                        @if ($queryEFA->id == $vArticulo->id)
+                                        <div class="form-group col-4">
+                                            <label>Cantidad aprobada</label>
+                                            <input class="form-control" name="cantidadkey2[]" id="cantidad2" type="number" min="{{$queryEFA->cantidad}}" value = "{{$queryEFA->cantidad}}" disabled>
+                                        </div>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     @endforeach

@@ -1,166 +1,123 @@
 @extends('sideb')
 @section('content')
-<div class="row my-5 py-2 ">
-    <div class="col-2"></div>
-    <div class="col-8">
+<div class="row my-5 py-1">
+    <div class="col-1"></div>
+    <div class="col-9">
       <div class="card">
-        <form action="{{route('surtir.update',$vale->id)}}" method="post">
-            @csrf
-            @method('PUT')
-            <?php $contador = 0; ?>
-            <div class="card-body">
-            <h5 class="card-title">Editar Vale</h5>
-                <div class="row ">
-                    <input type="number" id="contador_producto" hidden>
-                    <div class="form-group" id="producto">
-                        @foreach ($valeArticulos as $vArticulo)
-                            <?php $contador++;?>
-                            <div id="newpro" name= "newpro" class="newpro">
-                                <h5 class="border-top mt-4">Producto</h5>
-                                <div class="row d-flex align-items-end"> 
-                                    <div class="form-group col-5">
-                                        <label>Articulo</label> 
-                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">                                                    
-                                            <option selected value="{{$vArticulo->id}}">
-                                                {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
-                                            </option>                                                   
-                                            @foreach ($articulos as $articulo)
-                                                <option value="{{$articulo->id}}">
-                                                    {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
-                                                </option>
-                                            @endforeach     
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-5">
-                                        <label>Cantidad</label>
-                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}">
-                                    </div>
-                                </div>
-                            </div>
+        <?php $contador = 0; ?>
+        <div class="card-body">
+            <h5 class="card-title">Vale</h5>
+            <div class="row ">
+                <div class="form-group row">
+                    <div class="form-group col-3">
+                        <label>Fecha de solicitado</label>
+                        <input class="form-control form-control-sm" type="datetime" value ="{{$vale->fecha}}" disabled>
+                    </div>
+                    <div class="form-group col-2">
+                        <label>Estatus</label>
+                        @if ($vale->status == 3)
+                        <div class="w-100"></div>
+                            <span class="badge rounded-pill bg-primary">
+                            Listo para surtir
+                            </span>
+                        @endif
+                    </div>
+                    <div class="form-group col-3">
+                        @foreach ($usuarios as $usuario )
+                            @if ($vale->usuario_id == $usuario->id_usuario)
+                            <label>Usuario solicitante</label>
+                            <input class="form-control form-control-sm" type="text" value = "{{$usuario->name}} {{$usuario->primer_apellido}}" disabled>
+                            @endif
                         @endforeach
                     </div>
-                </div>
-                <div class="row py-2 border-top mt-3" >
-                    <div class="margin">
-                        <input type="text" value="{{$contador}}" id= "contador_edit" hidden>
-                        <div class="btn-group m-4">
-                            <button type="submit" class="btn btn-success" id="agre_btn" style="display:none">
-                                Agregar
-                            </button>
-                        </div>
-                        <div class="btn-group m-4">
-                            <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
-                                Finalizar
-                            </button>
-                        </div>
-                        <div class="btn-group ">
-                            <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block">
-                                <i class="fas fa-plus"></i> Agregar producto
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-danger" id="btn_delete" onClick="delete_last()" style="display:block">
-                                <i class="fas fa-minus-circle"></i> Eliminar el último producto
-                            </button>
-                        </div>
+                    <div class="form-group col-3">
+                        @if ($vale->fecha_aprovado != null)
+                        <label>Fecha de aprobado</label>
+                        <input class="form-control form-control-sm" type="datetime" value = "{{$vale->fecha_aprovado}}" disabled>
+                        @endif
                     </div>
                 </div>
+                <div class="form-group">
+                    @foreach ($valeArticulos as $vArticulo)
+                        <div id="newpro" name= "newpro" class="newpro">
+                            <h5 class="border-top mt-4">Producto</h5>
+                            <div class="row d-flex align-items-end"> 
+                                <div class="form-group col-5">
+                                    @if ($vale->articulos->isNotEmpty())
+                                        @if ($valeArticulos !=null)
+                                            <label>Articulo</label> 
+                                            <select class="form-control form-control-sm" name="articulokey[]" disabled>                                                    
+                                                <option selected value="{{$vArticulo->id}}">
+                                                    {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
+                                                </option>                                                    
+                                            </select>
+                                        @endif
+                                    @endif
+                                </div>
+                                <div class="form-group col-5">
+                                    <label>Cantidad</label>
+                                    <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </form>
+        </div>
       </div>
     </div>
 </div>
-@endsection
-@section('editarSurtir')
-    <script>
-        function load() {
-            contadoredit();
-        }
-        var parent = 0;
-        window.onload = load;
-        function contadoredit(){
-            var valoredit = document.getElementById("contador_edit").value;
-            parent = Number(valoredit);
-            document.getElementById("contador_producto").value = parent; 
-            if (parent > 1) {
-                document.getElementById("btn_delete").style.display = "block";
-            }
-        }
-        function producto() {
-            parent++;
-            if (parent > 1) {
-                document.getElementById("btn_delete").style.display = "block";
-            }
-            var div = document.createElement("div");
-            div.id = "newpro";
-            div.className = "newpro";
-            div.name = "newppro"; 
-
-            var row = document.createElement("div");
-            row.className = "row d-flex align-items-end";
-
-            var column1 = document.createElement("div");
-            column1.className = "col-5";
-            row.appendChild(column1);
-            var formGroup1 = document.createElement("div");
-            formGroup1.className = "form-group";
-            column1.appendChild(formGroup1);
-            var label = document.createElement("label");
-            label.innerHTML = "Articulo";
-            formGroup1.appendChild(label);
-            var select = document.createElement("select");
-            select.className = "form-control";
-            select.name = "articulokey[]";
-            select.id = "artparent" + parent;
-            select.required = "required";
-            formGroup1.appendChild(select);
-            $.ajax({ 
-                type: "GET",
-                url: "{{ route('articulo.existencia') }}",
-                success: function(articulos) {
-                    $.each(articulos, function(key, value) {
-                        var option = document.createElement("option");
-                        option.text = (value['nombre_articulo']) + " - " + (value['nombre_med']);
-                        option.value = value['id'];
-                        select.add(option);
-                        formGroup1.appendChild(select);
-                    })
-                }
-            });     
-            var column3 = document.createElement("div");
-            column3.className = "col-5";
-            row.appendChild(column3);
-            var label = document.createElement("label");
-            label.innerHTML = "Cantidad";
-            column3.appendChild(label);
-            var cantidad = document.createElement("input");
-            cantidad.className = "form-control";
-            cantidad.name = "cantidadkey[]";
-            cantidad.id = "cantidad" + parent;
-            cantidad.type = "number";
-            cantidad.min = "0";
-            cantidad.value = "0";
-            column3.appendChild(cantidad);
-
-            div.appendChild(row);
-            document.getElementById("producto").appendChild(div);
-            document.getElementById("contador_producto").value = parent;  
-        }        
-        function delete_last() {
-            if (parent > 1) {  
-                $(".newpro").last().remove();   
-            }
-            parent--;
-            if (parent == 1) {
-                document.getElementById("btn_delete").style.display = "none";
-            }
-            document.getElementById("contador_producto").value = parent;  
-        }
-        function final() {
-            document.getElementById("btn_delete").style.display = "none";
-            document.getElementById("agregar_btn").style.display = "none";
-            document.getElementById("fin_btn").style.display = "none";
-            document.getElementById("agre_btn").style.display = "block";
-        }
-    </script>
+{{-- Para surtir --}}
+{{-- Para surtir --}}
+<div class="row my-5">
+    <div class="col-1"></div>
+    <div class="col-9">
+        <div class="card">
+            <?php $contador = 0; ?>
+            <div class="card-body">
+                <form action="{{route('surtir.update',$surtido->id)}}" method="POST">
+                    @csrf 
+                    @method('PUT')
+                    <h5 class="card-title">Vale Aprobado</h5>
+                    <div class="row border-top mt-2">
+                        @foreach ($queryEFAs as $queryEFA)
+                        <div class="form-group row">
+                            <div class="form-group col-3">
+                                <label>Articulo</label>
+                                <input disabled type="text" class="form-control form-control-sm" value="{{$queryEFA->nombre_articulo}} - {{$queryEFA->nombre_med}}">
+                            </div>
+                            <div class="form-group col-3">
+                                <label>Número de factura</label>
+                                <input disabled type="number" class="form-control form-control-sm" value="{{$queryEFA->factura_id}}">
+                            </div>
+                            <div class="form-group col-3">
+                                <label>Precio</label>
+                                <input disabled type="number" class="form-control form-control-sm" name="precio[]" step="any" value="{{$queryEFA->precio}}">
+                            </div>
+                            <div class="form-group col-3">
+                                <label>Cantidad</label>
+                                <input disabled type="number" class="form-control form-control-sm" name= "cantidad[]" value="{{$queryEFA->cantidad}}">
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="row border-top mt-2">
+                        <div class="form-group col-4">
+                            <label >Total del vale</label>
+                            <div class="input-group input-group-sm mb-2">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control form-control-sm" id= "total" step="any" name="total" min="0" value="{{$surtido->total}}">
+                            </div>
+                        </div>
+                        <div class="form-group col-2 m-2 py-3">
+                            <button type="submit" class="btn btn-success btn-sm" style="display:block">
+                                Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

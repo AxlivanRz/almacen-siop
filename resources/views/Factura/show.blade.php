@@ -83,27 +83,43 @@
                 <div class="row border-top mt-3 py-2">
                     <h5 class="card-title">Total Factura</h5>
                     @if (isset($factura->respaldo_factura))
-                        <div class="col-4 d-flex  align-items-end" >
+                        <div class="col-2 d-flex  align-items-end" >
                             <label for="archivo" class="col-form-label">
                                 <i class="fas fa-check-circle" style = "color: rgb(0, 215, 0);"></i>
                                 Archivo existente
                             </label>
                         </div>
                     @else
-                        <div class="col-4 d-flex  align-items-end" >
+                        <div class="col-2 d-flex  align-items-end" >
                             <label for="archivo" class="col-form-label">
                                 <i class="fas fa-times-circle" style = "color: red;"></i>
                                 Sin archivo
                             </label>
                         </div>
                     @endif
-                    <div class="col-4">
+                    <div class="form-group col-3">                                          
+                        <label>Origen del Recurso</label>                               
+                        <select class="form-select form-select-sm"  disabled name="recurso" id="recurso" >
+                            @foreach ($origenes as $origen )
+                                @if ($factura->recurso_id == $origen->id_origen)
+                                <option selected value="{{$origen->id_origen}}">
+                                    {{$origen->nombre_recurso}}
+                                </option>
+                                @endif   
+                            @endforeach                
+                        </select>
+                    </div>  
+                    <div class="col-3">
                         <label for="impfactura">Importe total IVA</label>
-                        <input id="impfactura" type="number" class="form-control" id="impfactura" name="impfactura" value="{{$factura->imp_iva}}" step="any" disabled>
+                        <input id="impfactura" type="number" class="form-control form-select-sm" id="impfactura" name="impfactura" value="{{$factura->imp_iva}}" step="any" disabled>
                     </div>
-                    <div class="col-4">
+                    <div class="form-goup col-2">
+                        <label for="total">SubTotal</label>
+                        <input id="subtotal" type="number" class="form-control form-control-sm" id = "subtotal" name="subtotal" step="any" value="{{$factura->subtotal}}" disabled>
+                    </div>
+                    <div class="col-2">
                         <label for="total">Importe Total</label>
-                        <input id="total" type="number" class="form-control" id = "total" name="total" step="any" value="{{$factura->imp_total}}" disabled >
+                        <input id="total" type="number" class="form-control form-select-sm" id = "total" name="total" step="any" value="{{$factura->imp_total}}" disabled >
                     </div>
                 </div>
             </div>

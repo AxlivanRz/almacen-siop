@@ -70,12 +70,12 @@
                     <div class="row py-1 border-top mt-3" >
                         <div class="margin">
                             <div class="btn-group m-4">
-                                <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
+                                <button type="button" class="btn btn-info" id="fin_btn" onClick="final();retroceso();" style="display:block">
                                     Confirmar
                                 </button>
                             </div>
                             <div class="btn-group ">
-                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block">
+                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();retroceso()" style="display:block">
                                     <i class="fas fa-plus"></i> Agregar producto
                                 </button>
                             </div>
@@ -121,7 +121,7 @@
                             '</option>' +
                             '@foreach ($valeArticulos as $vArticulo)' +
                                 '@foreach ( $entradas as $entrada)' +
-                                    '@if ($vArticulo->id == $entrada->articulo_id)' +
+                                    '@if ($vArticulo->id == $entrada->articulo_id && $entrada->existencia != 0)' +
                                     '<option value="{{$entrada->id}}">' +
                                         '{{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}} - {{$entrada->factura_id}}'  +
                                     '</option>' +
@@ -196,7 +196,8 @@
                         '</div>' +
                         '<div class="form-group col-3">' +
                             '<label>' + 'Cantidad' + '</label>' +
-                            '<input type="number" class="form-control form-control-sm" name= "cantidad[]" id="cantidad'+id+'" value="0" min="0" max="'+element.existencia+'">' +
+                            '<input type="number" class="form-control form-control-sm" name= "cantidad[]" id="cantidadVale'+id+'" value="0" min="0" max="'+element.existencia+'">' +
+                            '<input type="number" hidden class="form-control form-control-sm" step="any" name= "total_art[]" id="total_art'+id+'">' +
                         '</div>' +
                     '</div>'
                     );
@@ -204,5 +205,16 @@
             });
             dato.removeChild(dato.lastElementChild);
         }   
+        function retroceso(){    
+           var contador = document.getElementById("contador_producto").value;
+            while (  contador != 0) {
+                var precio = document.getElementById('precio' + contador).value;
+                var cantidad = document.getElementById('cantidadVale' + contador).value;
+                var operacion1 = (Number(precio) * Number(cantidad));
+                var preciototal = document.getElementById('total_art' + contador);
+                preciototal.value = operacion1;
+                contador--;
+            }
+        }
     </script>
 @endsection

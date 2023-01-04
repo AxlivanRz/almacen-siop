@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use App\Models\EntradaArticulo;
 use App\Models\Departamento;
+use App\Models\ValeSurtido;
 use App\Models\Articulo;
 use App\Models\Vale;
 use App\Models\User;
@@ -21,7 +22,7 @@ class ValeController extends Controller
      */
     public function index()
     {
-        $vales = Vale::paginate(15);
+        $vales = Vale::get();
         return view('Vale.index', compact('vales'));
     }
  
@@ -79,10 +80,24 @@ class ValeController extends Controller
     public function show($id)
     {
         $vale = Vale::findOrFail($id);
+        $idSurtido = DB::table('vale_surtidos')
+        ->where('vale_id', '=', $id)
+        ->select('id')
+        ->get();
+        foreach ($idSurtido as $idw) {
+            $nid = $idw->id;
+        }
         $entradas = EntradaArticulo::get();
         $valeArticulos = $vale->articulos;
-       
-        return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos'])); 
+        $usuarios = User::get();
+        $surtido = ValeSurtido::findOrFail($nid);
+        $queryEFAs = DB::table('surtido_entradas')
+        ->where('vale_surtido_id', '=', $nid)
+        ->join('entrada_articulos', 'surtido_entradas.entrada_articulo_id', '=', 'entrada_articulos.id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->select('articulos.id', 'surtido_entradas.cantidad')
+        ->get();
+        return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos', 'queryEFAs', 'surtido', 'usuarios'])); 
     }
 
     /**

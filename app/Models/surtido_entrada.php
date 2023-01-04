@@ -20,7 +20,8 @@ class surtido_entrada extends Model
     protected $fillable = [
         'cantidad',
         'entrada_articulo_id',
-        'vale_surtido_id'
+        'vale_surtido_id',
+        'total_articulo'
     ];
 }
 

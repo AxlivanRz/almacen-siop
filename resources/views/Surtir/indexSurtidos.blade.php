@@ -34,7 +34,7 @@
                                     @endif
                                 @endforeach
                                 <td>                                                            
-                                    <a href="" class="btn btn-info btn-sm" disabled>
+                                    <a href="{{route('surtir.show',$surtido->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>
                                     </a>                           
                                 </td>                   

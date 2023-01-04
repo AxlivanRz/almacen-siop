@@ -68,16 +68,30 @@
                     <h5 class="card-title">Total Factura</h5>
                     <div class="form-group col-3">  
                         <label for="impfactura">Importe total IVA</label>
-                        <input id="impfactura" type="number" class="form-control" id="impfactura" name="impfactura" step="any" required autofocus>
+                        <input id="impfactura" type="number" class="form-control form-control-sm" name="impfactura" step="any" required autofocus>
                     </div>
-                    <div class="form-goup col-3">
+                    <div class="form-goup col-2">
+                        <label for="total">SubTotal</label>
+                        <input id="subtotal" type="number" class="form-control form-control-sm" id = "subtotal" name="subtotal" step="any" required autofocus>
+                    </div>
+                    <div class="form-group col-2">                                          
+                        <label>Origen del Recurso</label>                               
+                        <select class="form-select form-select-sm"  name="recurso" id="recurso" >
+                            @foreach ($origenes as $origen )
+                                <option value="{{$origen->id_origen}}">
+                                    {{$origen->nombre_recurso}}
+                                </option>
+                            @endforeach                 
+                        </select>
+                    </div>  
+                    <div class="form-goup col-2">
                         <label for="total">Importe Total</label>
-                        <input id="total" type="number" class="form-control" id = "total" name="total" step="any" required autofocus>
+                        <input id="total" type="number" class="form-control form-control-sm" id = "total" name="total" step="any" required autofocus>
                     </div>
-                    <div class="col-4">
-                        <div class="mb-3">
+                    <div class="col-3">
+                        <div class="mb-2">
                             <label for="archivo">Respaldo de factura</label>
-                            <input class="form-control" id="archivo" name="archivo" type="file">
+                            <input class="form-control form-control-sm" id="archivo" name="archivo" type="file">
                         </div>
                     </div>     
                 </div>
@@ -97,7 +111,7 @@
                     </button>
                 </div>
                 <div class="btn-group m-4">
-                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();cuentas();" style="display:block" >
+                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block" >
                         <i class="fas fa-plus"></i> Agregar producto
                     </button>
                 </div>
@@ -208,7 +222,7 @@
             formGroup2.className = "form-group";
             column3.appendChild(formGroup2);
             var label = document.createElement("label");
-            label.innerHTML = "Precio Base";
+            label.innerHTML = "Precio";
             formGroup2.appendChild(label);
             var base = document.createElement("input");
             base.className = "form-control";
@@ -345,35 +359,6 @@
             }
             document.getElementById("contador_producto").value = parent;
         }
-        function cuentas(){    
-            var  i = 0;
-           var contador = document.getElementById("contador_producto").value;
-           if (parent == 1) {
-                var descuento = document.getElementById('descuento' + contador).value;
-                var cantidad = document.getElementById('cantidad' + contador).value;
-                var base = document.getElementById('base' + contador).value;
-                var iva = document.getElementById('iva' + contador).value;
-                var unitario = (base/100) * iva;
-                document.getElementById('unitario' + contador).value = unitario;
-                var finalsuma1 = (Number(unitario) + Number(base)- Number(descuento));
-                document.getElementById('precio' + contador).value = finalsuma1;
-                var preciototal = document.getElementById('preciototal' + contador);
-                preciototal.value = (Number(finalsuma1) * Number(cantidad));
-           }else{
-                for ( i = 0; i <= contador; i++) {
-                    var descuento = document.getElementById('descuento' + contador).value;
-                    var cantidad = document.getElementById('cantidad' + contador).value;
-                    var base = document.getElementById('base' + contador).value;
-                    var iva = document.getElementById('iva' + contador).value;
-                    var unitario = (base/100) * iva;
-                    document.getElementById('unitario' + contador).value = unitario;
-                    var finalsuma1 = (Number(unitario) + Number(base)) - Number(descuento);
-                    document.getElementById('precio' + contador).value = finalsuma1;
-                    var preciototal = document.getElementById('preciototal' + contador);
-                    preciototal.value = (Number(finalsuma1) * Number(cantidad));
-                }
-            }
-        }
         function retroceso(){    
            var contador = document.getElementById("contador_producto").value;
             while (  contador != 0) {
@@ -381,12 +366,17 @@
                 var cantidad = document.getElementById('cantidad' + contador).value;
                 var base = document.getElementById('base' + contador).value;
                 var iva = document.getElementById('iva' + contador).value;
-                var unitario = (base/100) * iva;
+
+                var unitario = (base-descuento)/100 * iva;
+
                 document.getElementById('unitario' + contador).value = unitario;
-                var finalsuma1 = (Number(unitario) + Number(base) - Number(descuento));
+
+                var finalsuma1 = (Number(unitario) + Number(base) - Number(descuento))/Number(cantidad);
+
                 document.getElementById('precio' + contador).value = finalsuma1;
+
                 var preciototal = document.getElementById('preciototal' + contador);
-                preciototal.value = (Number(finalsuma1) * Number(cantidad));
+                preciototal.value = (Number(base) + Number(unitario));
                 contador--;
             }
         }
@@ -402,36 +392,36 @@
         }
         function final() {
             var cou = document.getElementById("contador_producto").value;
-        
-            var cantidad = Array.prototype.slice.call(document.getElementsByName('cantidadkey[]'));
-            var valCant = cantidad.map((c) => c.value);
-
-            var precio = Array.prototype.slice.call(document.getElementsByName('preciokey[]'));
-            var valPrec = precio.map((p) => p.value);
-
+            var base = Array.prototype.slice.call(document.getElementsByName('basekey[]'));
+            var valBase = base.map((b) => b.value);
+            // var cantidad = Array.prototype.slice.call(document.getElementsByName('cantidadkey[]'));
+            // var valCant = cantidad.map((c) => c.value);
+            // var precio = Array.prototype.slice.call(document.getElementsByName('preciokey[]'));
+            // var valPrec = precio.map((p) => p.value);
             var unitario = Array.prototype.slice.call(document.getElementsByName('unitariokey[]'));
             var valUni = unitario.map((u) => u.value);
-
-            let multiplicacion1 = new Array();
-            let multiplicacion2 = new Array();
-            
-            for (z=0; z<valPrec.length; z++){
-                for (w=0; w<valCant.length; w++){
-                    multiplicacion1 [z]= valCant[z] * valPrec[z]; 
-                }
-            }
-            for (a=0; a<valUni.length; a++){
-                for (b=0; b<valCant.length; b++){
-                    multiplicacion2 [a]= valCant[a] * valUni[a]; 
-                }
-            }
+            // let multiplicacion1 = new Array();
+            // let multiplicacion2 = new Array();
+            // let multiplicacion3 = new Array();
+            // for (z=0; z<valPrec.length; z++){
+            //     for (w=0; w<valCant.length; w++){
+            //         multiplicacion1 [z]= valCant[z] * valPrec[z]; 
+            //     }
+            // }
+            // for (a=0; a<valUni.length; a++){
+            //     for (d=0; d<valCant.length; d++){
+            //         multiplicacion2 [a]= valCant[a] * valUni[a]; 
+            //     }
+            // }
             // for ( i = 0; i < multiplicacion1.length; i++) {
             //     cuentaf [i]= multiplicacion1[i] + multiplicacion2[i]; 
             // }    
-            
-            let totalfinal = multiplicacion1.reduce((r, o) => r + o, 0);
-            let totaliva = multiplicacion2.reduce((g, h) => g + h, 0);
+            let totaliva = valUni.reduce((g, h) => Number(g) + Number(h), 0);
+            let subtotal =  valBase.reduce((r, t) => Number(r) + Number(t), 0);
+            let totalfinal = totaliva + subtotal;
+            console.log(subtotal);
             document.getElementById('impfactura').value = totaliva;
+            document.getElementById('subtotal').value = subtotal;
             document.getElementById('total').value = totalfinal;
         }
         setInterval(retroceso, 1000);

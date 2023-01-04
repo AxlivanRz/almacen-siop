@@ -64,7 +64,6 @@
                     <td colspan="5"><span class="badge rounded-pill bg-danger">Aún no solicitas un vale</span></td>
                     @endif      
                 </tbody>
-                <div class = "d-flex">{{$vales->links()}}</div>
             </table> 
         </div>
     </div>

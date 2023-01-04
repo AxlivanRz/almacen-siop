@@ -48,7 +48,7 @@
                                     @endif
                                 @endforeach
                                 <td>                                                            
-                                    <a href="{{route('surtir.editAdmin',$vale->id)}}" class="btn btn-primary btn-sm">
+                                    <a href="{{route('surtir.createVale',$vale->id)}}" class="btn btn-primary btn-sm">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </a>                              
                                 </td>                   

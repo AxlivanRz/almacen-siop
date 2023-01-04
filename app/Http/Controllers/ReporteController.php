@@ -25,21 +25,22 @@ class ReporteController extends Controller
         return view('Reporte.indexDiario');
     }
     public function pdf(){
-        $mdss = "";
+        $partidas = Partida::get();
+        $areas = Area::get();
         $gastos  = DB::table('surtido_entradas')
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
         ->join('vales', 'vale_surtidos.vale_id', '=', 'vales.id')
-        ->join('vale_articulos','vales.id' , '=', 'vale_articulos.vale_id')
-        ->join('articulos', 'vale_articulos.articulo_id', '=', 'articulos.id')
-        ->join('partidas', 'articulos.partida_id' , '=', 'partidas.id_partida')
-        ->join('users', 'vales.usuario_id' , '=', 'users.id_usuario')
-        ->join('areas', 'users.area_id' , '=', 'areas.id_area')
-        ->selectRaw('SUM(DISTINCT vale_surtidos.total)')
-        //->select('vales.id','areas.id_area', 'partidas.id_partida')
+        ->join('entrada_articulos','surtido_entradas.entrada_articulo_id' , '=', 'entrada_articulos.id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->select('surtido_entradas.total_articulo','vales.area_id', 'articulos.partida_id')
         ->get();
-        
-        $partidas = Partida::get();
-        $areas = Area::get();
+    
+        // $totalGastos = DB::table('areas')
+        // ->joinSub($gastos, 'gastos', function ($join) {
+        //     $join->on('areas.id_area', '=', 'gastos.area_id');
+        // })->get();
+
+       
         $pdf = PDF::loadView('Reporte.diario', ['areas'=>$areas, 'partidas'=>$partidas], compact('gastos'));
         $pdf->set_paper ('a4','landscape');
         return $pdf->stream();

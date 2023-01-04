@@ -51,8 +51,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="foto_articulo" class="form-label">Foto del articulo</label>
-                            <input class="form-control form-control-sm" id="foto_articulo" name="foto_articulo" type="file" accept="image/png, image/jpeg" required>
-                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                            <input class="form-control form-control-sm" id="foto_articulo" name="foto_articulo" type="file" accept="image/png, image/jpeg">
                           </div>
                     </div>                                          
                 </div>

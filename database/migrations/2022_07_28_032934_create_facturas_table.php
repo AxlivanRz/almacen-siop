@@ -19,13 +19,16 @@ class CreateFacturasTable extends Migration
             $table->bigInteger('numero_factura')->unique();
             $table->string('folio');
             $table->string('respaldo_factura')->nullable();
-            $table->double('iva');
-            $table->double('imp_total');
-            $table->double('imp_iva');
+            $table->double('iva')->unsigned();
+            $table->double('subtotal')->unsigned();
+            $table->double('imp_total')->unsigned();
+            $table->double('imp_iva')->unsigned();
             $table->boolean('confirmed')->default(0);
             $table->unsignedBigInteger('proveedor_id');
+            $table->unsignedBigInteger('recurso_id');
             $table->timestamps();
             $table->foreign('proveedor_id')->references('id_proveedor')->on('proveedores')->onDelete('cascade');
+            $table->foreign('recurso_id')->references('id_origen')->on('origen_recursos')->onDelete('cascade');
         });
     }
 

@@ -40,7 +40,7 @@ Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('art
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
 Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin');
-Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'editAdmin'])->name('surtir.editAdmin');
+Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'submitAlmacen'])->name('surtir.editAlm');
 Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit');
 Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale');
 Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');

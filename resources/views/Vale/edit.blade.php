@@ -25,9 +25,11 @@
                                                 {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
                                             </option>                                           
                                             @foreach ($dif2 as $articulo1)
-                                                <option value="{{$articulo1->id}}">
-                                                    {{$articulo1->nombre_articulo}} - {{$articulo1->nombre_med}}
-                                                </option> 
+                                                @if ($articulo1->id != $vArticulo->id)
+                                                    <option value="{{$articulo1->id}}">
+                                                        {{$articulo1->nombre_articulo}} - {{$articulo1->nombre_med}}
+                                                    </option> 
+                                                @endif
                                             @endforeach  
                                         </select>
                                     </div>

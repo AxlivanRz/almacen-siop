@@ -105,7 +105,7 @@
                     </tr>                                              
                 @endforeach       
                 
-                        <td id="total">{{$gastos}}</td>       
+                          
             </tbody>
         </table>
     </main>
@@ -117,5 +117,10 @@
             ');
         }
     </script>      
+    <script>
+        function (params) {
+            
+        }
+    </script>
 </body>
 </html>

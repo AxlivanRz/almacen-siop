@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\EntradaArticulo;
+use App\Models\OrigenRecurso;
+use App\Models\UnidadMedida;
+use App\Models\Proveedores;
 use App\Models\Articulo;
 use App\Models\Factura;
-use App\Models\Proveedores;
-use App\Models\EntradaArticulo;
-use App\Models\UnidadMedida;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,8 @@ class FacturaController extends Controller
         $proveedores = Proveedores::get();
         $entradas = EntradaArticulo::get();
         $articulos = Articulo::get();
-        return view ('Factura.index', compact(['facturas', 'proveedores', 'entradas', 'articulos']));
+        $origenes = OrigenRecurso::get();
+        return view ('Factura.index', compact(['facturas', 'proveedores', 'entradas', 'articulos', 'origenes']));
     }
 
     /**
@@ -36,9 +38,10 @@ class FacturaController extends Controller
     {
         $medidas =UnidadMedida::get();
         $proveedores = Proveedores::get();
+        $origenes = OrigenRecurso::get();
         $inicio = Carbon::now()->startOfMonth()->toDateString();
         $ultimo = Carbon::now()->endOfMonth()->toDateString();
-        return view('Factura.create', compact(['medidas', 'proveedores', 'inicio', 'ultimo']));
+        return view('Factura.create', compact(['medidas', 'proveedores', 'inicio', 'ultimo', 'origenes']));
     }
 
     /**
@@ -87,6 +90,8 @@ class FacturaController extends Controller
             $factura_create->iva = $request->iva;
             $factura_create->imp_iva = $request->impfactura;
             $factura_create->imp_total = $request->total;
+            $factura_create->subtotal = $request->subtotal;
+            $factura_create->recurso_id = $request->recurso;
             $factura_create->save();
             return redirect ('/factura')->with('exito', 'Se guardo con exito');
         } catch (\Throwable $th) {
@@ -120,9 +125,10 @@ class FacturaController extends Controller
         ->select('numero_factura')
         ->where('id_factura', $id)->get();
         $articulos = Articulo::get();
+        $origenes = OrigenRecurso::get();
         //$entradas = EntradaArticulo::get();
         $entradas = DB::table('entrada_articulos')->orderBy('id', 'asc')->get();
-        return view('Factura.edit', compact(['factura', 'entradas', 'proveedores', 'articulos']));
+        return view('Factura.edit', compact(['factura', 'entradas', 'proveedores', 'articulos', 'origenes']));
     }
 
     /**
@@ -197,6 +203,8 @@ class FacturaController extends Controller
         $edit_factura->iva = $request->iva;
         $edit_factura->imp_iva = $request->impfactura;
         $edit_factura->imp_total = $request->total;
+        $edit_factura->subtotal = $request->subtotal;
+        $edit_factura->recurso_id = $request->recurso;
         $edit_factura->save();
         return redirect ('/factura');
     }
