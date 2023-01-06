@@ -119,13 +119,12 @@
                             </div>
                             <p>
                                 <button class="btn btn-md border border-0 btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#drop3" aria-expanded="false" aria-controls="drop3">
-                                Consultas
+                                Reportes
                                 </button>
                             </p>
                             <div class="collapse" id="drop3">
                                 <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Reporte diario de salidas</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Inventario</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('reporte.diario')}}">Reporte de salidas</a>
                                 </div>
                             </div>
                         </div>

@@ -86,7 +86,7 @@
         </div>
     </footer>
     <main>
-        <table class="table table-bordered table-sm" style="page-break-after: never;">
+        <table class="table table-bordered table-sm" style="page-break-after: never; background-color: white">
             <thead >
             <tr style="background-color: rgb(189, 189, 189)">
                 <th class="border border-dark" scope="col">Partida</th>
@@ -97,18 +97,33 @@
                 <th class="border border-dark" scope="col">Total</th>  
             </tr>
             </thead>
-            <tbody >       
-                @foreach ( $partidas as $partida )
-                    <tr>  
-                        <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}}</th>
-                        <td class="border border-dark">{{$partida->nombre_partida}}</td>  
-                    </tr>                                              
-                @endforeach       
-                
-                          
+            <tbody>
+            @foreach ($partidas as $partida)
+                <tr id="{{$partida->nombre_partida}}"> 
+                    <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}}</th>
+                    <td class="border border-dark">{{$partida->nombre_partida}}</td>  
+                    @foreach ($areas as $area)
+                        @foreach ( $gastos[$area->id_area][$partida->id_partida] as $gasto )
+                        @if ($gasto->suma != null)
+                        <td class="border border-dark">${{$gasto->suma}}</td>
+                        @else
+                        <td class="border border-dark">$ 0</td>
+                        @endif
+                        @endforeach
+                    @endforeach
+                    <th id="totalPartida"class="border border-dark">${{$gastosPartida[$partida->id_partida]}}</th> 
+                </tr>                  
+            @endforeach
+            <tr>
+                <th class="border border-dark" colspan="2" style="text-align: end">T o t a l:</th> 
+                @foreach ($areas as $area)
+                    <th id="total" class="border border-dark">${{$gastosArea[$area->id_area]}}</th>    
+                @endforeach   
+                <th id="totalFinal"class="border border-dark" style="color: red">${{$gastoFinal}}</th>
+            </tr>       
             </tbody>
         </table>
-    </main>
+    </main> 
     <script type="text/php">
         if ( isset($pdf) ) {
             $pdf->page_script('
@@ -118,8 +133,16 @@
         }
     </script>      
     <script>
-        function (params) {
-            
+         function load() {
+            valor();
+        }
+        window.onload = load;
+        function valor() {
+            cArea = document.getElementById('contador_area').value;
+            cPartida = document.getElementById('contador_partida').value;
+            cantidadTD = Number(cArea) * Number(cPartida);
+            document.getElementById('cantidadTD').value = cantidadTD;
+            console.log(cantidadTD);
         }
     </script>
 </body>

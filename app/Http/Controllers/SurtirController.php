@@ -187,7 +187,7 @@ class SurtirController extends Controller
         $surtido->fecha = $date;
         $surtido->capturista_id = $request->user()->id_usuario;
         $surtido->save();
-        return redirect('/vale/confirmacion');
+        return redirect('/surtir');
         
     }
 

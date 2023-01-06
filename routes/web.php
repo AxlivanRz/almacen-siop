@@ -47,7 +47,9 @@ Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->na
 Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
 Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido');
 Route::get('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
-Route::get('/dd', [ReporteController::class, 'pdf'])->name('reporte.pdf');
+Route::any('/dd', [ReporteController::class, 'pdf'])->name('reporte.pdf');
+
+Route::get('/cross', [ReporteController::class, 'crossArea'])->name('reporte.cross');
 
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/area', AreaController::class)->middleware('rol:ti,admin,alm');
