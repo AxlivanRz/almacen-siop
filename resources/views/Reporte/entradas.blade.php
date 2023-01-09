@@ -46,7 +46,7 @@
                 <h6 class="text-center small font-weight-bold">Unidad Administrativa</h6>
                 <h6 class="text-center small font-weight-bold">Departamento de Recursos Materiales y Servicios Generales de la SIOP</h6>
                 <h6 class="text-center small font-weight-bold">Oficina de Control de Inventarios (Almacén de Suministros)</h6>
-                <h6 class="text-center small font-weight-bold">Resumen de salidas</h6>
+                <h6 class="text-center small font-weight-bold">Resumen de entradas</h6>
                 <h6 class="text-center small font-weight-bold">CIERRE DE MES</h6>
                 <h6 class="text-center small font-weight-bold">Del 1 de Septiembre al 31 de Septiembre del 2022</h6>
             </div>
@@ -89,19 +89,23 @@
         <table class="table table-bordered table-sm" style="page-break-after: never;">
             <thead >
             <tr style="background-color: rgb(189, 189, 189)">
-                <th class="border border-dark" scope="col">Id</th>
-                <th class="border border-dark" scope="col">Nombre</th>
-                <th class="border border-dark" scope="col">Unidad de medida</th>          
+                <th class="border border-dark" scope="col">Partida</th>
+                <th class="border border-dark" scope="col">Concepto</th>
+                <th class="border border-dark" scope="col">Importe</th>          
             </tr>
             </thead>
             <tbody >            
-                @foreach ( $articulos as $articulo )
+                @foreach ($partidas as $partida )
                     <tr>
-                        <th class="border border-dark" scope="row">{{$articulo->id_articulo}}</th>
-                        <td class="border border-dark">{{$articulo->nombre_articulo}}</td>
-                        <td class="border border-dark">{{$articulo->nombre_med}}</td>                                             
-                    </tr>                    
-                @endforeach                 
+                        <th class="border border-dark" scope="row">{{$partida->descripcion_partida}}</th>
+                        <td class="border border-dark">{{$partida->nombre_partida}}</td>
+                        <td class="border border-dark">${{$gastosPartida[$partida->id_partida]}}</td>                                             
+                    </tr>              
+                @endforeach 
+                <tr>
+                    <th colspan="2" style="border-bottom-color: white; border-left-color: white; border-right-color: black;text-align: right">Total:</th>
+                    <th class="border border-dark py-1" style="color: red">${{$gastoFinal}}</th>   
+                </tr>                      
             </tbody>
         </table>
     </main>

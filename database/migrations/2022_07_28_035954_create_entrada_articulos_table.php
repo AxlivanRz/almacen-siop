@@ -19,6 +19,7 @@ class CreateEntradaArticulosTable extends Migration
             $table->double('descuento');
             $table->double('base');
             $table->double('precio')->unsigned();
+            $table->double('preciofinal')->unsigned();
             $table->double('imp_unitario');
             $table->unsignedBigInteger('articulo_id');
             $table->bigInteger('factura_id')->unsigned();

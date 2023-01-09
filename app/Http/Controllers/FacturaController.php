@@ -73,6 +73,7 @@ class FacturaController extends Controller
                 $entrada_create->descuento = $request->get('descuentokey')[$key];
                 $entrada_create->base = $request->get('basekey')[$key];
                 $entrada_create->precio = $request->get('preciokey')[$key];
+                $entrada_create->preciofinal = $request->get('preciototalkey')[$key];
                 $entrada_create->articulo_id = $value;
                 $entrada_create->caducidad = $request->get('caducidad')[$key];
                 $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
@@ -154,6 +155,7 @@ class FacturaController extends Controller
             $descuentokey = $request->get('descuentokey')[$key];
             $basekey = $request->get('basekey')[$key];
             $preciokey = $request->get('preciokey')[$key];
+            $preciofinalkey = $request->get('preciototalkey')[$key];
             $articulokey= $value;
             if ($request->get('caducidad') != null) {
                 $caducidadkey = $request->get('caducidad')[$key];
@@ -167,6 +169,7 @@ class FacturaController extends Controller
                 $entrada->descuento = $descuentokey;
                 $entrada->base = $basekey;
                 $entrada->precio = $preciokey;
+                $entrada->preciofinal = $preciofinalkey;
                 $entrada->articulo_id = $articulokey;
                 $entrada->imp_unitario = $unitariokey;
                 if ($booleano == 0) {
@@ -183,6 +186,7 @@ class FacturaController extends Controller
                 $create->descuento = $descuentokey;
                 $create->base = $basekey;
                 $create->precio = $preciokey;
+                $create->preciofinal = $preciofinalkey;
                 $create->articulo_id = $articulokey;
                 $create->imp_unitario = $unitariokey;
                 if( $request->get('caducidad') != null){

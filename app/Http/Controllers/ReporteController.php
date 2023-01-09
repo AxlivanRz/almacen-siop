@@ -123,21 +123,96 @@ class ReporteController extends Controller
             }
         }//OR
         $pdf = PDF::loadView('Reporte.diario',  compact(['partidas', 'areas', 'gastos', 'gastosPartida', 'gastosArea', 'gastoFinal']));
-        $pdf->set_paper ('a4','landscape');
+        $pdf->set_paper('a4','landscape');
         return $pdf->stream();
         //return view ('Articulo.pdf', compact('articulos'));
     }
-    public function prueba()
+    public function entradas(Request $request)
     {
-        return view ('Reporte.pruebas', compact(['partidas', 'areas', 'gastos', 'gastosPartida', 'gastosArea', 'gastoFinal']));
+        $fI = $request->inicio2; 
+        $fF = $request->final2;
+        $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        if ($request->recurso2 == 0) {
+            foreach ($partidas as $partida) {
+                $gastosPartida[$partida->id_partida]= DB::table('facturas')
+                ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+                ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+                ->where('articulos.partida_id', '=', $partida->id_partida)
+                ->whereBetween('facturas.created_at', [$fI, $fF])
+                ->select('articulos.preciofinal')
+                ->sum('preciofinal');
+            } 
+            $gastoFinal= DB::table('facturas')
+            ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->whereBetween('facturas.created_at', [$fI, $fF])
+            ->select('articulos.preciofinal')->sum('preciofinal');
+            $pdf = PDF::loadView('Reporte.entradas',  compact(['partidas', 'gastosPartida', 'gastoFinal']));
+            $pdf->setPaper('A4','portrait');
+            return $pdf->stream();
+        }
+        //CON ORIGEN DEL RECURSO
+        //CON ORIGEN DEL RECURSO
+        $idOR = $request->recurso2;
+        foreach ($partidas as $partida) {
+            $gastosPartida[$partida->id_partida]= DB::table('facturas')//OR
+            ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('facturas.recurso_id', '=', $idOR)
+            ->whereBetween('facturas.created_at', [$fI, $fF])
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->select('articulos.preciofinal')
+            ->sum('preciofinal');
+        } 
+        $gastoFinal= DB::table('facturas')//OR
+        ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->where('facturas.recurso_id', '=', $idOR)
+        ->whereBetween('facturas.created_at', [$fI, $fF])
+        ->select('articulos.preciofinal')->sum('preciofinal');//OR
+        $pdf = PDF::loadView('Reporte.entradas',  compact(['partidas', 'gastosPartida', 'gastoFinal']));
+        $pdf->setPaper('A4','portrait');
+        return $pdf->stream();
     }
-    public function crossArea(){
-        $crossAPs = DB::table('areas')
-        ->orderBy('areas.id_area', 'asc')
-        ->crossJoin('partidas')
-        ->orderBy('partidas.id_partida', 'asc')
-        ->get();
-        return $crossAPs;
+    public function diferencias(Request $request){
+        $fI = $request->inicio3; 
+        $fF = $request->final3;
+        $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        $gastoFinalVal= DB::table('surtido_entradas')
+        ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+        ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+        ->select('surtido_entradas.total_articulo')
+        ->sum('total_articulo');
+        foreach ($partidas as $partida) {
+            $gastosVales[$partida->id_partida]= DB::table('surtido_entradas')
+            ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+            ->join('entrada_articulos','surtido_entradas.entrada_articulo_id' , '=', 'entrada_articulos.id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+            ->select('surtido_entradas.total_articulo')
+            ->sum('total_articulo');
+        }
+        //Facturas 
+        foreach ($partidas as $partida) {
+            $gastosFacturas[$partida->id_partida]= DB::table('facturas')
+            ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->whereBetween('facturas.created_at', [$fI, $fF])
+            ->select('articulos.preciofinal')
+            ->sum('preciofinal');
+            $diferenciasFVP[$partida->id_partida] = $gastosFacturas[$partida->id_partida] - $gastosVales[$partida->id_partida];
+        } 
+        $gastoFinalFac= DB::table('facturas')
+        ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->whereBetween('facturas.created_at', [$fI, $fF])
+        ->select('articulos.preciofinal')->sum('preciofinal');
+        $diferenciaTotal = $gastoFinalFac - $gastoFinalVal;
+        $pdf = PDF::loadView('Reporte.diferencias',  compact(['partidas', 'gastosFacturas', 'gastoFinalFac', 'gastosVales', 'gastoFinalVal', 'diferenciaTotal', 'diferenciasFVP']));
+        $pdf->setPaper('A4','portrait');
+        return $pdf->stream();
     }
     public function index()
     {

@@ -30,27 +30,31 @@ use Illuminate\Http\Request;
 if (Auth::check()) {
     return redirect('/Inicio');
 }
-Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::post('/', [LoginController::class, 'login']);
+Route::view('/', 'Login.inicio2')->name('usuario.login')->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::view('/', 'Login.inicio2')->name('usuario.login')->middleware('guest');
 Route::get('/inicio', [SurtirController::class, 'indexS'])->name('inicio')->middleware('rol:ti,admin,alm,user');
+Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin');
+Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'submitAlmacen'])->name('surtir.editAlm');
+Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');
+Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido');
+Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale');
+Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
+
+
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
-Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin');
-Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'submitAlmacen'])->name('surtir.editAlm');
+
 Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit');
-Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale');
-Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');
-Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
-Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido');
+
 Route::get('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
-Route::any('/dd', [ReporteController::class, 'pdf'])->name('reporte.pdf');
+Route::any('/reporte/salidas', [ReporteController::class, 'pdf'])->name('reporte.pdf');
+Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('reporte.entradas');
+Route::get('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
 
-Route::get('/cross', [ReporteController::class, 'crossArea'])->name('reporte.cross');
-
+Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/area', AreaController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/departamento', DepartamentoController::class)->middleware('rol:ti,admin,alm');
