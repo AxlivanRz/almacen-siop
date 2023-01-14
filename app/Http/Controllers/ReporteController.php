@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\InventarioExistencia;
+use App\Models\InventarioInicial;
+use App\Models\InventarioFinal;
 use App\Models\EntradaArticulo;
 use App\Models\OrigenRecurso;
 use App\Models\Departamento;
@@ -12,6 +15,7 @@ use App\Models\Factura;
 use App\Models\Partida;
 use App\Models\Area;
 use App\Models\User;
+use Carbon\Carbon;
 use PDF;
 
 class ReporteController extends Controller
@@ -212,6 +216,60 @@ class ReporteController extends Controller
         $diferenciaTotal = $gastoFinalFac - $gastoFinalVal;
         $pdf = PDF::loadView('Reporte.diferencias',  compact(['partidas', 'gastosFacturas', 'gastoFinalFac', 'gastosVales', 'gastoFinalVal', 'diferenciaTotal', 'diferenciasFVP']));
         $pdf->setPaper('A4','portrait');
+        return $pdf->stream();
+    }
+    
+    public function saldos(){
+        $fI = Carbon::now()->startOfMonth()->toDateString();
+        $fF = Carbon::now()->endOfMonth()->toDateString();
+        $fechaIni= Carbon::now()->startOfMonth()->isoFormat('LL');
+        $fechaFin= Carbon::now()->endOfMonth()->isoFormat('LL');
+        $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        foreach ($partidas as $partida) {
+            $inventarioIni[$partida->id_partida]=  DB::table('inventario_existencias')
+            ->join('articulos', 'inventario_existencias.articulo_id', '=', 'articulos.id')
+            ->whereBetween('inventario_existencias.fecha', [$fI, $fF])
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->select('inventario_existencias.precio_total')
+            ->sum('precio_total');
+            $gastosFacturas[$partida->id_partida]= DB::table('facturas')
+            ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->whereBetween('facturas.created_at', [$fI, $fF])
+            ->select('articulos.preciofinal')
+            ->sum('preciofinal');
+            $subtotalPartida[$partida->id_partida]= $gastosFacturas[$partida->id_partida] + $inventarioIni[$partida->id_partida];
+            $gastosVales[$partida->id_partida]= DB::table('surtido_entradas')
+            ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+            ->join('entrada_articulos','surtido_entradas.entrada_articulo_id' , '=', 'entrada_articulos.id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+            ->select('surtido_entradas.total_articulo')
+            ->sum('total_articulo');
+            $totalPartida[$partida->id_partida]= $subtotalPartida[$partida->id_partida] - $gastosVales[$partida->id_partida];
+        }
+        $inventarioIniFinal=  DB::table('inventario_existencias')
+        ->join('articulos', 'inventario_existencias.articulo_id', '=', 'articulos.id')
+        ->whereBetween('inventario_existencias.fecha', [$fI, $fF])
+        ->select('inventario_existencias.precio_total')
+        ->sum('precio_total');
+        $gastosFacturasTotal= DB::table('facturas')
+        ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->whereBetween('facturas.created_at', [$fI, $fF])
+        ->select('articulos.preciofinal')
+        ->sum('preciofinal');
+        $subTotalFinal = $inventarioIniFinal + $gastosFacturasTotal;
+        $gastosValesFinal= DB::table('surtido_entradas')
+        ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+        ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+        ->select('surtido_entradas.total_articulo')
+        ->sum('total_articulo');
+        $inventarioFinal = $subTotalFinal - $gastosValesFinal;
+        $pdf = PDF::loadView('Reporte.saldo', compact(['partidas', 'fechaIni', 'fechaFin','inventarioFinal', 'subTotalFinal', 'gastosValesFinal','gastosFacturasTotal','inventarioIniFinal', 'totalPartida', 'subtotalPartida', 'gastosVales', 'inventarioIni', 'gastosFacturas']));
+        $pdf->set_paper('a4','landscape');
         return $pdf->stream();
     }
     public function index()

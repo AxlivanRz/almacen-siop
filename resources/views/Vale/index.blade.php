@@ -35,16 +35,16 @@
                                 <td>Contiene: {{count($vale->articulos)}} articulos</td>
                                 {{-- If para el Estatus del vale --}}
                                     @if ($vale->status == 1)
-                                    <td style="text-align: top"><i class="fa-solid fa-circle fa-2x" style="color: red"></i></td>
+                                    <td style="text-align: top"><span class="badge rounded-pill bg-danger">Enviado</span></td>
                                     @endif
                                     @if ($vale->status == 2)
-                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(255, 230, 0)"></i></td>
+                                    <td><span class="badge rounded-pill bg-warning">Validadp por el administrador</span></td>
                                     @endif
                                     @if ($vale->status == 3)
-                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(29, 92, 249)"></i></td>
+                                    <td><span class="badge rounded-pill bg-primary">Enviado a almacen</span></td>
                                     @endif
                                     @if ($vale->status == 4)
-                                    <td><i class="fa-solid fa-circle fa-2x" style="color: rgb(2, 187, 42)"></i></td>
+                                    <td><span class="badge rounded-pill bg-success">Surtido</span></td>
                                     @endif
                                 {{-- Termino del If para el Estatus del vale --}}
                                 <td>                  
@@ -53,9 +53,11 @@
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </a> 
                                     @endif
+                                    @if ($vale->status >= 2)
                                     <a href="{{route('vale.show',$vale->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>
-                                    </a>                              
+                                    </a>
+                                    @endif                              
                                 </td>                   
                             </tr>     
                             @endif

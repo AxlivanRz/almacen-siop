@@ -49,10 +49,12 @@ Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.
 
 Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit');
 
-Route::get('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
+Route::any('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
 Route::any('/reporte/salidas', [ReporteController::class, 'pdf'])->name('reporte.pdf');
 Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('reporte.entradas');
-Route::get('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
+Route::any('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
+Route::any('/reporte/saldos', [ReporteController::class, 'saldos'])->name('reporte.saldos');
+Route::any('/reporte/comparativo', [ReporteController::class, 'comparativo'])->name('reporte.comparativo');
 
 Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');

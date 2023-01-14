@@ -84,12 +84,14 @@ class ValeController extends Controller
         ->where('vale_id', '=', $id)
         ->select('id')
         ->get();
+        $nid = null;
         foreach ($idSurtido as $idw) {
             $nid = $idw->id;
         }
         $entradas = EntradaArticulo::get();
         $valeArticulos = $vale->articulos;
         $usuarios = User::get();
+        $surtido = ValeSurtido::findOrFail($nid);
         $surtido = ValeSurtido::findOrFail($nid);
         $queryEFAs = DB::table('surtido_entradas')
         ->where('vale_surtido_id', '=', $nid)

@@ -37,5 +37,22 @@ class UserSeeder extends Seeder
             'rol_id' => '2',
             'usuario_id' => '2',
         ]);
+        DB::table('ups')->insert([
+            'nombre_ups' => 'Obras Públicas',
+            'descripcion_ups' => '1',
+            'iniciales' => 'OBP',
+        ]);
+        DB::table('areas')->insert([
+            'nombre_area' => 'Desarrollo Urbano',
+            'descripcion_area' => 'DESUB',
+            'up_id' => '1',
+            'encargado_area' => 'Lic. Juán',
+        ]);
+        DB::table('areas')->insert([
+            'nombre_area' => 'Archivo de Obras',
+            'descripcion_area' => 'ARCHOB',
+            'up_id' => '1',
+            'encargado_area' => 'Lic. Adriana',
+        ]);
     }
 }

@@ -18,13 +18,24 @@
                     <div class="form-group col-3">
                         <label>Estatus</label>
                         @if ($vale->status == 1)
-                        <input class="form-control form-control-sm" type="text" value = "Enviado" disabled>
+                        <span class="badge rounded-pill bg-danger">
+                            Enviado
+                        </span>
                         @endif
                         @if ($vale->status == 2)
-                        <input class="form-control form-control-sm" type="text" value = "Validado por el Administrador" disabled>
+                        <span class="badge rounded-pill bg-warning">
+                            Validado por el Administrador
+                        </span>
+                        @endif
+                        @if ($vale->status == 3)
+                        <span class="badge rounded-pill bg-primary">
+                            Validado por el solicitante
+                        </span>
                         @endif
                         @if ($vale->status == 4)
-                        <input class="form-control form-control-sm" type="text" value = "Surtido por Almacén" disabled>
+                        <span class="badge rounded-pill bg-success">
+                            Surtido por Almacén
+                        </span>
                         @endif
                     </div>
                     <div class="form-group col-3">
@@ -66,7 +77,7 @@
                                         @if ($queryEFA->id == $vArticulo->id)
                                         <div class="form-group col-4">
                                             <label>Cantidad aprobada</label>
-                                            <input class="form-control" name="cantidadkey2[]" id="cantidad2" type="number" min="{{$queryEFA->cantidad}}" value = "{{$queryEFA->cantidad}}" disabled>
+                                            <input class="form-control" name="cantidadkey2[]" id="cantidad2" type="number" value = "{{$queryEFA->cantidad}}" disabled>
                                         </div>
                                         @endif
                                     @endforeach

@@ -1,8 +1,9 @@
 @extends('sideb')
 @section('content')
-<div class="card col-9 mx-5 my-5 ">
+<div class="card col-12 mx-2 my-5 ">
     <div class="card-header">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
+            {{-- Encabezado --}}
             <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Resumen de salidas</button>
             </li>
@@ -11,6 +12,13 @@
             </li>
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte-3" type="button" role="tab" aria-controls="reporte-3" aria-selected="false">Reporte de Diferencias</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte-4" type="button" role="tab" aria-controls="reporte-4" aria-selected="false">Resumen de saldos</button>
+            </li>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte-5" type="button" role="tab" aria-controls="reporte-5" aria-selected="false">Comparativo y Diferencias</button>
             </li>
         </ul>
     </div>
@@ -78,7 +86,7 @@
                     </div>
                 </form>
             </div>
-             {{-- Reporte de diferencias --}}
+            {{-- Reporte de diferencias --}}
             <div class="tab-pane fade" id="reporte-3" role="tabpanel" aria-labelledby="reporte-3" tabindex="0">
                 <form  class="row needs-validation" action="/reporte/diferencias" novalidate>
                     @csrf
@@ -94,6 +102,29 @@
                             <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                         </div>
                         <div class="form-grop col-1 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {{-- Reporte de saldos --}}
+            <div class="tab-pane fade" id="reporte-4" role="tabpanel" aria-labelledby="reporte-4" tabindex="0">
+                <form  class="row needs-validation" action="/reporte/saldos" novalidate>
+                    @csrf
+                    <div class="row">
+                        <div class="form-grop col-3 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {{-- Reporte comparativo --}}
+            <div class="tab-pane fade" id="reporte-5" role="tabpanel" aria-labelledby="reporte-5" tabindex="0">
+                <form  class="row needs-validation" action="/reporte/comparativo" novalidate>
+                    @csrf
+                    <div class="row">
+
+                        <div class="form-grop col-3 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>
                     </div>
