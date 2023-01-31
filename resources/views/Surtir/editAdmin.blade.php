@@ -2,14 +2,14 @@
 @section('content')
 <div class="row my-5 py-1">
     <div class="col-1"></div>
-    <div class="col-9">
+    <div class="col-10">
       <div class="card">
         <?php $contador = 0; ?>
         <div class="card-body">
-            <h5 class="card-title">Vale</h5>
+            <h5 class="card-title">Vale solicitado por usuario</h5>
             <div class="row ">
                 <div class="form-group row">
-                    <div class="form-group col-3">
+                    <div class="form-group col-2">
                         <label>Fecha de solicitado</label>
                         <input class="form-control form-control-sm" type="datetime" value ="{{$vale->fecha}}" disabled>
                     </div>
@@ -27,6 +27,27 @@
                             @if ($vale->usuario_id == $usuario->id_usuario)
                             <label>Usuario solicitante</label>
                             <input class="form-control form-control-sm" type="text" value = "{{$usuario->name}} {{$usuario->primer_apellido}}" disabled>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="form-group col-2">
+                        @foreach ($usuarios as $usuario )
+                            @if ($vale->usuario_id == $usuario->id_usuario)
+                                @if ($usuario->departamento_id != null)
+                                    @foreach ($departamentos as $departamento)
+                                        @if ($departamento->id_departamento == $usuario->departamento_id)
+                                        <label>Departamento</label>
+                                        <input class="form-control form-control-sm" type="text" value = "{{$departamento->nombre_departamento}}" disabled>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @foreach ($areas as $area)
+                                        @if ($area->id_area == $usuario->area_id)
+                                        <label>Área</label>
+                                        <input class="form-control form-control-sm" type="text" value = "{{$area->nombre_area}}" disabled>
+                                        @endif
+                                    @endforeach
+                                @endif
                             @endif
                         @endforeach
                     </div>
@@ -71,14 +92,14 @@
 {{-- Para surtir --}}
 <div class="row my-5">
     <div class="col-1"></div>
-    <div class="col-9">
+    <div class="col-10">
         <div class="card">
             <?php $contador = 0; ?>
             <div class="card-body">
                 <form action="{{route('surtir.update',$surtido->id)}}" method="POST">
                     @csrf 
                     @method('PUT')
-                    <h5 class="card-title">Vale Aprobado</h5>
+                    <h5 class="card-title">Vale Aprobado por Almacen</h5>
                     <div class="row border-top mt-2">
                         @foreach ($queryEFAs as $queryEFA)
                         <div class="form-group row">
@@ -88,7 +109,7 @@
                             </div>
                             <div class="form-group col-3">
                                 <label>Número de factura</label>
-                                <input disabled type="number" class="form-control form-control-sm" value="{{$queryEFA->factura_id}}">
+                                <input disabled type="text" class="form-control form-control-sm" value="{{$queryEFA->factura_id}}">
                             </div>
                             <div class="form-group col-3">
                                 <label>Precio</label>
@@ -106,8 +127,16 @@
                             <label >Total del vale</label>
                             <div class="input-group input-group-sm mb-2">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control form-control-sm" id= "total" step="any" name="total" min="0" value="{{$surtido->total}}">
+                                <input type="number" class="form-control form-control-sm" id= "total" step="any" name="total" min="0" value="{{$surtido->total}}" disabled>
                             </div>
+                        </div>
+                        <div class="form-group col-3">
+                            @foreach ($usuarios as $usuario )
+                                @if ($vale->administrador_id == $usuario->id_usuario)
+                                    <label>Aprobado por</label>
+                                    <input class="form-control form-control-sm" type="text" value = "{{$usuario->name}} {{$usuario->primer_apellido}}" disabled>
+                                @endif
+                            @endforeach
                         </div>
                         <div class="form-group col-2 m-2 py-3">
                             <button type="submit" class="btn btn-success btn-sm" style="display:block">

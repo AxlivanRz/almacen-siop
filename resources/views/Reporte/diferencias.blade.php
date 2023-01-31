@@ -48,7 +48,7 @@
                 <h6 class="text-center small font-weight-bold">Oficina de Control de Inventarios (Almacén de Suministros)</h6>
                 <h6 class="text-center small font-weight-bold">Comparativo y Diferencias entre Registro de Kardex y Vales de Salida</h6>
                 <h6 class="text-center small font-weight-bold">CIERRE DE MES</h6>
-                <h6 class="text-center small font-weight-bold">Del 1 de Septiembre al 31 de Septiembre del 2022</h6>
+                <h6 class="text-center small font-weight-bold">Del {{$fechaIni1}} al {{$fechaFin1}}</h6>
             </div>
         </div>
     </header>

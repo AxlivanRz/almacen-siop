@@ -88,6 +88,7 @@
                                 <i class="fas fa-check-circle" style = "color: rgb(0, 215, 0);"></i>
                                 Archivo existente
                             </label>
+                            <a target="_blank" href="{{asset('storage').'/'.$factura->respaldo_factura}}">Archivo</a>
                         </div>
                     @else
                         <div class="col-2 d-flex  align-items-end" >

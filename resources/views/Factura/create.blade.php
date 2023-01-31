@@ -242,7 +242,7 @@
             formGroup2.className = "form-group";
             column4.appendChild(formGroup2);
             var label = document.createElement("label");
-            label.innerHTML = "Descuento";
+            label.innerHTML = "Descuento $";
             formGroup2.appendChild(label);
             var descuento = document.createElement("input");
             descuento.className = "form-control";
@@ -376,7 +376,7 @@
                 document.getElementById('precio' + contador).value = finalsuma1;
 
                 var preciototal = document.getElementById('preciototal' + contador);
-                preciototal.value = (Number(base) + Number(unitario));
+                preciototal.value = (Number(base) + Number(unitario) - descuento);
                 contador--;
             }
         }
@@ -400,6 +400,8 @@
             // var valPrec = precio.map((p) => p.value);
             var unitario = Array.prototype.slice.call(document.getElementsByName('unitariokey[]'));
             var valUni = unitario.map((u) => u.value);
+            var descuento = Array.prototype.slice.call(document.getElementsByName('descuentokey[]'));
+            var valDescuento = descuento.map((a) => a.value);
             // let multiplicacion1 = new Array();
             // let multiplicacion2 = new Array();
             // let multiplicacion3 = new Array();
@@ -418,11 +420,12 @@
             // }    
             let totaliva = valUni.reduce((g, h) => Number(g) + Number(h), 0);
             let subtotal =  valBase.reduce((r, t) => Number(r) + Number(t), 0);
+            let total_descuento = valDescuento.reduce((f,i) => Number(f) + Number(i), 0);
             let totalfinal = totaliva + subtotal;
-            console.log(subtotal);
+            let totalfinal1 = totalfinal - total_descuento;
             document.getElementById('impfactura').value = totaliva;
             document.getElementById('subtotal').value = subtotal;
-            document.getElementById('total').value = totalfinal;
+            document.getElementById('total').value = totalfinal1;
         }
         setInterval(retroceso, 1000);
     </script>

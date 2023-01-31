@@ -21,8 +21,10 @@ class CreateInventarioExistenciasTable extends Migration
             $table->double('precio_total')->unsigned();
             $table->date('fecha');
             $table->unsignedBigInteger('articulo_id');
+            $table->unsignedBigInteger('recurso_id');
             $table->timestamps();
             $table->foreign('articulo_id')->references('id')->on('articulos');
+            $table->foreign('recurso_id')->references('id_origen')->on('origen_recursos');
         });
     }
 

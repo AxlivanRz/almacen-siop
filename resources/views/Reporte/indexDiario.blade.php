@@ -20,6 +20,9 @@
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte-5" type="button" role="tab" aria-controls="reporte-5" aria-selected="false">Comparativo y Diferencias</button>
             </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte-6" type="button" role="tab" aria-controls="reporte-6" aria-selected="false">Resumen de Movimientos</button>
+            </li>
         </ul>
     </div>
     <div class="card-body">
@@ -112,6 +115,11 @@
                 <form  class="row needs-validation" action="/reporte/saldos" novalidate>
                     @csrf
                     <div class="row">
+                        <div class="form-grop col-4">
+                            <label>Selecciona el mes</label>
+                            <input type="month" id="mes4" name="mes4" class="form-control" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        </div>
                         <div class="form-grop col-3 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>
@@ -123,7 +131,45 @@
                 <form  class="row needs-validation" action="/reporte/comparativo" novalidate>
                     @csrf
                     <div class="row">
-
+                        <div class="form-grop col-3">
+                            <label>Selecciona el mes</label>
+                            <input type="month" id="mes" name="mes" class="form-control" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        </div>
+                        <div class="form-grop col-4">
+                            <label>Partida</label>
+                            <select class="form-select" name="partida" id="partida" required>
+                                <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                                @foreach ($partidas as $partida)
+                                <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-grop col-3 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+             {{-- Reporte comparativo --}}
+             <div class="tab-pane fade" id="reporte-6" role="tabpanel" aria-labelledby="reporte-6" tabindex="0">
+                <form  class="row needs-validation" action="/reporte/movimiento" novalidate>
+                    @csrf
+                    <div class="row">
+                        <div class="form-grop col-3">
+                            <label>Selecciona el mes</label>
+                            <input type="month" id="mes_movimiento" name="mes_movimiento" class="form-control" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        </div>
+                        <div class="form-grop col-4">
+                            <label>Partida</label>
+                            <select class="form-select" name="partida_movimiento" id="partida" required>
+                                <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                                @foreach ($partidas as $partida)
+                                <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-grop col-3 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>

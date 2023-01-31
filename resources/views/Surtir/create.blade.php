@@ -109,7 +109,7 @@
             var producto = $('#productoSurtir');
             if (contador > 1) {
                 document.getElementById("btn_delete").style.display = "block";
-            }
+            } 
            $(producto).append(
             '<div>'+
                 '<div class="row d-flex align-items-end border-top mt-4">' +
@@ -119,10 +119,10 @@
                             '<option value="0">' +
                                 'Selecione un articulo'  +
                             '</option>' +
-                            '@foreach ($valeArticulos as $vArticulo)' +
-                                '@foreach ( $entradas as $entrada)' +
+                            '@foreach ($valeArticulos as $vArticulo)' +        
+                                '@foreach ($entradas as $entrada)' +
                                     '@if ($vArticulo->id == $entrada->articulo_id && $entrada->existencia != 0)' +
-                                    '<option value="{{$entrada->id}}">' +
+                                    '<option class="entrada" data-select-name="entrada" value="{{$entrada->id}}">' +
                                         '{{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}} - {{$entrada->factura_id}}'  +
                                     '</option>' +
                                     '@endif' +
@@ -174,17 +174,20 @@
             var id = objSelect.id;
             var dato = document.getElementById('datosFactura' + id);
             var valor = objSelect.value;
+            var name = $('#'+id+' option:selected').attr('class');
             $.ajax({ 
                 type: "GET",
                 url: "/getFactura",
-                data:{'id': valor}
+                data:{'id': valor,
+                    'nombre': name,
+                }
             }).done(function(data){
                 $.each(data, function(index, element){
                     $(dato).append(
                     '<div class="form-group row">'+
                         '<div class="form-group col-3">'+
                             '<label>' + 'Número de factura' + '</label>' +
-                            '<input disabled type="number" class="form-control form-control-sm" value="'+element.factura_id+'" >' +
+                            '<input disabled type="text" class="form-control form-control-sm" value="'+element.factura_id+'" >' +
                         '</div>' +
                         '<div class="form-group col-3">'+
                             '<label>' + 'Precio' + '</label>' +
@@ -204,7 +207,8 @@
                 }); 
             });
             dato.removeChild(dato.lastElementChild);
-        }   
+            
+        }
         function retroceso(){    
            var contador = document.getElementById("contador_producto").value;
             while (  contador != 0) {

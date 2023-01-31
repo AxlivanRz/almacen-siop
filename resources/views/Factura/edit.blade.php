@@ -129,24 +129,28 @@
                                                         <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
                                                     </div>
                                                     <div class="form-group col-2">
-                                                        <label> Precio Base</label>
+                                                        <label> Precio</label>
                                                         <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Descuento $</label>
                                                         <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
                                                     </div>
-                                                    <div class="form-group col-2">
+                                                    <div class="form-group col-1">
                                                         <label>IVA %</label>
                                                         <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
                                                     </div>
                                                     <div class="form-group col-2">
-                                                        <label>Importe Unitario</label>
+                                                        <label>Importe IVA</label>
                                                         <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Precio unitario</label>
                                                         <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Precio total</label>
+                                                        <input class="form-control" name="preciototalkey[]" id="preciototal{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->preciofinal}}">
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Existencia</label>
@@ -167,6 +171,7 @@
                                 <label for="archivo" class="col-form-label">
                                     <i class="fas fa-check-circle" style = "color: rgb(0, 215, 0);"></i>
                                     Archivo existente
+                                    <a target="_blank" href="{{asset('storage').'/'.$factura->respaldo_factura}}">archivo</a>
                                 </label>
                             </div>
                         @else
@@ -502,7 +507,7 @@
                 document.getElementById('precio' + contador).value = finalsuma1;
 
                 var preciototal = document.getElementById('preciototal' + contador);
-                preciototal.value = (Number(base) + Number(unitario));
+                preciototal.value = (Number(base) + Number(unitario) - Number(descuento));
                 contador--;
             }
         }
@@ -521,6 +526,8 @@
             // var valPrec = precio.map((p) => p.value);
             var unitario = Array.prototype.slice.call(document.getElementsByName('unitariokey[]'));
             var valUni = unitario.map((u) => u.value);
+            var descuento = Array.prototype.slice.call(document.getElementsByName('descuentokey[]'));
+            var valDescuento = descuento.map((a) => a.value);
             // let multiplicacion1 = new Array();
             // let multiplicacion2 = new Array();
             // let multiplicacion3 = new Array();
@@ -539,11 +546,12 @@
             // }    
             let totaliva = valUni.reduce((g, h) => Number(g) + Number(h), 0);
             let subtotal =  valBase.reduce((r, t) => Number(r) + Number(t), 0);
+            let total_descuento = valDescuento.reduce((f,i) => Number(f) + Number(i), 0);
             let totalfinal = totaliva + subtotal;
-            console.log(subtotal);
+            let totalfinal1 = totalfinal - total_descuento;
             document.getElementById('impfactura').value = totaliva;
             document.getElementById('subtotal').value = subtotal;
-            document.getElementById('total').value = totalfinal;
+            document.getElementById('total').value = totalfinal1;
         }
         setInterval(retroceso, 1000);
     </script>

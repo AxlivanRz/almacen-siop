@@ -5,6 +5,14 @@
     <div class="col-3 py-3 mt-2">
         <h5> <i class="fa-regular fa-file-lines fa-2x"></i> &NonBreakingSpace; Vales Surtidos</h5>
     </div>
+    <div class="d-md-flex justify-content-md-end my-3 px-5">
+        <form action="/vales/surtidos" method="get">
+            <div class="btn-group">
+                <input type="text" name="busqueda" class="form-control">
+                <input type="submit" value="Buscar" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 </div>
 <div class="row">
     <div class="container bg-white col-10">
@@ -36,15 +44,17 @@
                                 <td>                                                            
                                     <a href="{{route('surtir.show',$surtido->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>
+                                    </a>    
+                                    <a href="{{route('vale.pdf',$surtido->id)}}" class="btn btn-primary btn-sm">
+                                       PDF
                                     </a>                           
                                 </td>                   
                             </tr>     
                         @endforeach   
-                    @else
-                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Aún no solicitan un vale</span></td>
                     @endif
                 </tbody>
             </table> 
+            <div class = "d-flex">{{$surtidos->appends(['busqueda' => $busqueda])}}</div>
         </div>
     </div>
 </div>

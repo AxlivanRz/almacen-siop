@@ -8,11 +8,13 @@ use App\Models\EntradaArticulo;
 use App\Models\vale_articulo;
 use App\Models\ValeSurtido;
 use App\Models\Departamento;
+use App\Models\Partida;
 use App\Models\Factura;
 use App\Models\Vale;
 use App\Models\User;
 use App\Models\Area;
 use Carbon\Carbon;
+use PDF;
 
 class SurtirController extends Controller
 {
@@ -32,14 +34,26 @@ class SurtirController extends Controller
         ->where('status', 3)->get();
         $surtido = DB::table('vales')
         ->where('status', 4)->get();
-        return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres', 'surtido']));
+        $partidas = Partida::get();
+        $articulos = DB::table('entrada_articulos')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->where('entrada_articulos.existencia', '>', 0)
+        ->select('entrada_articulos.precio', 'entrada_articulos.factura_id', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id', 'entrada_articulos.caducidad',  'articulos.partida_id')
+        ->orderBy('entrada_articulos.caducidad','asc')->get();
+        return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres', 'surtido', 'articulos', 'partidas']));
     }
-    public function indexSurtido(){
+    public function indexSurtido(Request $request){
         $usuarios = User::get();
         $areas = Area::get();
         $departamentos = Departamento::get();
-        $surtidos = ValeSurtido::get();
-        return view('Surtir.indexSurtidos', compact(['surtidos', 'usuarios', 'areas', 'departamentos']));
+        $busqueda = $request->busqueda;
+        if ($busqueda == null) {
+            $surtidos = ValeSurtido::paginate(15);
+        }else{
+            $surtidos = ValeSurtido::where('id', '=', $busqueda)
+            ->paginate(15);
+        }
+        return view('Surtir.indexSurtidos', compact(['surtidos', 'usuarios', 'areas', 'departamentos', 'busqueda']));
     }
     public function indexAdmin(){
         $usuarios = User::get();
@@ -79,6 +93,13 @@ class SurtirController extends Controller
         return view('Surtir.create', compact(['vale', 'valeArticulos', 'articulos', 'entradas', 'facturas'])); 
     }
     public function getFactura(Request $request){
+        // $inv_nombre = "inventario";
+        // if ($request->nombre == $inv_nombre) {
+        //     $inventario = DB::table('inventario_existencias')
+        //     ->where('id', $request->id)
+        //     ->get();
+        //     return  $inventario;
+        // }
         $entrada = DB::table('entrada_articulos')
         ->where('id', $request->id)
         ->get();
@@ -134,6 +155,8 @@ class SurtirController extends Controller
         $surtido = ValeSurtido::findOrFail($id);
         $vale = Vale::findOrFail($surtido->vale_id);
         $valeArticulos = $vale->articulos;
+        $departamentos = Departamento::get();
+        $areas = Area::get();
         $queryEFAs = DB::table('surtido_entradas')
         ->where('vale_surtido_id', '=', $id)
         ->join('entrada_articulos', 'surtido_entradas.entrada_articulo_id', '=', 'entrada_articulos.id')
@@ -141,7 +164,27 @@ class SurtirController extends Controller
         ->select('articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.precio', 'surtido_entradas.cantidad', 'entrada_articulos.factura_id')
         ->get();
         $facturas = Factura::get();
-        return view('Surtir.show', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios']));
+        return view('Surtir.show', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios', 'departamentos', 'areas']));
+    }
+
+    public function pdf($id)
+    {
+        $usuarios = User::get();
+        $surtido = ValeSurtido::findOrFail($id);
+        $vale = Vale::findOrFail($surtido->vale_id);
+        $valeArticulos = $vale->articulos;
+        $departamentos = Departamento::get();
+        $areas = Area::get();
+        $queryEFAs = DB::table('surtido_entradas')
+        ->where('vale_surtido_id', '=', $id)
+        ->join('entrada_articulos', 'surtido_entradas.entrada_articulo_id', '=', 'entrada_articulos.id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->select('articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.precio', 'surtido_entradas.cantidad', 'entrada_articulos.factura_id')
+        ->get();
+        $facturas = Factura::get();
+        $pdf = PDF::loadView('Surtir.valePDF', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios', 'departamentos', 'areas']));
+        $pdf->setPaper('A4','portrait');
+        return $pdf->stream();
     }
 
     /**
@@ -159,6 +202,8 @@ class SurtirController extends Controller
         $usuarios = User::get();
         $surtido = ValeSurtido::findOrFail($id);
         $vale = Vale::findOrFail($surtido->vale_id);
+        $departamentos = Departamento::get();
+        $areas = Area::get();
         $valeArticulos = $vale->articulos;
         $queryEFAs = DB::table('surtido_entradas')
         ->where('vale_surtido_id', '=', $id)
@@ -167,7 +212,7 @@ class SurtirController extends Controller
         ->select('articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.precio', 'surtido_entradas.cantidad', 'entrada_articulos.factura_id')
         ->get();
         $facturas = Factura::get();
-        return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios'])); 
+        return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios', 'departamentos', 'areas'])); 
     }
 
     /**

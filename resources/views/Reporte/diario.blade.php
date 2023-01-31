@@ -48,7 +48,7 @@
                 <h6 class="text-center small font-weight-bold">Oficina de Control de Inventarios (Almacén de Suministros)</h6>
                 <h6 class="text-center small font-weight-bold">Resumen de salidas</h6>
                 <h6 class="text-center small font-weight-bold">CIERRE DE MES</h6>
-                <h6 class="text-center small font-weight-bold">Del 1 de Septiembre al 31 de Septiembre del 2022</h6>
+                <h6 class="text-center small font-weight-bold">Del {{$fechaIni1}} al {{$fechaFin1}}</h6>
             </div>
         </div>
     </header>
@@ -100,7 +100,7 @@
             <tbody>
             @foreach ($partidas as $partida)
                 <tr id="{{$partida->nombre_partida}}"> 
-                    <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}}</th>
+                    <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->descripcion_partida}}</th>
                     <td class="border border-dark">{{$partida->nombre_partida}}</td>  
                     @foreach ($areas as $area)
                         @foreach ( $gastos[$area->id_area][$partida->id_partida] as $gasto )

@@ -157,13 +157,12 @@ class ArticuloController extends Controller
         $query = Articulo::get();
         return ($query);
     }
-    public function getExistencia(){
-        
-        $entradas = EntradaArticulo::get(); 
+    public function getExistencia(){ 
         $articulos[] = array();
         $query1 = DB::table('articulos')
         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
-        ->where('entrada_articulos.existencia', '>',  0)
+
+        ->orWhere('entrada_articulos.existencia', '>',  0)
         ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
         ->get();
         $query2 = $query1->unique('nombre_articulo');

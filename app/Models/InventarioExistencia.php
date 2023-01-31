@@ -25,5 +25,6 @@ class InventarioExistencia extends Model
         'precio_total',
         'fecha',
         'articulo_id',
+        'recurso_id',
     ];
 }

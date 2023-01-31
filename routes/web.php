@@ -55,6 +55,10 @@ Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('r
 Route::any('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
 Route::any('/reporte/saldos', [ReporteController::class, 'saldos'])->name('reporte.saldos');
 Route::any('/reporte/comparativo', [ReporteController::class, 'comparativo'])->name('reporte.comparativo');
+Route::any('/reporte/movimiento', [ReporteController::class, 'movimientos'])->name('reporte.movimiento');
+Route::any('/cierre', [ReporteController::class, 'cierre'])->name('reporte.cierre');
+Route::any('/pdf/vale/{id}', [SurtirController::class, 'pdf'])->name('vale.pdf');
+Route::view('/cierre/mensual', 'Reporte.cierre')->name('cierre.mensual');
 
 Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');

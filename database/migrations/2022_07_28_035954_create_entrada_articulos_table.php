@@ -22,7 +22,7 @@ class CreateEntradaArticulosTable extends Migration
             $table->double('preciofinal')->unsigned();
             $table->double('imp_unitario');
             $table->unsignedBigInteger('articulo_id');
-            $table->bigInteger('factura_id')->unsigned();
+            $table->string('factura_id');
             $table->date('caducidad')->nullable();
             $table->integer('existencia')->unsigned();
             $table->timestamps();

@@ -94,41 +94,38 @@
                 <th class="border border-dark" scope="col">Más Entradas</th>
                 <th class="border border-dark" scope="col">SubTotal</th>
                 <th class="border border-dark" scope="col">Menos Salidas</th>
-                <th class="border border-dark" scope="col">Menos Obsoletos</th>
                 <th class="border border-dark" scope="col">Inventario Final Real</th>
             </tr>
             </thead>
             <tbody>
             @foreach ($partidas as $partida)
                 <tr id="{{$partida->nombre_partida}}"> 
-                    <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->id_partida}} {{$partida->nombre_partida}}</th>
-                        @if ($inventarioIni[$partida->id_partida] != null)
-                            <td class="border border-dark">${{$inventarioIni[$partida->id_partida]}}</td>
-                        @else
-                            <td class="border border-dark">$ 0</td>
-                        @endif
-                        @if ($gastosFacturas[$partida->id_partida] != null)
-                            <td class="border border-dark">${{$gastosFacturas[$partida->id_partida]}}</td>
-                        @else
-                            <td class="border border-dark">$ 0</td>
-                        @endif
-                        @if ($subtotalPartida[$partida->id_partida] != null)
-                            <td class="border border-dark">${{$subtotalPartida[$partida->id_partida]}}</td>
-                        @else
-                            <td class="border border-dark">$ 0</td>
-                        @endif
-                        @if ($gastosVales[$partida->id_partida] != null)
-                            <td class="border border-dark">${{$gastosVales[$partida->id_partida]}}</td>
-                        @else
-                            <td class="border border-dark">$ 0</td>
-                        @endif
-                        <td id="obsoletos"class="border border-dark">$0</td> 
-                        @if ($totalPartida[$partida->id_partida] != null)
-                            <th class="border border-dark">${{$totalPartida[$partida->id_partida]}}</th>
-                        @else
-                            <th class="border border-dark">$ 0</th>
-                        @endif
-                   
+                    <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->descripcion_partida}} {{$partida->nombre_partida}}</th>
+                    @if ($inventarioIni[$partida->id_partida] != null)
+                        <td class="border border-dark">${{$inventarioIni[$partida->id_partida]}}</td>
+                    @else
+                        <td class="border border-dark">$ 0</td>
+                    @endif
+                    @if ($gastosFacturas[$partida->id_partida] != null)
+                        <td class="border border-dark">${{$gastosFacturas[$partida->id_partida]}}</td>
+                    @else
+                        <td class="border border-dark">$ 0</td>
+                    @endif
+                    @if ($subtotalPartida[$partida->id_partida] != null)
+                        <td class="border border-dark">${{$subtotalPartida[$partida->id_partida]}}</td>
+                    @else
+                        <td class="border border-dark">$ 0</td>
+                    @endif
+                    @if ($gastosVales[$partida->id_partida] != null)
+                        <td class="border border-dark">${{$gastosVales[$partida->id_partida]}}</td>
+                    @else
+                        <td class="border border-dark">$ 0</td>
+                    @endif
+                    @if ($totalPartida[$partida->id_partida] != null)
+                        <th class="border border-dark">${{$totalPartida[$partida->id_partida]}}</th>
+                    @else
+                        <th class="border border-dark">$ 0</th>
+                    @endif
                 </tr>                  
             @endforeach
             <tr>
@@ -137,7 +134,6 @@
                 <th class="border border-dark">${{$gastosFacturasTotal}}</th>
                 <th class="border border-dark">${{$subTotalFinal}}</th>
                 <th class="border border-dark">${{$gastosValesFinal}}</th>
-                <th class="border border-dark">$0</th>
                 <th id="totalFinal"class="border border-dark" style="color: red">${{$inventarioFinal}}</th>
             </tr>       
             </tbody>

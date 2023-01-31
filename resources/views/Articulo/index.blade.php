@@ -11,7 +11,7 @@
         <table class="table ">
             <thead>
             <tr>
-                <th scope="col">Id</th>
+                <th scope="col">Clave</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Unidad de medida</th>
                 <th scope="col">Partida</th>
@@ -32,7 +32,7 @@
                 @if ($articulos->isNotEmpty())
                     @foreach ( $articulos as $articulo )
                         <tr>
-                            <th scope="row">{{$articulo->id}}</th>
+                            <th scope="row">{{$articulo->clave_articulo}}</th>
                             <td>{{$articulo->nombre_articulo}}</td>
                             <td>{{$articulo->nombre_med}}</td> 
                             @foreach ($partidas as $partida )

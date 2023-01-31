@@ -12,7 +12,7 @@
                 <div class="modal-body">
                     <div class="col-12">
                         <label >Clave</label>
-                        <input type="number" class="form-control" id ="clave" name ="clave" style="height: 35px" min="0" step="any" required>
+                        <input type="text" class="form-control" id ="clave" name ="clave" style="height: 35px"required>
                         <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                     </div>
                     <div class="col-12">
