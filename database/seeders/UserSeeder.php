@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'contrasena' => Hash::make('Admin1'),
         ]);
         DB::table('rol_usuarios')->insert([
-            'rol_id' => '3',
+            'rol_id' => '1',
             'usuario_id' => '1',
         ]);
         DB::table('users')->insert([
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'contrasena' => Hash::make('Rz1511'),
         ]);
         DB::table('rol_usuarios')->insert([
-            'rol_id' => '2',
+            'rol_id' => '3',
             'usuario_id' => '2',
         ]);
         DB::table('ups')->insert([

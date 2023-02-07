@@ -5,22 +5,30 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             {{-- Encabezado --}}
             <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Cambio de ejercicio</button>
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Exportar datos de Entradas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Exportar datos de Salidas</button>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
+            {{-- Reporte de entradas --}}
             <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                <form  class="row needs-validation" action="/cierre" novalidate>
-                    @csrf
+                <form  class= "row needs-validation" action="/excel/entradas" novalidate>
                     <div class="row">
-                        <div class="form-grop col-3">
-                            <label>Selecciona el mes de diciembre del año a cerrar</label>
-                            <input type="month" id="mesCierre" name="mesCierre" class="form-control" required>
-                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        <div class="form-grop col-1 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>
-                        <div class="form-grop col-3 my-4">
+                    </div>
+                </form>
+            </div>
+            {{-- Reporte de salidas --}}
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <form  class= "row needs-validation" action="/excel/salidas" novalidate>
+                    <div class="row">
+                        <div class="form-grop col-1 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>
                     </div>
@@ -44,15 +52,5 @@
              })
          })()
     </script>
-     @if(Session::has('exito'))
-     <script>
-         toastr.success("{!! Session::get('exito') !!}");
-     </script>
-     @endif
-     @if(Session::has('no'))
-     <script>
-         toastr.error("{!! Session::get('no') !!}");
-     </script>
-     @endif
 </div>
 @endsection

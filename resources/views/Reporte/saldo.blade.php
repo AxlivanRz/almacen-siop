@@ -101,8 +101,8 @@
             @foreach ($partidas as $partida)
                 <tr id="{{$partida->nombre_partida}}"> 
                     <th class="border border-dark"  id="{{$partida->id_partida}}" scope="row">{{$partida->descripcion_partida}} {{$partida->nombre_partida}}</th>
-                    @if ($inventarioIni[$partida->id_partida] != null)
-                        <td class="border border-dark">${{$inventarioIni[$partida->id_partida]}}</td>
+                    @if ($inventarioIni[$partida->id_partida][0]->suma_inv != null)
+                        <td class="border border-dark">${{$inventarioIni[$partida->id_partida][0]->suma_inv}}</td>
                     @else
                         <td class="border border-dark">$ 0</td>
                     @endif
@@ -130,7 +130,7 @@
             @endforeach
             <tr>
                 <th class="border border-dark" style="text-align: end">T o t a l:</th> 
-                <th class="border border-dark">${{$inventarioIniFinal}}</th>
+                <th class="border border-dark">${{$inventarioIniFinal[0]->suma_invF}}</th>
                 <th class="border border-dark">${{$gastosFacturasTotal}}</th>
                 <th class="border border-dark">${{$subTotalFinal}}</th>
                 <th class="border border-dark">${{$gastosValesFinal}}</th>

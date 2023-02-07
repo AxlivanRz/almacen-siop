@@ -114,7 +114,6 @@
                             <div class="collapse" id="drop1">
                                 <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('factura.index')}}">Alta factura</a>
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="#">Consultar facturas</a>
                                 </div>
                             </div>
                             <p>
@@ -124,7 +123,7 @@
                             </p>
                             <div class="collapse" id="drop3">
                                 <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('reporte.diario')}}">Reportes</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('excel.index')}}">Exportar a Excel</a>
                                     <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('cierre.mensual')}}">Proceso de cierre</a>
                                 </div>
                             </div>

@@ -22,10 +22,6 @@
                             <input type="text" class="form-control"  id="numerof" name="numerof" value="{{$factura->numero_factura}}">
                         </div>
                         <div class="form-group col-3">
-                            <label >Folio</label>
-                            <input type="text" class="form-control" id ="folio" name ="folio" value="{{$factura->folio}}">
-                        </div>
-                        <div class="form-group col-3">
                             <label >Proveedor</label>                               
                             <select class="form-select"  name="proveedor" id="proveedor" >
                                 @foreach ($proveedores as $proveedor )

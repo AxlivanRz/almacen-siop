@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-3">
                         <label >Folio</label>
-                        <input type="text" class="form-control " id ="folio" name ="folio" value="{{$factura->folio}}" disabled>
+                        <input type="text" class="form-control " id ="folio" name ="folio" value="{{$factura->id_factura}}" disabled>
                     </div>
                     <div class="col-3">
                         <label >Proveedor</label>                               

@@ -40,10 +40,7 @@
                                 @endif
                                 @endif
                             @endforeach                                                
-                            <td>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#departamentoDelete{{$departamento->id_departamento}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button> 
+                            <td> 
                             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#departamentoEdit{{$departamento->id_departamento}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
@@ -60,7 +57,6 @@
     @if ($departamentos->isNotEmpty())   
         @foreach ($departamentos as $departamento)
             @include('Departamento.edit')
-            @include('Departamento.delete')
         @endforeach
     @endif
     @include('Departamento.create')

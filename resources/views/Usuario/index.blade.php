@@ -25,7 +25,8 @@
             </thead>
             <tbody>            
                 @if ($user->isNotEmpty())
-                    @foreach ( $user as $us )
+                    @foreach ($user as $us)
+                    @if(Auth::user()->roles->first()->id_rol <= $us->roles->first()->id_rol)
                         <tr>
                             <th scope="row">{{$us->id_usuario}}</th>
                             <td>{{$us->name}}</td>
@@ -69,7 +70,7 @@
                                 </button> 
                             </td>                   
                         </tr>    
-                                    
+                    @endif            
                     @endforeach
                 @else
                     <td colspan="4"><span class="badge rounded-pill bg-danger">Sin usuarios</span></td>

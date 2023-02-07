@@ -35,30 +35,35 @@ Route::view('/', 'Login.inicio2')->name('usuario.login')->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::get('/inicio', [SurtirController::class, 'indexS'])->name('inicio')->middleware('rol:ti,admin,alm,user');
-Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin');
-Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'submitAlmacen'])->name('surtir.editAlm');
-Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale');
-Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido');
-Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale');
+Route::get('/vale/confirmacion', [SurtirController::class, 'indexAdmin'])->name('surtir.indexAdmin')->middleware('rol:ti,admin,alm');
+Route::get('/vale/confirmacion/{id}', [SurtirController::class, 'submitAlmacen'])->name('surtir.editAlm')->middleware('rol:ti,admin,alm');
+Route::post('/surtir/vale/create/{id}', [SurtirController::class, 'storeV'])->name('surtir.storeVale')->middleware('rol:ti,admin,alm');
+Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('surtir.indexSurtido')->middleware('rol:ti,admin,alm');
+Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale')->middleware('rol:ti,admin,alm');
 Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
 
 
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
-Route::get('/articulo/pdf', [ArticuloController::class, 'pdf'])->name('articulo.pdf');
 
-Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit');
 
-Route::any('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
-Route::any('/reporte/salidas', [ReporteController::class, 'pdf'])->name('reporte.pdf');
-Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('reporte.entradas');
-Route::any('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
-Route::any('/reporte/saldos', [ReporteController::class, 'saldos'])->name('reporte.saldos');
-Route::any('/reporte/comparativo', [ReporteController::class, 'comparativo'])->name('reporte.comparativo');
-Route::any('/reporte/movimiento', [ReporteController::class, 'movimientos'])->name('reporte.movimiento');
-Route::any('/cierre', [ReporteController::class, 'cierre'])->name('reporte.cierre');
+Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit')->middleware('auth');
+
+// Route::any('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
+// Route::any('/reporte/salidas', [ReporteController::class, 'pdf'])->name('reporte.pdf');
+// Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('reporte.entradas');
+// Route::any('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
+// Route::any('/reporte/saldos', [ReporteController::class, 'saldos'])->name('reporte.saldos');
+// Route::any('/reporte/comparativo', [ReporteController::class, 'comparativo'])->name('reporte.comparativo');
+// Route::any('/reporte/movimiento', [ReporteController::class, 'movimientos'])->name('reporte.movimiento');
+
 Route::any('/pdf/vale/{id}', [SurtirController::class, 'pdf'])->name('vale.pdf');
-Route::view('/cierre/mensual', 'Reporte.cierre')->name('cierre.mensual');
+Route::any('/cierre', [ReporteController::class, 'cierre'])->name('reporte.cierre')->middleware('rol:ti,admin');
+Route::view('/cierre/mensual', 'Reporte.cierre')->name('cierre.mensual')->middleware('rol:ti,admin');
+Route::view('/export', 'Excel.index')->name('excel.index')->middleware('rol:ti,admin,alm');
+Route::get('/excel/entradas', [ReporteController::class, 'entrada'])->name('excel.entrada')->middleware('rol:ti,admin,alm');
+Route::get('/excel/salidas', [ReporteController::class, 'salida'])->name('excel.salida')->middleware('rol:ti,admin,alm');
+Route::get('/excel/facturas', [ReporteController::class, 'factura'])->name('excel.factura')->middleware('rol:ti,admin,alm');
 
 Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');

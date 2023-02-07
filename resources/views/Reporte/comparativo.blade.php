@@ -139,10 +139,10 @@
                                     <th class="border border-dark">{{$prueba01[$recurso->id_origen][$articulo->id][0]->clave_articulo}} {{$prueba01[$recurso->id_origen][$articulo->id][0]->nombre_articulo}}</th>
                                     <td class="border border-dark">{{$prueba01[$recurso->id_origen][$articulo->id][0]->nombre_med}}</td>
                                     <td class="border border-dark">${{$prueba01[$recurso->id_origen][$articulo->id][0]->precio}}</td>
-                                    @if (isset($inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01))
+                                    @if (isset($inventario_01[$recurso->id_origen][$articulo->id][0]->precio))
                                     <td class="border border-dark">{{$inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01}}</td> 
                                     @else
-                                    <td class="border border-dark">0</td> 
+                                    <td class="border border-dark">0</td>  
                                     @endif
                                     @if (isset($cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01))
                                     <td class="border border-dark">{{$cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01}}</td> 
@@ -155,7 +155,7 @@
                                     <td class="border border-dark">0</td> 
                                     @endif
                                     @if (isset($salida_vales1[$recurso->id_origen][$articulo->id][0]->cantidad_salidas1) && isset($cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01) && isset($inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_0))
-                                    <td class="border border-dark">{{$inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01 + $cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01 - $salida_vales1[$recurso->id_origen][$articulo->id][0]->cantidad_salidas1}}</td>
+                                    <td class="border border-dark">{{$inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01 - $salida_vales1[$recurso->id_origen][$articulo->id][0]->cantidad_salidas1}}</td>
                                     @else
                                     <td class="border border-dark">0</td> 
                                     @endif

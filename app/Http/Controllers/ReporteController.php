@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 use App\Models\InventarioExistencia;
 use App\Models\InventarioInicial;
 use App\Models\InventarioFinal;
+use App\Exports\EntradaExport;
+use App\Exports\SalidaExport;
 use App\Models\EntradaArticulo;
 use App\Models\OrigenRecurso;
 use App\Models\Departamento;
@@ -134,8 +137,8 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('Reporte.diario',  compact(['partidas', 'areas', 'gastos', 'gastosPartida', 'gastosArea', 'gastoFinal', 'fechaIni1', 'fechaFin1']));
         $pdf->set_paper('a4','landscape');
         return $pdf->stream();
-        //return view ('Articulo.pdf', compact('articulos'));
     }
+
     public function entradas(Request $request)
     {
         $fI = $request->inicio2;
@@ -143,6 +146,9 @@ class ReporteController extends Controller
         $fechaIni1= Carbon::parse($request->inicio2)->isoFormat('LL');
         $fechaFin1= Carbon::parse($request->final2)->isoFormat('LL');
         $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        $anterior_fF = Carbon::parse($request->inicio2)->addDay(-1)->endOfMonth()->toDateString();
+        $ano = Carbon::parse($request->inicio2)->endOfMonth()->addDay()->isoFormat('YYYY');
+        $inicio = $ano."-01-01";
         if ($request->recurso2 == 0) {
             foreach ($partidas as $partida) {
                 $gastosPartida[$partida->id_partida]= DB::table('facturas')
@@ -150,14 +156,31 @@ class ReporteController extends Controller
                 ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
                 ->where('articulos.partida_id', '=', $partida->id_partida)
                 ->whereBetween('facturas.created_at', [$fI, $fF])
-                ->select('articulos.preciofinal')
+                ->select('entrada_articulos.preciofinal')
                 ->sum('preciofinal');
+                // $gastosPartida1[$partida->id_partida]= DB::table('facturas')
+                // ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+                // ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+                // ->where('articulos.partida_id', '=', $partida->id_partida)
+                // ->whereBetween('facturas.created_at', [$inicio, $anterior_fF])
+                // ->where('entrada_articulos.existencia', '>', 0)
+                // ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as gasto_partida')
+                // ->get();
+                // $gastosPartida[$partida->id_partida] = $gastosPartida0[$partida->id_partida] + $gastosPartida1[$partida->id_partida][0]->gasto_partida;
             }
             $gastoFinal= DB::table('facturas')
             ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
             ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
             ->whereBetween('facturas.created_at', [$fI, $fF])
-            ->select('articulos.preciofinal')->sum('preciofinal');
+            ->select('entrada_articulos.preciofinal')->sum('preciofinal');
+            // $gastoFinal1= DB::table('facturas')
+            // ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            // ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            // ->where('entrada_articulos.existencia', '>', 0)
+            // ->whereBetween('facturas.created_at', [$inicio, $anterior_fF])
+            // ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as gasto_final')
+            // ->get();
+            // $gastoFinal =  $gastoFinal1[0]->gasto_final + $gastoFinal0;
             $pdf = PDF::loadView('Reporte.entradas',  compact(['partidas', 'gastosPartida', 'gastoFinal', 'fechaIni1', 'fechaFin1']));
             $pdf->setPaper('A4','portrait');
             return $pdf->stream();
@@ -166,21 +189,40 @@ class ReporteController extends Controller
         //CON ORIGEN DEL RECURSO
         $idOR = $request->recurso2;
         foreach ($partidas as $partida) {
-            $gastosPartida[$partida->id_partida]= DB::table('facturas')//OR
+            $gastosPartida0[$partida->id_partida]= DB::table('facturas')//OR
             ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
             ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
             ->where('facturas.recurso_id', '=', $idOR)
             ->whereBetween('facturas.created_at', [$fI, $fF])
             ->where('articulos.partida_id', '=', $partida->id_partida)
-            ->select('articulos.preciofinal')
+            ->select('entrada_articulos.preciofinal')
             ->sum('preciofinal');
+            $gastosPartida1[$partida->id_partida]= DB::table('facturas')
+            ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+            ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+            ->where('facturas.recurso_id', '=', $idOR)
+            ->where('articulos.partida_id', '=', $partida->id_partida)
+            ->whereBetween('facturas.created_at', [$inicio, $anterior_fF])
+            ->where('entrada_articulos.existencia', '>', 0)
+            ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as gasto_partida')
+            ->get();
+            $gastosPartida[$partida->id_partida] = $gastosPartida0[$partida->id_partida] + $gastosPartida1[$partida->id_partida][0]->gasto_partida;
         }
-        $gastoFinal= DB::table('facturas')//OR
+        $gastoFinal0= DB::table('facturas')//OR
         ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->where('facturas.recurso_id', '=', $idOR)
         ->whereBetween('facturas.created_at', [$fI, $fF])
-        ->select('articulos.preciofinal')->sum('preciofinal');//OR
+        ->select('entrada_articulos.preciofinal')->sum('preciofinal');//OR
+        $gastoFinal1= DB::table('facturas')
+        ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->where('entrada_articulos.existencia', '>', 0)
+        ->where('facturas.recurso_id', '=', $idOR)
+        ->whereBetween('facturas.created_at', [$inicio, $anterior_fF])
+        ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as gasto_final')
+        ->get();
+        $gastoFinal =  $gastoFinal1[0]->gasto_final + $gastoFinal0;
         $pdf = PDF::loadView('Reporte.entradas',  compact(['partidas', 'gastosPartida', 'gastoFinal', 'fechaIni1', 'fechaFin1']));
         $pdf->setPaper('A4','portrait');
         return $pdf->stream();
@@ -191,6 +233,9 @@ class ReporteController extends Controller
         $fechaIni1= Carbon::parse($request->inicio3)->isoFormat('LL');
         $fechaFin1= Carbon::parse($request->final3)->isoFormat('LL');
         $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        $anterior_fF = Carbon::parse($request->inicio2)->addDay(-1)->endOfMonth()->toDateString();
+        $ano = Carbon::parse($request->inicio2)->endOfMonth()->addDay()->isoFormat('YYYY');
+        $inicio = $ano."-01-01";
         $gastoFinalVal= DB::table('surtido_entradas')
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
         ->whereBetween('vale_surtidos.created_at', [$fI, $fF])
@@ -213,7 +258,7 @@ class ReporteController extends Controller
             ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
             ->where('articulos.partida_id', '=', $partida->id_partida)
             ->whereBetween('facturas.created_at', [$fI, $fF])
-            ->select('articulos.preciofinal')
+            ->select('entrada_articulos.preciofinal')
             ->sum('preciofinal');
             $diferenciasFVP[$partida->id_partida] = $gastosFacturas[$partida->id_partida] - $gastosVales[$partida->id_partida];
         }
@@ -221,7 +266,7 @@ class ReporteController extends Controller
         ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->whereBetween('facturas.created_at', [$fI, $fF])
-        ->select('articulos.preciofinal')->sum('preciofinal');
+        ->select('entrada_articulos.preciofinal')->sum('preciofinal');
         $diferenciaTotal = $gastoFinalFac - $gastoFinalVal;
         $pdf = PDF::loadView('Reporte.diferencias',  compact(['partidas', 'gastosFacturas', 'gastoFinalFac', 'gastosVales', 'gastoFinalVal', 'diferenciaTotal', 'diferenciasFVP', 'fechaIni1', 'fechaFin1']));
         $pdf->setPaper('A4','portrait');
@@ -234,15 +279,19 @@ class ReporteController extends Controller
         $fechaIni= Carbon::parse($request->mes4)->startOfMonth()->isoFormat('LL');
         $fechaFin= Carbon::parse($request->mes4)->endOfMonth()->isoFormat('LL');
         $partidas = DB::table('partidas')->orderBy('id_partida', 'asc')->get();
+        $anterior_fF = Carbon::parse($fI)->addDay(-1)->endOfMonth()->toDateString();
+        $ano = Carbon::parse($fI)->endOfMonth()->addDay()->isoFormat('YYYY');
+        $inicio = $ano."-01-01";
         foreach ($partidas as $partida) {
             $inventarioIni[$partida->id_partida]=  DB::table('facturas')
             ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
             ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
             ->where('articulos.partida_id', '=', $partida->id_partida)
-            ->where('facturas.confirmed', '=', 1)
-            ->whereBetween('facturas.created_at', [$fI, $fF])
-            ->select('articulos.preciofinal')
-            ->sum('preciofinal');
+            ->where('entrada_articulos.existencia', '>', 0)
+            ->WhereBetween('facturas.created_at', [$inicio, $anterior_fF])
+            ->where('facturas.confirmed', '>=', 0)
+            ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as suma_inv')
+            ->get();
             $gastosFacturas[$partida->id_partida]= DB::table('facturas')
             ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
             ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
@@ -251,7 +300,7 @@ class ReporteController extends Controller
             ->whereBetween('facturas.created_at', [$fI, $fF])
             ->select('articulos.preciofinal')
             ->sum('preciofinal');
-            $subtotalPartida[$partida->id_partida]= $gastosFacturas[$partida->id_partida] + $inventarioIni[$partida->id_partida];
+            $subtotalPartida[$partida->id_partida]= $gastosFacturas[$partida->id_partida] + $inventarioIni[$partida->id_partida][0]->suma_inv;
             $gastosVales[$partida->id_partida]= DB::table('surtido_entradas')
             ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
             ->join('entrada_articulos','surtido_entradas.entrada_articulo_id' , '=', 'entrada_articulos.id')
@@ -265,18 +314,19 @@ class ReporteController extends Controller
         $inventarioIniFinal=  DB::table('facturas')
         ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
-        ->whereBetween('facturas.created_at', [$fI, $fF])
-        ->where('facturas.confirmed', '=', 1)
-        ->select('articulos.preciofinal')
-        ->sum('preciofinal');
+        ->WhereBetween('facturas.created_at', [$inicio, $anterior_fF])
+        ->where('entrada_articulos.existencia', '>', 0)
+        ->orWhere('facturas.confirmed', '>=', 0)
+        ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as suma_invF')
+        ->get();
         $gastosFacturasTotal= DB::table('facturas')
         ->join('entrada_articulos','facturas.numero_factura' , '=', 'entrada_articulos.factura_id')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->whereBetween('facturas.created_at', [$fI, $fF])
         ->where('facturas.confirmed', '=', 0)
-        ->select('articulos.preciofinal')
+        ->select('entrada_articulos.preciofinal')
         ->sum('preciofinal');
-        $subTotalFinal = $inventarioIniFinal + $gastosFacturasTotal;
+        $subTotalFinal = $inventarioIniFinal[0]->suma_invF + $gastosFacturasTotal;
         $gastosValesFinal= DB::table('surtido_entradas')
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
         ->whereBetween('vale_surtidos.created_at', [$fI, $fF])
@@ -295,11 +345,14 @@ class ReporteController extends Controller
         $idP = $request->partida;
         $partida = Partida::findOrFail($idP);
         $recursos = DB::table('origen_recursos')->orderBy('id_origen', 'asc')->get();
+        $anterior_fF = Carbon::parse($iniI)->addDay(-1)->endOfMonth()->toDateString();
+        $ano = Carbon::parse($iniI)->endOfMonth()->addDay()->isoFormat('YYYY');
+        $inicio = $ano."-01-01";
         
         $query1 = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
         ->where('articulos.partida_id', '=', $idP)
         ->orderBy('entrada_articulos.id','asc')
         ->select('entrada_articulos.cantidad', 'facturas.recurso_id', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id')
@@ -308,7 +361,7 @@ class ReporteController extends Controller
         $total_f = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
         ->where('articulos.partida_id', '=', $idP)
         ->where('entrada_articulos.existencia', '>', 0)
         ->orderBy('entrada_articulos.id','asc')
@@ -318,12 +371,12 @@ class ReporteController extends Controller
         $inventarios = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->WhereBetween('facturas.created_at', [$inicio, $anterior_fF])
         ->where('articulos.partida_id', '=', $idP)
-        ->where('facturas.confirmed', '=', 1)
+        ->where('facturas.confirmed', '>=', 0)
+        ->where('entrada_articulos.existencia', '>', 0)
         ->select('entrada_articulos.cantidad', 'facturas.recurso_id', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id', 'facturas.confirmed')
         ->orderBy('entrada_articulos.id','asc')->get();
-
         $entradas = DB::table('entrada_articulos')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
@@ -351,17 +404,17 @@ class ReporteController extends Controller
                             ->where('entrada_articulos.precio', '=', $quer->precio)
                             ->where('facturas.recurso_id', '=', $recurso->id_origen)
                             ->where('articulos.clave_articulo', '=', $articulo->clave_articulo)
-                            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
                             ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'facturas.recurso_id')
                             ->selectRaw('SUM(entrada_articulos.existencia) AS suma_0')
                             ->get();
                             $prueba01[$recurso->id_origen][$articulo->id] = DB::table('articulos')
                             ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
                             ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-                            ->where('articulos.clave_articulo', '=', $articulo->clave_articulo)
                             ->where('entrada_articulos.precio', '!=', $quer->precio)
                             ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                            ->where('articulos.clave_articulo', '=', $articulo->clave_articulo)
+                            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
                             ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'facturas.recurso_id')
                             ->selectRaw('SUM(entrada_articulos.existencia) AS suma_1')
                             ->get();
@@ -402,28 +455,27 @@ class ReporteController extends Controller
                         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
                         ->where('entrada_articulos.precio', '=', $inventario->precio)
                         ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                        ->where('articulos.partida_id', '=', $idP)
-                        ->where('facturas.confirmed', '=', 1)
-                        ->where('entrada_articulos.id', '=', $inventario->id)
-                        ->where('articulos.id', '=', $inventario->articulo_id)
-                        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                        ->where('facturas.confirmed', '>=', 0)
+                        ->where('articulos.id', '=', $articulo->id)
+                        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
                         ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo')
-                        ->selectRaw('SUM(entrada_articulos.cantidad) AS inventario_0')
+                        ->selectRaw('SUM(entrada_articulos.existencia) AS inventario_0')
                         ->get();
                         $inventario_01[$recurso->id_origen][$articulo->id] = DB::table('articulos')
                         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
                         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
+                        ->where('articulos.id', '=', $articulo->id)
                         ->where('entrada_articulos.precio', '!=', $inventario->precio)
                         ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                        ->where('articulos.partida_id', '=', $idP)
-                        ->where('facturas.confirmed', '=', 1)
-                        ->where('entrada_articulos.id', '=', $inventario->id)
-                        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                        ->where('facturas.confirmed', '>=', 0)
+                        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
                         ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo')
-                        ->selectRaw('SUM(entrada_articulos.cantidad) AS inventario_01')
+                        ->selectRaw('SUM(entrada_articulos.existencia) AS inventario_01')
                         ->get();
                     }
                 }
+                    $cantidad_existencia_recursoE[$recurso->id_origen][$articulo->id][0]= null;
+                    $cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]= null;
                 foreach ($entradas as $entrada) {
                     if($articulo->id == $entrada->articulo_id){
                         if ($recurso->id_origen == $entrada->recurso_id) {
@@ -456,6 +508,7 @@ class ReporteController extends Controller
                 }
             }
         }
+        //dd($inventario_01);
         $pdf = PDF::loadView('Reporte.comparativo', compact(['cantidad_existencia_recursoE', 'prueba0', 'prueba01', 'salida_vales', 'salida_vales1','recursos', 'partida', 'fechaIni', 'fechaFin', 'articulos', 'inventarios', 'query1', 'cantidad_existencia_recursoE', 'cantidad_existencia_recursoE1', 'inventario_01', 'inventario_0', 'total_f']));
         $pdf->set_paper('a4','landscape');
         return $pdf->stream();
@@ -468,11 +521,13 @@ class ReporteController extends Controller
         $idP = $request->partida_movimiento;
         $partida = Partida::findOrFail($idP);
         $recursos = DB::table('origen_recursos')->orderBy('id_origen', 'asc')->get();
-        
+        $anterior_fF = Carbon::parse($iniI)->addDay(-1)->endOfMonth()->toDateString();
+        $ano = Carbon::parse($iniI)->endOfMonth()->addDay()->isoFormat('YYYY');
+        $inicio = $ano."-01-01";
         $query1 = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
         ->where('articulos.partida_id', '=', $idP)
         ->orderBy('entrada_articulos.id','asc')
         ->select('entrada_articulos.cantidad', 'facturas.recurso_id', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id')
@@ -481,7 +536,7 @@ class ReporteController extends Controller
         $total_f = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
         ->where('articulos.partida_id', '=', $idP)
         ->where('entrada_articulos.existencia', '>', 0)
         ->orderBy('entrada_articulos.id','asc')
@@ -491,9 +546,10 @@ class ReporteController extends Controller
         $inventarios = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
         ->where('articulos.partida_id', '=', $idP)
-        ->where('facturas.confirmed', '=', 1)
+        ->where('entrada_articulos.existencia', '>', 0)
+        ->where('facturas.confirmed', '>=', 0)
         ->select('entrada_articulos.cantidad', 'facturas.recurso_id', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id', 'facturas.confirmed')
         ->orderBy('entrada_articulos.id','asc')->get();
 
@@ -518,12 +574,12 @@ class ReporteController extends Controller
         $total_if = DB::table('entrada_articulos')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
         ->where('articulos.partida_id', '=', $idP)
-        ->where('facturas.confirmed', '=', 1)
+        ->where('facturas.confirmed', '>=', 0)
         ->orderBy('entrada_articulos.id','asc')
         ->select('entrada_articulos.cantidad', 'facturas.recurso_id', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id')
-        ->selectRaw('SUM(entrada_articulos.cantidad * entrada_articulos.precio) AS total_if')
+        ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) AS total_if')
         ->get();
         $total_s1f = DB::table('surtido_entradas')
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
@@ -540,6 +596,8 @@ class ReporteController extends Controller
         ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
         ->whereBetween('vale_surtidos.created_at', [$iniI, $finF])
         ->get();
+        $total_e1 = 0;
+        $total_e = 0;
         foreach ($recursos as $recurso) {
             foreach ($articulos as $articulo) {
                 foreach ($query1 as $quer) {
@@ -551,7 +609,7 @@ class ReporteController extends Controller
                             ->where('entrada_articulos.precio', '=', $quer->precio)
                             ->where('facturas.recurso_id', '=', $recurso->id_origen)
                             ->where('articulos.clave_articulo', '=', $articulo->clave_articulo)
-                            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
                             ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'facturas.recurso_id')
                             ->selectRaw('SUM(entrada_articulos.existencia) AS suma_0')
                             ->get();
@@ -562,7 +620,7 @@ class ReporteController extends Controller
                             ->where('articulos.clave_articulo', '=', $articulo->clave_articulo)
                             ->where('entrada_articulos.precio', '!=', $quer->precio)
                             ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
                             ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'facturas.recurso_id')
                             ->selectRaw('SUM(entrada_articulos.existencia) AS suma_1')
                             ->get();
@@ -599,39 +657,36 @@ class ReporteController extends Controller
                 
                     $inventario_01[$recurso->id_origen][$articulo->id][0]= null;
                     $inventario_0[$recurso->id_origen][$articulo->id][0]= null;
-                    $total_i0[$recurso->id_origen][$articulo->id][0]= null;
-                    $total_i01[$recurso->id_origen][$articulo->id][0]= null;
                 foreach ($inventarios as $inventario) {
                     if($articulo->id == $inventario->articulo_id){
                         $inventario_0[$recurso->id_origen][$articulo->id] = DB::table('articulos')
                         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
                         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-                        ->where('entrada_articulos.precio', '=', $inventario->precio)
                         ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                        ->where('articulos.partida_id', '=', $idP)
-                        ->where('facturas.confirmed', '=', 1)
-                        ->where('entrada_articulos.id', '=', $inventario->id)
                         ->where('articulos.id', '=', $inventario->articulo_id)
-                        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                        ->where('entrada_articulos.precio', '=', $inventario->precio)
+                        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
+                        ->where('facturas.confirmed', '>=', 0)
                         ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo')
-                        ->selectRaw('SUM(entrada_articulos.cantidad) AS inventario_0')
+                        ->selectRaw('SUM(entrada_articulos.existencia) AS inventario_0')
                         ->get();
                         $total_i0[$recurso->id_origen][$articulo->id] = $inventario_0[$recurso->id_origen][$articulo->id][0]->inventario_0 * $inventario_0[$recurso->id_origen][$articulo->id][0]->precio;
                         $inventario_01[$recurso->id_origen][$articulo->id] = DB::table('articulos')
                         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
                         ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
-                        ->where('entrada_articulos.precio', '!=', $inventario->precio)
                         ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                        ->where('articulos.partida_id', '=', $idP)
-                        ->where('facturas.confirmed', '=', 1)
-                        ->where('entrada_articulos.id', '=', $inventario->id)
-                        ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                        ->where('articulos.id', '=', $inventario->articulo_id)
+                        ->where('entrada_articulos.precio', '!=', $inventario->precio)
+                        ->whereBetween('entrada_articulos.created_at', [$inicio, $anterior_fF])
+                        ->where('facturas.confirmed', '>=', 0)
                         ->select('entrada_articulos.cantidad', 'entrada_articulos.precio', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo')
-                        ->selectRaw('SUM(entrada_articulos.cantidad) AS inventario_01')
+                        ->selectRaw('SUM(entrada_articulos.existencia) AS inventario_01')
                         ->get();
                         $total_i01[$recurso->id_origen][$articulo->id] = $inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01 * $inventario_01[$recurso->id_origen][$articulo->id][0]->precio;
                     }
                 }
+                $cantidad_existencia_recursoE[$recurso->id_origen][$articulo->id][0]= null;
+                $cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]= null;
                 foreach ($entradas as $entrada) {
                     if($articulo->id == $entrada->articulo_id){
                         if ($recurso->id_origen == $entrada->recurso_id) {
@@ -666,8 +721,7 @@ class ReporteController extends Controller
                 }
             }
         }
-        $pdf = PDF::loadView('Reporte.movimientos', compact(['cantidad_existencia_recursoE', 'prueba0', 'prueba01', 'salida_vales', 'salida_vales1', 'recursos', 'total_e1f', 'total_if', 'total_s1f', 'total_s1f', 'total_if',
-        'partida', 'fechaIni', 'fechaFin', 'articulos', 'inventarios', 'query1', 'cantidad_existencia_recursoE', 'cantidad_existencia_recursoE1', 'inventario_01', 'inventario_0', 'total_f', 'total_e1', 'total_e', 'total_i01', 'total_i0', 'total_s1', 'total_s' , 'total_p0', 'total_p01']));
+        $pdf = PDF::loadView('Reporte.movimientos', compact(['cantidad_existencia_recursoE', 'prueba0', 'prueba01', 'salida_vales', 'salida_vales1', 'recursos', 'total_e1f', 'total_if', 'total_s1f', 'total_s1f', 'total_if', 'partida', 'fechaIni', 'fechaFin', 'articulos', 'inventarios', 'query1', 'cantidad_existencia_recursoE', 'cantidad_existencia_recursoE1', 'inventario_01', 'inventario_0', 'total_f', 'total_e1', 'total_e', 'total_s1', 'total_s' , 'total_p0', 'total_p01']));
         $pdf->set_paper('legal','landscape');
         return $pdf->stream();
     }
@@ -779,9 +833,20 @@ class ReporteController extends Controller
 
     public function index()
     {
-        //
+        return view('Excel.index');
     }
-
+    public function entrada()
+    {
+    return (new EntradaExport)->download('entrada.xlsx', Excel::XLSX);
+    }
+    public function salida()
+    {
+        return (new SalidaExport)->download('salida.xlsx', Excel::XLSX);
+    }
+    public function factura()
+    {
+       
+    }
     /**
      * Show the form for creating a new resource.
      *

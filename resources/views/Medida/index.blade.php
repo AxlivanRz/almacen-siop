@@ -28,10 +28,7 @@
                             <th scope="row">{{$medida->id_medida}}</th> 
                             <td>{{$medida->nombre_medida}}</td>
                             <td>{{$medida->abreviado}}</td>
-                            <td >                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#medidaDelete{{$medida->id_medida}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>                               
+                            <td >                                                            
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#medidaEdit{{$medida->id_medida}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>                               
@@ -47,7 +44,6 @@
     </div>
     @if ($medidas->isNotEmpty())
         @foreach ( $medidas as $medida )
-            @include('Medida.delete')
             @include('Medida.edit')
         @endforeach
     @endif

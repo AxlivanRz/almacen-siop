@@ -22,9 +22,6 @@
                     <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#articuloCreate">
                         <i class="far fa-plus-square"></i>
                     </button>
-                    <a href="{{ route('articulo.pdf')}}" class="btn btn-sm btn-info">
-                        PDF
-                    </a>
                 </th>          
             </tr>
             </thead>
@@ -45,9 +42,6 @@
                                 @endif
                             @endforeach                                                
                             <td>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#articuloDelete{{$articulo->id}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button> 
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit{{$articulo->id}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
@@ -67,7 +61,6 @@
     </div>
     @if ($articulos->isNotEmpty())  
         @foreach ($articulos as $articulo )
-            @include('Articulo.delete')
             @include('Articulo.edit')   
             @include('Articulo.show')   
         @endforeach

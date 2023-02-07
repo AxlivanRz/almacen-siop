@@ -31,10 +31,7 @@
                             <td>{{$up->descripcion_ups}}</td>
                             <td>{{$up->nombre_ups}}</td>
                             <td>{{$up->iniciales}}</td>
-                            <td >                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#upDelete{{$up->id_up}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>                               
+                            <td >                                                              
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#upEdit{{$up->id_up}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>                               
@@ -51,7 +48,6 @@
     </div>
     @if ($ups->isNotEmpty())
         @foreach ( $ups as $up )
-            @include('Up.delete')
             @include('Up.edit')
         @endforeach
     @endif

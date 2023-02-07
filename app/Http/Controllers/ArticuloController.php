@@ -161,18 +161,10 @@ class ArticuloController extends Controller
         $articulos[] = array();
         $query1 = DB::table('articulos')
         ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
-
         ->orWhere('entrada_articulos.existencia', '>',  0)
         ->select('articulos.id','articulos.nombre_articulo', 'articulos.nombre_med')
         ->get();
         $query2 = $query1->unique('nombre_articulo');
         return ($query2);
-    }
-    public function pdf(){
-        $articulos = Articulo::paginate();
-        $pdf = PDF::loadView('Articulo.pdfV', ['articulos'=>$articulos]);
-        //$pdf->set_paper ('a4','landscape');
-        return $pdf->stream();
-        //return view ('Articulo.pdf', compact('articulos'));
     }
 }

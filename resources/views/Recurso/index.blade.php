@@ -27,10 +27,7 @@
                         <tr>
                             <th scope="row">{{$recurso->id_origen}}</th>
                             <td>{{$recurso->nombre_recurso}}</td>
-                            <td >                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#recursoDelete{{$recurso->id_origen}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>                               
+                            <td >                                                           
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#recursoEdit{{$recurso->id_origen}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>                               
@@ -46,7 +43,6 @@
     </div>
     @if ($recursos->isNotEmpty())
         @foreach ( $recursos as $recurso )
-            @include('Recurso.delete')
             @include('Recurso.edit')
         @endforeach
     @endif

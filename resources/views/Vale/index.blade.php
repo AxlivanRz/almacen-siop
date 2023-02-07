@@ -38,10 +38,10 @@
                                     <td style="text-align: top"><span class="badge rounded-pill bg-danger">Enviado</span></td>
                                     @endif
                                     @if ($vale->status == 2)
-                                    <td><span class="badge rounded-pill bg-warning">Validadp por el administrador</span></td>
+                                    <td><span class="badge rounded-pill bg-warning">Validado por el administrador</span></td>
                                     @endif
                                     @if ($vale->status == 3)
-                                    <td><span class="badge rounded-pill bg-primary">Enviado a almacen</span></td>
+                                    <td><span class="badge rounded-pill bg-primary">Enviado a almacén</span></td>
                                     @endif
                                     @if ($vale->status == 4)
                                     <td><span class="badge rounded-pill bg-success">Surtido</span></td>

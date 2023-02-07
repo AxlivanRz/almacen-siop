@@ -31,9 +31,6 @@
                             <td>{{$partida->nombre_partida}}</td>
                             <td>{{$partida->abreviado}}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#partidaDelete{{$partida->id_partida}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button> 
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#partidaEdit{{$partida->id_partida}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
@@ -49,7 +46,6 @@
     </div>
     @if ($partidas->isNotEmpty())
         @foreach ( $partidas as $partida )
-            @include('Partida.delete')
             @include('Partida.edit')
         @endforeach
     @endif

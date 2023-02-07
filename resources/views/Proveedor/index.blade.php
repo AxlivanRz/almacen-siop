@@ -33,10 +33,7 @@
                             <td>{{$proveedor->nombre_empresa}}</td>
                             <td>{{$proveedor->telefono}}</td>
                             <td>{{$proveedor->email_proveedor}}</td>
-                            <td >                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#proveedorDelete{{$proveedor->id_proveedor}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>                               
+                            <td >                                                             
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#proveedorEdit{{$proveedor->id_proveedor}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button> 
@@ -55,7 +52,6 @@
     </div>
     @if ($proveedores->isNotEmpty())
         @foreach ( $proveedores as $proveedor )
-            @include('Proveedor.delete')
             @include('Proveedor.edit')
             @include('Proveedor.show')
         @endforeach

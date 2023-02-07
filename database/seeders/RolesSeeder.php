@@ -15,6 +15,11 @@ class RolesSeeder extends Seeder
     public function run()
     {
         DB::table('rols')->insert([
+            'nombre_rol' => 'AdminTI',
+            'slug' => 'ti',
+             
+        ]);
+        DB::table('rols')->insert([
             'nombre_rol' => 'Almacen',
             'slug' => 'admin',
              
@@ -22,11 +27,6 @@ class RolesSeeder extends Seeder
         DB::table('rols')->insert([
             'nombre_rol' => 'Vales',
             'slug' => 'user',
-             
-        ]);
-        DB::table('rols')->insert([
-            'nombre_rol' => 'AdminTI',
-            'slug' => 'ti',
              
         ]);
         DB::table('rols')->insert([

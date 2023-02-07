@@ -128,21 +128,25 @@
                                     @else
                                     <td class="border border-dark" style="color: red">0</td> 
                                     @endif
+
                                     @if (isset($prueba0[$recurso->id_origen][$articulo->id][0]->precio))
                                     <td class="border border-dark">{{$prueba0[$recurso->id_origen][$articulo->id][0]->suma_0}}</td> 
                                     @else
                                     <td class="border border-dark">0</td> 
                                     @endif   
-                                    @if (isset($total_i0[$recurso->id_origen][$articulo->id]))
-                                    <th class="border border-dark">${{$total_i0[$recurso->id_origen][$articulo->id]}}</th> 
+
+                                    @if (isset($inventario_0[$recurso->id_origen][$articulo->id][0]->inventario_0))
+                                    <th class="border border-dark" >${{$inventario_0[$recurso->id_origen][$articulo->id][0]->precio * $inventario_0[$recurso->id_origen][$articulo->id][0]->inventario_0}}</th> 
                                     @else
-                                    <th class="border border-dark">$0</th> 
+                                    <th class="border border-dark" >$0</th> 
                                     @endif
-                                    @if (isset($total_e[$recurso->id_origen][$articulo->id]))
-                                    <th class="border border-dark">${{$total_e[$recurso->id_origen][$articulo->id]}}</th> 
+
+                                    @if (isset($cantidad_existencia_recursoE[$recurso->id_origen][$articulo->id][0]->precio))
+                                    <th class="border border-dark">${{$cantidad_existencia_recursoE[$recurso->id_origen][$articulo->id][0]->precio * $cantidad_existencia_recursoE[$recurso->id_origen][$articulo->id][0]->suma_existencia0}}</th> 
                                     @else
-                                    <th class="border border-dark">$0</th> 
+                                    <th class="border border-dark" >$0</th> 
                                     @endif
+
                                     @if (isset($total_s[$recurso->id_origen][$articulo->id]))
                                     <th class="border border-dark" style="color: red">${{$total_s[$recurso->id_origen][$articulo->id]}}</th> 
                                     @else
@@ -166,7 +170,7 @@
                                     <td class="border border-dark">{{$cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01}}</td> 
                                     @else
                                     <td class="border border-dark">0</td> 
-                                    @endif 
+                                    @endif
                                     @if (isset($salida_vales1[$recurso->id_origen][$articulo->id][0]->cantidad_salidas1))
                                     <td class="border border-dark" style="color: red">{{$salida_vales1[$recurso->id_origen][$articulo->id][0]->cantidad_salidas1}}</td>
                                     @else
@@ -184,18 +188,18 @@
                                     @else
                                     <td class="border border-dark">0</td> 
                                     @endif
-                                    @if (isset($total_i01[$recurso->id_origen][$articulo->id]))
-                                    <th class="border border-dark">${{$total_i01[$recurso->id_origen][$articulo->id]}}</th> 
+                                    @if (isset($inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01))
+                                    <th class="border border-dark" >${{$inventario_01[$recurso->id_origen][$articulo->id][0]->precio * $inventario_01[$recurso->id_origen][$articulo->id][0]->inventario_01}}</th> 
                                     @else
                                     <th class="border border-dark">$0</th> 
                                     @endif
-                                    @if (isset($total_e1[$recurso->id_origen][$articulo->id]))
-                                    <th class="border border-dark">${{$total_e1[$recurso->id_origen][$articulo->id]}}</th> 
+                                    @if (isset($cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]))
+                                    <th class="border border-dark">${{$cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->precio * $cantidad_existencia_recursoE1[$recurso->id_origen][$articulo->id][0]->suma_existencia01}}</th> 
                                     @else
                                     <th class="border border-dark">$0</th> 
                                     @endif
                                     @if (isset($total_s1[$recurso->id_origen][$articulo->id]))
-                                    <th class="border border-dark" style="color: red">${{$total_s1[$recurso->id_origen][$articulo->id]}}</th> 
+                                    <th class="border border-dark" style="color: red">${{$total_s[$recurso->id_origen][$articulo->id]}}</th> 
                                     @else
                                     <th class="border border-dark" style="color: red">$0</th> 
                                     @endif
@@ -206,9 +210,21 @@
                 @endforeach
             <tr>
                 <th class="border border-dark" colspan="8" style="text-align: right">T o t a l:</th>
+                @if (isset($total_if[0]->total_if))
                 <th class="border border-dark" style="color: red">${{$total_if[0]->total_if}}</th> 
+                @else
+                <th class="border border-dark" style="color: red">$0</th> 
+                @endif
+                @if (isset($total_e1f[0]->total_ef01))
                 <th class="border border-dark" style="color: red">${{$total_e1f[0]->total_ef01}}</th> 
+                @else
+                <th class="border border-dark" style="color: red">$0</th> 
+                @endif
+                @if (isset($total_s1f[0]->total_s1f))
                 <th class="border border-dark" style="color: red">${{$total_s1f[0]->total_s1f}}</th> 
+                @else
+                <th class="border border-dark" style="color: red">$0</th> 
+                @endif
                 <th id="totalFinal" class="border border-dark" style="color: red">${{$total_f[0]->total_f}}</th>
             </tr>       
             </tbody>

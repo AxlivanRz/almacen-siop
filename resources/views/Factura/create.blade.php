@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <div class="form-group col-3">
                         <label >Fecha</label>
-                        <input type="date" class="form-control @error('fecha') is-invalid @enderror" id ="fecha" name ="fecha"  min="{{$inicio}}" max="{{$ultimo}}" data-inputmask-inputformat="dd/mm/yyyy" required>
+                        <input type="date" class="form-control @error('fecha') is-invalid @enderror" id ="fecha" name ="fecha"  data-inputmask-inputformat="dd/mm/yyyy" required>
                         <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                         @error('fecha')
                             <span class="invalid-feedback">
@@ -36,18 +36,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="form-group col-3">
-                        <label >Folio</label>
-                        <input type="text" class="form-control @error('folio') is-invalid @enderror" id ="folio" name ="folio" required>
-                        <div class="invalid-feedback">Este campo No Puede estar vacío</div>
-                        @error('folio')
-                        <span class="invalid-feedback">
-                            <small>
-                                {{$message}}
-                            </small>
-                        </span>
-                        @enderror
-                    </div>         
+                       
                     <div class="form-group col-3">                                          
                         <label >Proveedor</label>                               
                         <select class="form-select"  name="proveedor" id="proveedor" >
