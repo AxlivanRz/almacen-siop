@@ -10,6 +10,9 @@
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Exportar datos de Salidas</button>
             </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Exportar datos de existencias</button>
+            </li>
         </ul>
     </div>
     <div class="card-body">
@@ -48,6 +51,15 @@
                             <input type="date" id="final1" name="final1" class="form-control" data-inputmask-inputformat="dd/mm/yyyy" required>
                             <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                         </div>
+                        <div class="form-grop col-1 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="reporte" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <form  class= "row needs-validation" action="/excel/existencias" novalidate>
+                    <div class="row">
                         <div class="form-grop col-1 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>

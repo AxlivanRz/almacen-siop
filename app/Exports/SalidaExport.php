@@ -15,6 +15,7 @@ use App\Models\Articulo;
 use App\Models\Factura;
 use App\Models\Partida;
 use App\Models\Area;
+use App\Models\User;
 use App\Models\Vale;
 
 class SalidaExport implements FromView, ShouldAutoSize
@@ -38,7 +39,8 @@ class SalidaExport implements FromView, ShouldAutoSize
             'partidas' => Partida::all(),
             'vales' => Vale::all(),
             'areas' => Area::all(),
-            'vales_surtidos' => ValeSurtido::all()
+            'vales_surtidos' => ValeSurtido::all(),
+            'users' => User::all()
         ]);
     }
 }

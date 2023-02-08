@@ -9,6 +9,7 @@ use App\Models\InventarioExistencia;
 use App\Models\InventarioInicial;
 use App\Models\InventarioFinal;
 use App\Exports\EntradaExport;
+use App\Exports\ExistenciaExport;
 use App\Exports\SalidaExport;
 use App\Models\EntradaArticulo;
 use App\Models\OrigenRecurso;
@@ -778,11 +779,9 @@ class ReporteController extends Controller
             foreach ($recursos as $recurso) {
                 if ($total_existencia_recurso[$recurso->id_origen][0]->iva != null) {
                     $numerof = "inv/".$ano."/".$recurso->nombre_recurso;
-                    $foliof = "inv/".$ano."/".$recurso->nombre_recurso."F";
                     $new_factura = new Factura();
                     $new_factura -> fecha = $tomorrow;
                     $new_factura -> numero_factura = $numerof;
-                    $new_factura -> folio = $foliof;
                     $new_factura->proveedor_id = 1;
                     $new_factura->iva = $total_existencia_recurso[$recurso->id_origen][0]->iva;
                     $new_factura->imp_iva = 0;
@@ -859,9 +858,14 @@ class ReporteController extends Controller
         $fecha = Carbon::parse($fF)->isoFormat('MM-YY');
         return (new SalidaExport($salidas))->download($fecha.'-salidas.xlsx', Excel::XLSX);
     }
-    public function factura()
+    public function existencia()
     {
-       
+        $entradas = DB::table('entrada_articulos')
+        ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
+        ->where('entrada_articulos.existencia','>', 0 )
+        ->get();
+        $fecha = Carbon::now()->isoFormat('MM-YY');
+        return (new ExistenciaExport($entradas))->download($fecha.'-existencias.xlsx', Excel::XLSX);
     }
     /**
      * Show the form for creating a new resource.

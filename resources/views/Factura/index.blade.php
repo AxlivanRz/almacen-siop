@@ -27,7 +27,7 @@
                 @if ($facturas->isNotEmpty())
                     @foreach ( $facturas as $factura )
                         <tr>
-                            <th scope="row">{{$factura->folio}}</th>
+                            <th scope="row">{{$factura->id_factura}}</th>
                             <td>{{$factura->numero_factura}}</td>
                             <td>{{$factura->fecha}}</td>
                             @foreach ($proveedores as $proveedor )

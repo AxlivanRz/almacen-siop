@@ -15,6 +15,7 @@
             <th>Número de vale solicitado</th>
             <th>Número de vale surtido</th>
             <th>Área que solicita</th>
+            <th>Usuario que solicita</th>
         </tr>
     </thead>
     <tbody>
@@ -58,6 +59,11 @@
                                                     @endif
                                                 @endforeach
                                             @endif
+                                        @endforeach
+                                        @foreach ($users as $user)
+                                            @if ($user->id_usuario == $vale->usuario_id && $user->deleted_at == null)
+                                            <td>{{$user->name}} - {{$user->primer_apellido}}</td>
+                                            @endif    
                                         @endforeach
                                     @endif
                                 @endforeach
