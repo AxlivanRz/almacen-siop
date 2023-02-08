@@ -14,6 +14,7 @@ use App\Models\ValeSurtido;
 use App\Models\Articulo;
 use App\Models\Factura;
 use App\Models\Partida;
+use App\Models\Area;
 use App\Models\Vale;
 
 class SalidaExport implements FromView, ShouldAutoSize
@@ -22,17 +23,22 @@ class SalidaExport implements FromView, ShouldAutoSize
     * @return \Illuminate\Support\Collection
     */
     use Exportable;
-    public function view(): View
+    protected $salidas;
+    public function __construct($salidas = null){
+        $this->salidas = $salidas;
+    }
+    public function view(): View 
     {
         return view('Excel.salidas',[
+            'salidas' => $this->salidas ?: surtido_entrada::all(),
             'entradas' => EntradaArticulo::all(),
             'facturas' => Factura::all(),
             'recursos' => OrigenRecurso::all(),
             'articulos' => Articulo::all(),
             'partidas' => Partida::all(),
             'vales' => Vale::all(),
-            'vales_surtidos' => ValeSurtido::all(),
-            'salidas' => surtido_entrada::all()
+            'areas' => Area::all(),
+            'vales_surtidos' => ValeSurtido::all()
         ]);
     }
 }

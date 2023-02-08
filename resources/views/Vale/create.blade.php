@@ -104,7 +104,7 @@
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";
-            cantidad.min = "0";
+            cantidad.min = "1";
             cantidad.value = "0";
             column3.appendChild(cantidad);
 

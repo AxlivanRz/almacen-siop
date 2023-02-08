@@ -49,9 +49,16 @@
             @include('Partida.edit')
         @endforeach
     @endif
-    @include('Partida.create')   
+    @include('Partida.create')
+    @if ($errors->isNotEmpty())
+        @foreach ( $errors->all() as $nuevo )
+        <script>
+            toastr.error('{{$nuevo}}');
+        </script>
+        @endforeach 
+    @endif   
     @if(Session::has('exito'))
-    <script>
+    <script> 
         toastr.success("{!! Session::get('exito') !!}");
     </script>
     @endif

@@ -14,6 +14,7 @@
             <th>Fecha de salida</th>
             <th>Número de vale solicitado</th>
             <th>Número de vale surtido</th>
+            <th>Área que solicita</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +50,15 @@
                                         <td>{{$vale_surtido->fecha}}</td>
                                         <td>{{$vale_surtido->id}}</td>
                                         <td>{{$vale_surtido->vale_id}}</td>
+                                        @foreach ($vales as $vale)
+                                            @if ($vale->id == $vale_surtido->vale_id)
+                                                @foreach ($areas as $area)
+                                                    @if ($vale->area_id == $area->id_area)
+                                                        <td>{{$area->nombre_area}}</td>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
                                     @endif
                                 @endforeach
                             @endif

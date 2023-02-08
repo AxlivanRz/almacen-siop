@@ -19,10 +19,14 @@ class EntradaExport implements FromView, ShouldAutoSize
     * @return \Illuminate\Support\Collection
     */
     use Exportable;
+    protected $entradas;
+    public function __construct($entradas = null){
+        $this->entradas = $entradas;
+    }
     public function view(): View
     {
         return view('Excel.entradas',[
-            'entradas' => EntradaArticulo::all(),
+            'entradas' => $this->entradas ?: EntradaArticulo::all(),
             'facturas' => Factura::all(),
             'recursos' => OrigenRecurso::all(),
             'articulos' => Articulo::all(),

@@ -8,7 +8,7 @@
         </div>
             <div class="content" style="align-self: center">
                 <div class="modal-body">
-                    <form action="{{route('partida.update',$partida->id_partida)}}" method="POST">
+                    <form class="needs-validation" action="{{route('partida.update',$partida->id_partida)}}" method="POST" novalidate>
                         @csrf 
                         @method('PUT')
                         <div class="col-12">
@@ -36,3 +36,20 @@
       </div>
     </div>
 </div>
+<script type="text/javascript">
+    (function () {
+      'use strict'
+     var forms = document.querySelectorAll('.needs-validation')
+     Array.prototype.slice.call(forms)
+         .forEach(function (form) {
+         form.addEventListener('submit', function (event) {
+             if (!form.checkValidity()) {
+             event.preventDefault()
+             event.stopPropagation()
+             }
+ 
+             form.classList.add('was-validated')
+         }, false)
+         })
+    })()
+ </script>

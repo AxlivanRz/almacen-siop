@@ -732,13 +732,15 @@ class ReporteController extends Controller
             $tomorrow = Carbon::parse($request->mesCierre)->endOfMonth()->addDay()->toDateString();
             $nombre = Carbon::parse($request->mesCierre)->isoFormat('MMMM');
             $ano = Carbon::parse($request->mesCierre)->endOfMonth()->addDay()->isoFormat('MM/YY');
+            $ano01 = Carbon::parse($request->mesCierre)->endOfMonth()->addDay()->isoFormat('YYYY');
+            $inicio = $ano01."-01-01";
             $recursos = DB::table('origen_recursos')->orderBy('id_origen', 'asc')->get();
             // 1. Sumatoria total para Inventarios inicial y final
             $total_existencias = DB::table('articulos')
             ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
             ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
             ->where('entrada_articulos.existencia', '>',  0)
-            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
             ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as suma')
             ->get();
             // 1. Cierre
@@ -750,7 +752,7 @@ class ReporteController extends Controller
                 ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
                 ->where('entrada_articulos.existencia', '>',  0)
                 ->where('facturas.recurso_id', '=', $recurso->id_origen)
-                ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+                ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
                 ->select('facturas.iva')
                 ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as suma_recurso')
                 ->get();
@@ -770,7 +772,7 @@ class ReporteController extends Controller
             ->join('entrada_articulos', 'articulos.id', '=', 'entrada_articulos.articulo_id')
             ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
             ->where('entrada_articulos.existencia', '>',  0)
-            ->whereBetween('entrada_articulos.created_at', [$iniI, $finF])
+            ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
             ->select('entrada_articulos.articulo_id', 'entrada_articulos.caducidad', 'entrada_articulos.existencia', 'entrada_articulos.cantidad', 'entrada_articulos.precio',  'entrada_articulos.id', 'facturas.recurso_id', 'facturas.iva', 'facturas.proveedor_id')
             ->get();
             foreach ($recursos as $recurso) {
@@ -835,13 +837,27 @@ class ReporteController extends Controller
     {
         return view('Excel.index');
     }
-    public function entrada()
+    public function entrada(Request $request)
     {
-    return (new EntradaExport)->download('entrada.xlsx', Excel::XLSX);
+        $fI = $request->inicio;
+        $fF = $request->final;
+        $entradas = DB::table('entrada_articulos')
+        ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
+        ->whereBetween('facturas.fecha', [$fI, $fF])
+        ->get();
+        $fecha = Carbon::parse($fF)->isoFormat('MM-YY');
+        return (new EntradaExport($entradas))->download($fecha.'-entradas.xlsx', Excel::XLSX);
     }
-    public function salida()
+    public function salida(Request $request)
     {
-        return (new SalidaExport)->download('salida.xlsx', Excel::XLSX);
+        $fI = $request->inicio1;
+        $fF = $request->final1;
+        $salidas = DB::table('surtido_entradas')
+        ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+        ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+        ->get();
+        $fecha = Carbon::parse($fF)->isoFormat('MM-YY');
+        return (new SalidaExport($salidas))->download($fecha.'-salidas.xlsx', Excel::XLSX);
     }
     public function factura()
     {

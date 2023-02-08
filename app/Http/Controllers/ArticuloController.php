@@ -7,8 +7,8 @@ use App\Models\Partida;
 use App\Models\Articulo;
 use App\Models\UnidadMedida;
 use App\Models\EntradaArticulo;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class ArticuloController extends Controller

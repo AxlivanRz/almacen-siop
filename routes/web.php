@@ -61,6 +61,7 @@ Route::any('/pdf/vale/{id}', [SurtirController::class, 'pdf'])->name('vale.pdf')
 Route::any('/cierre', [ReporteController::class, 'cierre'])->name('reporte.cierre')->middleware('rol:ti,admin');
 Route::view('/cierre/mensual', 'Reporte.cierre')->name('cierre.mensual')->middleware('rol:ti,admin');
 Route::view('/export', 'Excel.index')->name('excel.index')->middleware('rol:ti,admin,alm');
+
 Route::get('/excel/entradas', [ReporteController::class, 'entrada'])->name('excel.entrada')->middleware('rol:ti,admin,alm');
 Route::get('/excel/salidas', [ReporteController::class, 'salida'])->name('excel.salida')->middleware('rol:ti,admin,alm');
 Route::get('/excel/facturas', [ReporteController::class, 'factura'])->name('excel.factura')->middleware('rol:ti,admin,alm');

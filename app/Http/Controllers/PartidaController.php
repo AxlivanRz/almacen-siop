@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Partida;
 
 class PartidaController extends Controller
@@ -36,6 +37,12 @@ class PartidaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'clave' => 'required | unique:App\Models\Partida,descripcion_partida',
+        ],
+            [
+            'clave.unique' => 'La clave de partida ya existe',
+        ]);
         try {
             $create = new Partida; 
             $create -> nombre_partida = $request->nombre_partida;
@@ -80,8 +87,14 @@ class PartidaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $edit = Partida::findOrFail($id); 
+        $request->validate([
+            'descripcion_partida' => Rule::unique('partidas', 'descripcion_partida')->ignore($edit->id_partida),
+        ],
+            [
+            'descripcion_partida.unique' => 'La clave de la partida ya existe',
+        ]);
         try {
-            $edit = Partida::findOrFail($id); 
             $edit -> nombre_partida = $request->nombre_partida;
             $edit -> descripcion_partida = $request->desc_partida;
             $edit -> abreviado = $request->abreviado;
