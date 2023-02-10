@@ -160,7 +160,7 @@
             row.className = "row d-flex align-items-end";
 
             var column1 = document.createElement("div");
-            column1.className = "col-3";
+            column1.className = "col-6";
             row.appendChild(column1);
             var formGroup1 = document.createElement("div");
             formGroup1.className = "form-group";
@@ -169,7 +169,7 @@
             label.innerHTML = "Articulo";
             formGroup1.appendChild(label);
             var select = document.createElement("select");
-            select.className = "form-control";
+            select.className = "form-control form-control-sm";
             select.name = "articulokey[]";
             select.id = "artparent" + parent;
             select.required = "true";
@@ -195,7 +195,7 @@
             label.innerHTML = "Cantidad";
             column3.appendChild(label);
             var cantidad = document.createElement("input");
-            cantidad.className = "form-control";
+            cantidad.className = "form-control form-control-sm";
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";
@@ -214,7 +214,7 @@
             label.innerHTML = "Precio";
             formGroup2.appendChild(label);
             var base = document.createElement("input");
-            base.className = "form-control";
+            base.className = "form-control form-control-sm";
             base.name = "basekey[]";
             base.id = "base" + parent;
             base.type = "number";
@@ -234,7 +234,7 @@
             label.innerHTML = "Descuento $";
             formGroup2.appendChild(label);
             var descuento = document.createElement("input");
-            descuento.className = "form-control";
+            descuento.className = "form-control form-control-sm";
             descuento.name = "descuentokey[]";
             descuento.id = "descuento" + parent;
             descuento.type = "number";
@@ -253,7 +253,7 @@
             label.innerHTML = "IVA %";
             formGroup3.appendChild(label);
             var iva = document.createElement("input");
-            iva.className = "form-control";
+            iva.className = "form-control form-control-sm";
             iva.name = "iva";
             iva.id = "iva" + parent;
             iva.type = "number";
@@ -272,7 +272,7 @@
             label.innerHTML = "Importe IVA";
             formGroup4.appendChild(label);
             var unitario = document.createElement("input");
-            unitario.className = "form-control";
+            unitario.className = "form-control form-control-sm";
             unitario.name = "unitariokey[]";
             unitario.id = "unitario" + parent;
             unitario.type = "number";
@@ -291,7 +291,7 @@
             label.innerHTML = "Precio unitario";
             formGroup5.appendChild(label);
             var precio = document.createElement("input");
-            precio.className = "form-control";
+            precio.className = "form-control form-control-sm";
             precio.name = "preciokey[]";
             precio.id = "precio" + parent;
             precio.type = "number";
@@ -310,7 +310,7 @@
             label.innerHTML = "Precio Total";
             formGroup6.appendChild(label);
             var precioT = document.createElement("input");
-            precioT.className = "form-control";
+            precioT.className = "form-control form-control-sm";
             precioT.name = "preciototalkey[]";
             precioT.id = "preciototal" + parent;
             precioT.type = "number";
@@ -329,7 +329,7 @@
             label.innerHTML = "Caducidad";
             formGroup7.appendChild(label);
             var caducidad = document.createElement("input");
-            caducidad.className = "form-control";
+            caducidad.className = "form-control form-control-sm";
             caducidad.name = "caducidad[]";
             caducidad.id = "caducidad" + parent;
             caducidad.type = "date";

@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\Models\InventarioExistencia;
 use App\Models\InventarioInicial;
+use App\Exports\ExistenciaExport;
+use App\Exports\ComparativoExport;
+use App\Models\EntradaArticulo;
 use App\Models\InventarioFinal;
 use App\Exports\EntradaExport;
-use App\Exports\ExistenciaExport;
 use App\Exports\SalidaExport;
-use App\Models\EntradaArticulo;
 use App\Models\OrigenRecurso;
 use App\Models\Departamento;
 use App\Models\ValeSurtido;
@@ -866,6 +867,36 @@ class ReporteController extends Controller
         ->get();
         $fecha = Carbon::now()->isoFormat('MM-YY');
         return (new ExistenciaExport($entradas))->download($fecha.'-existencias.xlsx', Excel::XLSX);
+    }
+    public function comparativoES(Request $request){
+        $fI = $request->fecha_inicio2;
+        $fF = $request->fecha_final2;
+        $ano01 = Carbon::parse($request->inicio2)->isoFormat('YYYY');
+        $inicio = Carbon::parse($ano01."-01-01")->isoFormat('YYYY-MM-DD');
+        $salidas_0 = DB::table('surtido_entradas')
+        ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+        ->join('entrada_articulos', 'surtido_entradas.entrada_articulo_id', '=', 'entrada_articulos.id')
+        ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
+        ->where('entrada_articulos.existencia', '=', 0)
+        ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+        ->select('entrada_articulos.*', 'facturas.*');
+        $entradas = DB::table('entrada_articulos')
+        ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
+        ->where('entrada_articulos.existencia', '>', 0)
+        ->whereBetween('facturas.fecha', [$inicio, $fF])
+        ->union($salidas_0)
+        ->get();
+        foreach ($entradas as $entrada) {
+            $salidas[$entrada->id] = DB::table('surtido_entradas')
+            ->join('vale_surtidos', 'surtido_entradas.vale_surtido_id', '=', 'vale_surtidos.id')
+            ->where('surtido_entradas.entrada_articulo_id', '=', $entrada->id)
+            ->whereBetween('vale_surtidos.fecha', [$fI, $fF])
+            ->select('surtido_entradas.entrada_articulo_id')
+            ->selectRaw('SUM(surtido_entradas.cantidad) as suma')
+            ->get();
+        }
+        $fecha = Carbon::parse($fF)->isoFormat('MM-YY');
+        return (new ComparativoExport($entradas, $salidas))->download($fecha.'-comparativo.xlsx', Excel::XLSX);
     }
     /**
      * Show the form for creating a new resource.

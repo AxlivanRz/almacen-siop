@@ -18,9 +18,9 @@
                             <div id="newpro" name= "newpro" class="newpro">
                                 <h5 class="border-top mt-4">Producto</h5>
                                 <div class="row d-flex align-items-end"> 
-                                    <div class="form-group col-5">
+                                    <div class="form-group col-8">
                                         <label>Articulo</label> 
-                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">                                               
+                                        <select class="form-control form-control-sm" name="articulokey[]" id="artparent{{$contador}}">                                               
                                             <option value="{{$vArticulo->id}}">
                                                 {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
                                             </option>                                           
@@ -33,9 +33,9 @@
                                             @endforeach  
                                         </select>
                                     </div>
-                                    <div class="form-group col-5">
+                                    <div class="form-group col-4">
                                         <label>Cantidad</label>
-                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}">
+                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$vArticulo->pivot->cantidad}}">
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
             row.className = "row d-flex align-items-end";
 
             var column1 = document.createElement("div");
-            column1.className = "col-5";
+            column1.className = "col-8";
             row.appendChild(column1);
             var formGroup1 = document.createElement("div");
             formGroup1.className = "form-group";
@@ -111,7 +111,7 @@
             label.innerHTML = "Articulo";
             formGroup1.appendChild(label);
             var select = document.createElement("select");
-            select.className = "form-control";
+            select.className = "form-control form-control-sm";
             select.name = "articulokey[]";
             select.id = "artparent" + parent;
             select.required = "required";
@@ -130,13 +130,13 @@
                 }
             });     
             var column3 = document.createElement("div");
-            column3.className = "col-5";
+            column3.className = "col-4";
             row.appendChild(column3);
             var label = document.createElement("label");
             label.innerHTML = "Cantidad";
             column3.appendChild(label);
             var cantidad = document.createElement("input");
-            cantidad.className = "form-control";
+            cantidad.className = "form-control form-control-sm";
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";

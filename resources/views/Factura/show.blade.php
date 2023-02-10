@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="facturaShow{{$factura->id_factura}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-white border-0 " >
                 <h5 class="modal-title" id="departamentoEditLabel" >Factura</h5>
@@ -38,43 +38,47 @@
                         @if ($articulo->id == $entrada->articulo_id && $entrada->factura_id == $factura->numero_factura)
                             <h5 class="border-top mt-4">Producto</h5>
                             <div class="row d-flex align-items-end">
-                                <div class="form-group col-3">
+                                <div class="form-group col-5">
                                     <label>Articulo</label> 
-                                    <select class="form-control" name="articulokey[]" id="artparent" disabled>
+                                    <select class="form-control form-control-sm" name="articulokey[]" id="artparent" disabled>
                                         @if ($articulo->id == $entrada->articulo_id)  
                                             <option selected value="{{$articulo->id}}">
-                                                {{$articulo->nombre_articulo}}
+                                                {{$articulo->nombre_articulo}}-{{$articulo->nombre_med}}
                                             </option>
                                         @endif   
                                     </select>
                                 </div>
                                 <div class="form-group col-2">
                                     <label>Cantidad</label>
-                                    <input class="form-control" name="cantidadkey[]" id="cantidad" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
+                                    <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
                                 </div>
                                 <div class="form-group col-3">
                                     <label>Precio Base</label>
-                                    <input class="form-control" name="basekey[]" id="base" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
+                                    <input class="form-control form-control-sm" name="basekey[]" id="base" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
                                 </div>
                                 <div class="form-group col-2">
                                     <label>Descuento $</label>
-                                    <input class="form-control" name="descuentokey[]" id="descuento" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
+                                    <input class="form-control form-control-sm" name="descuentokey[]" id="descuento" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
                                 </div>
                                 <div class="form-group col-2">
                                     <label>IVA %</label>
-                                    <input class="form-control" name="iva" id="iva" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
+                                    <input class="form-control form-control-sm" name="iva" id="iva" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
                                 </div>
                                 <div class="form-group col-3">
                                     <label>Importe IVA</label>
-                                    <input class="form-control" name="unitariokey[]" id="unitario" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
+                                    <input class="form-control form-control-sm" name="unitariokey[]" id="unitario" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
                                 </div>
-                                <div class="form-grop col-3">
+                                <div class="form-grop col-2">
                                     <label>Precio unitario</label>
-                                    <input class="form-control" name="preciokey[]" id="precio" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
+                                    <input class="form-control form-control-sm" name="preciokey[]" id="precio" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
                                 </div>
-                                <div class="form-grop col-3">
+                                <div class="form-grop col-2">
                                     <label>Existencia</label>
-                                    <input class="form-control" name="existencia[]" id="existencia" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                    <input class="form-control form-control-sm" name="existencia[]" id="existencia" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                </div>
+                                <div class="form-grop col-2">
+                                    <label>Caducidad</label>
+                                    <input class="form-control form-control-sm" type="date" name="caducidad[]" id="caducidad" value = "{{$entrada->caducidad}}" disabled>
                                 </div>
                             </div>
                         @endif

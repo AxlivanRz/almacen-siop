@@ -65,6 +65,7 @@ Route::view('/export', 'Excel.index')->name('excel.index')->middleware('rol:ti,a
 Route::get('/excel/entradas', [ReporteController::class, 'entrada'])->name('excel.entrada')->middleware('rol:ti,admin,alm');
 Route::get('/excel/salidas', [ReporteController::class, 'salida'])->name('excel.salida')->middleware('rol:ti,admin,alm');
 Route::get('/excel/existencias', [ReporteController::class, 'existencia'])->name('excel.existencia')->middleware('rol:ti,admin,alm');
+Route::get('/excel/comparativo', [ReporteController::class, 'comparativoES'])->name('excel.comparativo')->middleware('rol:ti,admin,alm');
 
 Route::resource('/usuario', UsuarioController::class)->middleware('rol:ti,admin,alm');
 Route::resource('/up', UpController::class)->middleware('rol:ti,admin,alm');

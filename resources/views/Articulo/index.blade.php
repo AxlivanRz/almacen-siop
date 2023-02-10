@@ -6,7 +6,7 @@
         <h5> <i class="fas fa-cubes fa-2x"></i> &NonBreakingSpace; Articulos</h5>
     </div>
 </div>
-<div class="container bg-white col-md-10 col-sm-12 col-11">
+<div class="container bg-white col-md-10 col-sm-12 col-12">
     <div class="table-responsive">
         <table class="table ">
             <thead>

@@ -15,10 +15,10 @@ class CreateDepartamentosTable extends Migration
     {
         Schema::create('departamentos', function (Blueprint $table) {
             $table->bigIncrements('id_departamento');
-            $table->string('nombre_departamento', 40);
-            $table->string('descripcion_departamento', 40);
+            $table->string('nombre_departamento');
+            $table->string('descripcion_departamento');
             $table->unsignedBigInteger('area_id');
-            $table->string('encargado_departamento', 40);
+            $table->string('encargado_departamento');
             $table->timestamps();
             $table->foreign('area_id')->references('id_area')->on('areas')->onDelete('cascade');
         });

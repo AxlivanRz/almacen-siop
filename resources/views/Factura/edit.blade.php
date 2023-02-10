@@ -50,19 +50,19 @@
                                             <div id="newpro" name= "newpro" class="newpro">
                                                 <h5 class="border-top mt-4">Producto</h5>
                                                 <div class="row d-flex align-items-end">
-                                                    <div class="form-group col-3">
+                                                    <div class="form-group col-5">
                                                         <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                         <label>Articulo</label> 
-                                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}" disabled>
+                                                        <select class="form-control form-control-sm" name="articulokey[]" id="artparent{{$contador}}" disabled>
                                                             @if ($articulo->id == $entrada->articulo_id)  
                                                                 <option selected value="{{$articulo->id}}">
-                                                                    {{$articulo->nombre_articulo}}
+                                                                    {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
                                                                 </option>
                                                             @endif
                                                             @foreach ($articulos as $articulo)
                                                                 @if ($articulo->id != $entrada->articulo_id)
                                                                     <option value="{{$articulo->id}}">
-                                                                        {{$articulo->nombre_articulo}}
+                                                                        {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
                                                                     </option>
                                                                 @endif  
                                                             @endforeach     
@@ -70,31 +70,35 @@
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Cantidad</label>
-                                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
+                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label> Precio Base</label>
-                                                        <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
+                                                        <input class="form-control form-control-sm" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Descuento $</label>
-                                                        <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
+                                                        <input class="form-control form-control-sm" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>IVA %</label>
-                                                        <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
+                                                        <input class="form-control form-control-sm" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Importe Unitario</label>
-                                                        <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
+                                                        <input class="form-control form-control-sm" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Precio unitario</label>
-                                                        <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
+                                                        <input class="form-control form-control-sm" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Existencia</label>
-                                                        <input class="form-control" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                        <input class="form-control form-control-sm" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Caducidad</label>
+                                                        <input class="form-control form-control-sm" name="caducidad[]" id="caducidad{{$contador}}" type="date" value = "{{$entrada->caducidad}}" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,19 +106,19 @@
                                             <div id="newpro" name= "newpro" class="newpro">
                                                 <h5 class="border-top mt-4">Producto</h5>
                                                 <div class="row d-flex align-items-end">
-                                                    <div class="form-group col-3">
+                                                    <div class="form-group col-6">
                                                         <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                         <label>Articulo</label> 
-                                                        <select class="form-control" name="articulokey[]" id="artparent{{$contador}}">
+                                                        <select class="form-control form-control-sm" name="articulokey[]" id="artparent{{$contador}}">
                                                             @if ($articulo->id == $entrada->articulo_id)  
                                                                 <option selected value="{{$articulo->id}}">
-                                                                    {{$articulo->nombre_articulo}}
+                                                                    {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
                                                                 </option>
                                                             @endif
                                                             @foreach ($articulos as $articulo)
                                                                 @if ($articulo->id != $entrada->articulo_id)
                                                                     <option value="{{$articulo->id}}">
-                                                                        {{$articulo->nombre_articulo}}
+                                                                        {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
                                                                     </option>
                                                                 @endif  
                                                             @endforeach     
@@ -122,35 +126,39 @@
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Cantidad</label>
-                                                        <input class="form-control" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
+                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}">
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label> Precio</label>
-                                                        <input class="form-control" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
+                                                        <input class="form-control form-control-sm" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}">
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Descuento $</label>
-                                                        <input class="form-control" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
+                                                        <input class="form-control form-control-sm" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}">
                                                     </div>
                                                     <div class="form-group col-1">
                                                         <label>IVA %</label>
-                                                        <input class="form-control" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
+                                                        <input class="form-control form-control-sm" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}">
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Importe IVA</label>
-                                                        <input class="form-control" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
+                                                        <input class="form-control form-control-sm" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}">
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Precio unitario</label>
-                                                        <input class="form-control" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
+                                                        <input class="form-control form-control-sm" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}">
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Precio total</label>
-                                                        <input class="form-control" name="preciototalkey[]" id="preciototal{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->preciofinal}}">
+                                                        <input class="form-control form-control-sm" name="preciototalkey[]" id="preciototal{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->preciofinal}}">
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Existencia</label>
-                                                        <input class="form-control" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                        <input class="form-control form-control-sm" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                    </div>
+                                                    <div class="form-grop col-2">
+                                                        <label>Caducidad</label>
+                                                        <input class="form-control form-control-sm" name="caducidad[]" id="caducidad{{$contador}}" type="date" value = "{{$entrada->caducidad}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,7 +289,7 @@
             row.className = "row d-flex align-items-end";
 
             var column1 = document.createElement("div");
-            column1.className = "col-3";
+            column1.className = "col-6";
             row.appendChild(column1);
             var formGroup1 = document.createElement("div");
             formGroup1.className = "form-group";
@@ -290,7 +298,7 @@
             label.innerHTML = "Articulo";
             formGroup1.appendChild(label);
             var select = document.createElement("select");
-            select.className = "form-control";
+            select.className = "form-control form-control-sm";
             select.name = "articulokey[]";
             select.id = "artparent" + parent;
             select.required = "required";
@@ -315,7 +323,7 @@
             label.innerHTML = "Cantidad";
             column3.appendChild(label);
             var cantidad = document.createElement("input");
-            cantidad.className = "form-control";
+            cantidad.className = "form-control form-control-sm";
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";
@@ -334,7 +342,7 @@
             label.innerHTML = "Precio Base";
             formGroup2.appendChild(label);
             var base = document.createElement("input");
-            base.className = "form-control";
+            base.className = "form-control form-control-sm";
             base.name = "basekey[]";
             base.id = "base" + parent;
             base.type = "number";
@@ -353,7 +361,7 @@
             label.innerHTML = "Descuento";
             formGroup2.appendChild(label);
             var descuento = document.createElement("input");
-            descuento.className = "form-control";
+            descuento.className = "form-control form-control-sm";
             descuento.name = "descuentokey[]";
             descuento.id = "descuento" + parent;
             descuento.type = "number";
@@ -372,7 +380,7 @@
             label.innerHTML = "IVA %";
             formGroup3.appendChild(label);
             var iva = document.createElement("input");
-            iva.className = "form-control";
+            iva.className = "form-control form-control-sm";
             iva.name = "iva";
             iva.id = "iva" + parent;
             iva.type = "number";
@@ -391,7 +399,7 @@
             label.innerHTML = "Importe IVA";
             formGroup4.appendChild(label);
             var unitario = document.createElement("input");
-            unitario.className = "form-control";
+            unitario.className = "form-control form-control-sm";
             unitario.name = "unitariokey[]";
             unitario.id = "unitario" + parent;
             unitario.type = "number";
@@ -410,7 +418,7 @@
             label.innerHTML = "Precio Unitario";
             formGroup5.appendChild(label);
             var precio = document.createElement("input");
-            precio.className = "form-control";
+            precio.className = "form-control form-control-sm";
             precio.name = "preciokey[]";
             precio.id = "precio" + parent;
             precio.type = "number";
@@ -429,7 +437,7 @@
             label.innerHTML = "Precio Total";
             formGroup6.appendChild(label);
             var precioT = document.createElement("input");
-            precioT.className = "form-control";
+            precioT.className = "form-control form-control-sm";
             precioT.name = "preciototalkey[]";
             precioT.id = "preciototal" + parent;
             precioT.type = "number";
@@ -448,7 +456,7 @@
             label.innerHTML = "Caducidad";
             formGroup7.appendChild(label);
             var caducidad = document.createElement("input");
-            caducidad.className = "form-control";
+            caducidad.className = "form-control form-control-sm";
             caducidad.name = "caducidad[]";
             caducidad.id = "caducidad" + parent;
             caducidad.type = "date";

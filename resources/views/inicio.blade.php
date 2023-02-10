@@ -1,6 +1,19 @@
 @extends('sideb')
 @section('content')
 @canany(['isAdmin', 'isTi', 'isAlm'])
+<style type="text/css"> 
+    thead{ 
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: #ffffff;
+    }
+
+    .table-responsive { 
+        height:250px;
+        overflow:scroll;
+    }
+</style>
 <div class="row">
     <div class="col-3 py-3 mt-2">
         <h5> <i class="fa-regular fa-file-lines fa-2x"></i> &NonBreakingSpace; Vales / {{Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->nombre_rol : "" }}</h5>
@@ -66,16 +79,16 @@
 <div class="container bg-white col-md-12 col-sm-12 col-11" style="height: 250px;overflow-y: scroll;">
     <div class="table-responsive" >
         <table class="table">
-            <thead>
+            <thead class="thead-dark">
             <tr>
-                <th scope="col">Clave articulo</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Unidad de medida</th>
-                <th scope="col">Partida</th>     
-                <th scope="col">N. de Factura</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Existencia</th>
-                <th scope="col">Caducidad</th>       
+                <th class="header" scope="col">Clave articulo</th>
+                <th class="header" scope="col">Nombre</th>
+                <th class="header" scope="col">Unidad de medida</th>
+                <th class="header" scope="col">Partida</th>     
+                <th class="header" scope="col">N. de Factura</th>
+                <th class="header" scope="col">Precio</th>
+                <th class="header" scope="col">Existencia</th>
+                <th class="header" scope="col">Caducidad</th>       
             </tr>
             </thead>
             <tbody>            

@@ -88,16 +88,18 @@ class ValeController extends Controller
         foreach ($idSurtido as $idw) {
             $nid = $idw->id;
         }
-        $entradas = EntradaArticulo::get();
+        $entradas = DB::table('entrada_articulos')
+        ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
+        ->get();
+
         $valeArticulos = $vale->articulos;
         $usuarios = User::get();
-        $surtido = ValeSurtido::findOrFail($nid);
         $surtido = ValeSurtido::findOrFail($nid);
         $queryEFAs = DB::table('surtido_entradas')
         ->where('vale_surtido_id', '=', $nid)
         ->join('entrada_articulos', 'surtido_entradas.entrada_articulo_id', '=', 'entrada_articulos.id')
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
-        ->select('articulos.id', 'surtido_entradas.cantidad')
+        ->select('articulos.clave_articulo', 'surtido_entradas.cantidad', 'entrada_articulos.id')
         ->get();
         return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos', 'queryEFAs', 'surtido', 'usuarios'])); 
     }

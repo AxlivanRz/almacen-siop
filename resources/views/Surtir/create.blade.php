@@ -1,17 +1,17 @@
 @extends('sideb')
 @section('content')
-<div class="row my-5 py-2 ">
-    <div class="col-3">
+<div class="row my-3">
+    <div class="col-12">
       <div class="card">
         <?php $contador = 0; ?>
         <div class="card-body">
-            <h5 class="card-title">Vale</h5>
+            <h5 class="card-title col-11 mx-4 px-4" style="display: inline-block">Vale solicitado por usuario</h5>
             <div class="row ">
                 <div class="form-group" id="producto">
                     @foreach ($valeArticulos as $vArticulo)
                         <?php $contador++;?>
                         <div id="newpro" name= "newpro" class="newpro">
-                            <h5 class="border-top mt-4">Producto</h5>
+                            <h5 class="border-top mt-2">Producto</h5>
                             <div class="row d-flex align-items-end">
                                 <div class="form-group col-8">
                                     @if ($vale->articulos->isNotEmpty())
@@ -44,9 +44,11 @@
         </div>
       </div>
     </div>
+</div>
     {{-- Para surtir --}}
     {{-- Para surtir --}}
-    <div class="col-9">
+<div class="row my-3">
+    <div class="col-12">
         <div class="card">
             <form action="{{route('surtir.storeVale',$vale->id)}}" method="post">
                 @csrf
@@ -113,7 +115,7 @@
            $(producto).append(
             '<div>'+
                 '<div class="row d-flex align-items-end border-top mt-4">' +
-                    '<div class="form-group col-3">' +
+                    '<div class="form-group col-5">' +
                         '<label>'+'Seleccionar Articulo'+'</label>' +
                         '<select class="articulo form-control form-control-sm" onChange= "getSelect(this)" name="entrada[]" id= "'+ contador +'">' +
                             '<option value="0">' +

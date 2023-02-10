@@ -60,11 +60,11 @@
                         <div id="newpro" name= "newpro" class="newpro">
                             <h5 class="border-top mt-4">Producto</h5>
                             <div class="row d-flex align-items-end"> 
-                                <div class="form-group col-4">
+                                <div class="form-group col-8">
                                     @if ($vale->articulos->isNotEmpty())
                                         @if ($valeArticulos !=null)
                                             <label>Articulo</label> 
-                                            <select class="form-control" name="articulokey[]" disabled>                                                    
+                                            <select class="form-control form-control-sm" name="articulokey[]" disabled>                                                    
                                                 <option selected value="{{$vArticulo->id}}">
                                                     {{$vArticulo->nombre_articulo}} - {{$vArticulo->nombre_med}}
                                                 </option>                                                    
@@ -72,17 +72,17 @@
                                         @endif
                                     @endif
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-2">
                                     <label>Cantidad solicitada</label>
-                                    <input class="form-control" name="cantidadkey[]" id="cantidad" type="number" min="{{$vArticulo->pivot->cantidad}}" value = "{{$vArticulo->pivot->cantidad}}" disabled>
+                                    <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad" type="number" min="{{$vArticulo->pivot->cantidad}}" value = "{{$vArticulo->pivot->cantidad}}" disabled>
                                 </div>
                                 @if ($queryEFAs != null)
                                     @foreach ($queryEFAs as $queryEFA)
-                                        @if ($queryEFA->id == $vArticulo->id)
-                                        <div class="form-group col-4">
-                                            <label>Cantidad aprobada</label>
-                                            <input class="form-control" name="cantidadkey2[]" id="cantidad2" type="number" value = "{{$queryEFA->cantidad}}" disabled>
-                                        </div>
+                                        @if ($queryEFA->clave_articulo == $vArticulo->clave_articulo)
+                                            <div class="form-group col-2">
+                                                <label>Cantidad aprobada</label>
+                                                <input class="form-control form-control-sm" name="cantidadkey2[]" id="cantidad2" type="number" value = "{{$queryEFA->cantidad }}" disabled>
+                                            </div>
                                         @endif
                                     @endforeach
                                 @endif

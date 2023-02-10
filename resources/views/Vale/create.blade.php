@@ -65,7 +65,7 @@
             row.className = "row d-flex align-items-end";
 
             var column1 = document.createElement("div");
-            column1.className = "col-5";
+            column1.className = "col-8";
             row.appendChild(column1);
             var formGroup1 = document.createElement("div");
             formGroup1.className = "form-group";
@@ -74,7 +74,7 @@
             label.innerHTML = "Articulo";
             formGroup1.appendChild(label);
             var select = document.createElement("select");
-            select.className = "form-control";
+            select.className = "form-control form-control-sm";
             select.name = "articulokey[]";
             select.id = "artparent" + parent;
             select.required = "required";
@@ -94,13 +94,13 @@
                 }
             });     
             var column3 = document.createElement("div");
-            column3.className = "col-5";
+            column3.className = "col-4";
             row.appendChild(column3);
             var label = document.createElement("label");
             label.innerHTML = "Cantidad";
             column3.appendChild(label);
             var cantidad = document.createElement("input");
-            cantidad.className = "form-control";
+            cantidad.className = "form-control form-control-sm";
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";

@@ -138,8 +138,9 @@ class FacturaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   try {
-        //code...
+    {   
+        try {
+         //code...
             if ($request->get('elimado') != null) {
                 foreach($request->get('elimado') as $key1 => $value1){ 
                     $delete = EntradaArticulo::findOrFail($value1);
@@ -202,7 +203,7 @@ class FacturaController extends Controller
             if ($request->hasFile('archivo')) {
                 $edit_factura['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
             }
-            $edit_factura -> proveedor_id = $request->proveedor;
+            $edit_factura->proveedor_id = $request->proveedor;
             $edit_factura->iva = $request->iva;
             $edit_factura->imp_iva = $request->impfactura;
             $edit_factura->imp_total = $request->total;
@@ -211,7 +212,7 @@ class FacturaController extends Controller
             $edit_factura->save();
             return redirect ('/factura')->with('exito', 'Se guardo con exito');
         } catch (\Throwable $th) {
-            return redirect ('/factura')->with('no', 'Algo salio mal');
+             return redirect ('/factura')->with('no', 'Algo salio mal');
         }
     }
 

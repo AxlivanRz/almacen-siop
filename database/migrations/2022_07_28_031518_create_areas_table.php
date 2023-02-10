@@ -15,10 +15,10 @@ class CreateAreasTable extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->bigIncrements('id_area');
-            $table->string('nombre_area', 40);
-            $table->string('descripcion_area', 40);
+            $table->string('nombre_area');
+            $table->string('descripcion_area');
             $table->unsignedBigInteger('up_id');
-            $table->string('encargado_area', 40);
+            $table->string('encargado_area');
             $table->timestamps();
             $table->foreign('up_id')->references('id_up')->on('ups')->onDelete('cascade');
         });

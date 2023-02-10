@@ -13,6 +13,9 @@
             <li class="nav-item" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Exportar datos de existencias</button>
             </li>
+            <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#reporte1" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Exportar datos Existencias/Salidas</button>
+            </li>
         </ul>
     </div>
     <div class="card-body">
@@ -37,7 +40,7 @@
                     </div>
                 </form>
             </div>
-            {{-- Reporte de salidas --}}
+            {{-- Reporte de existencia --}}
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                 <form  class= "row needs-validation" action="/excel/salidas" novalidate>
                     <div class="row">
@@ -60,6 +63,25 @@
             <div class="tab-pane fade" id="reporte" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                 <form  class= "row needs-validation" action="/excel/existencias" novalidate>
                     <div class="row">
+                        <div class="form-grop col-1 my-4">
+                            <button type="submit" class="btn btn-success">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="reporte1" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <form  class= "row needs-validation" action="/excel/comparativo" novalidate>
+                    <div class="row">
+                        <div class="form-grop col-3">
+                            <label>Fecha de Inicio</label>
+                            <input type="date" id="fecha_inicio2" name="fecha_inicio2" class="form-control"  required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        </div>
+                        <div class="form-grop col-3">
+                            <label>Fecha de Terminó</label>
+                            <input type="date" id="fecha_final2" name="fecha_final2" class="form-control" required>
+                            <div class="invalid-feedback">Este campo No Puede estar vacío</div>
+                        </div>
                         <div class="form-grop col-1 my-4">
                             <button type="submit" class="btn btn-success">Confirmar</button>
                         </div>
