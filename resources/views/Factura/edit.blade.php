@@ -13,7 +13,7 @@
                 <form action="{{route('factura.update',$factura->id_factura)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <?php $contador = 0;  ?>
+                    <?php $contador = 0; $editado = false; ?>
                     <div id="eliminados" name="eliminados">
                     </div>
                     <div class="form-group row">
@@ -51,13 +51,14 @@
                                     @if ($articulo->id == $entrada->articulo_id && $entrada->factura_id == $factura->numero_factura)
                                         <?php $contador++; ?>
                                         @if ($entrada->existencia != $entrada->cantidad)
+                                        <?php $editado= true; ?>
                                             <div id="newpro" name= "newpro" class="newpro">
                                                 <h5 class="border-top mt-4">Producto</h5>
                                                 <div class="row d-flex align-items-end">
                                                     <div class="form-group col-5">
                                                         <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                         <label>Articulo</label> 
-                                                        <select class="form-control form-control-sm" name="articulokey[]" id="selectEdit{{$contador}}" disabled>
+                                                        <select class="form-control form-control-sm" name="articulokey[]" id="selectEdit{{$contador}}" {{$editado == true ? 'disabled' : ''}}>
                                                             @if ($articulo->id == $entrada->articulo_id)  
                                                                 <option selected value="{{$articulo->id}}">
                                                                     {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
@@ -74,35 +75,35 @@
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Cantidad</label>
-                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="1" value = "{{$entrada->cantidad}}" disabled>
+                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="1" value = "{{$entrada->cantidad}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label> Precio Base</label>
-                                                        <input class="form-control form-control-sm" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}" disabled>
+                                                        <input class="form-control form-control-sm" name="basekey[]" id="base{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->base}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Descuento $</label>
-                                                        <input class="form-control form-control-sm" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}" disabled>
+                                                        <input class="form-control form-control-sm" name="descuentokey[]" id="descuento{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->descuento}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>IVA %</label>
-                                                        <input class="form-control form-control-sm" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
+                                                        <input class="form-control form-control-sm" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Importe Unitario</label>
-                                                        <input class="form-control form-control-sm" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" disabled>
+                                                        <input class="form-control form-control-sm" name="unitariokey[]" id="unitario{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->imp_unitario}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Precio unitario</label>
-                                                        <input class="form-control form-control-sm" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}" disabled>
+                                                        <input class="form-control form-control-sm" name="preciokey[]" id="precio{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->precio}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Existencia</label>
-                                                        <input class="form-control form-control-sm" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" disabled>
+                                                        <input class="form-control form-control-sm" name="existencia[]" id="existencia{{$contador}}" type="number" step="any" min="0" value = "{{$entrada->existencia}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-grop col-2">
                                                         <label>Caducidad</label>
-                                                        <input class="form-control form-control-sm" name="caducidad[]" id="caducidad{{$contador}}" type="date" value = "{{$entrada->caducidad}}" disabled>
+                                                        <input class="form-control form-control-sm" name="caducidad[]" id="caducidad{{$contador}}" type="date" value = "{{$entrada->caducidad}}" {{$editado == true ? 'disabled' : ''}} >
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,26 +231,52 @@
                     </div>
                     <div class= "row py-2">
                         <div class="margin">
+                            @if ($editado == true)
+                                @if ($factura->confirmed == 1)
+                                @else
+                                <div class="btn-group m-4">
+                                    <button type="submit" class="btn btn-primary" id="agre_btn" style="display:block">
+                                        Editar
+                                    </button>
+                                </div>
+                                @endif
+                                <div class="btn-group m-4">
+                                    <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:none">
+                                        Finalizar
+                                    </button>
+                                </div>
+                                <div class="btn-group m-4">
+                                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:none" >
+                                        <i class="fas fa-plus"></i> Agregar producto
+                                    </button>
+                                </div> 
+                                
+                            @else
+                            @if ($factura->confirmed == 1)
+                            @else
                             <div class="btn-group m-4">
                                 <button type="submit" class="btn btn-primary" id="agre_btn" style="display:none">
                                     Editar
                                 </button>
                             </div>
-                            <div class="btn-group m-4">
-                                <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
-                                    Finalizar
-                                </button>
-                            </div>
-                            <div class="btn-group m-4">
-                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block" >
-                                    <i class="fas fa-plus"></i> Agregar producto
-                                </button>
-                            </div> 
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none">
-                                    <i class="fas fa-minus-circle"></i> Eliminar el último producto
-                                </button>
-                            </div>
+                            @endif
+                                <div class="btn-group m-4">
+                                    <button type="button" class="btn btn-info" id="fin_btn" onClick="final();" style="display:block">
+                                        Finalizar
+                                    </button>
+                                </div>
+                                <div class="btn-group m-4">
+                                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block" >
+                                        <i class="fas fa-plus"></i> Agregar producto
+                                    </button>
+                                </div> 
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger" onClick="get_delete();delete_last();"id="btn_delete" style="display:none">
+                                        <i class="fas fa-minus-circle"></i> Eliminar el último producto
+                                    </button>
+                                </div> 
+                            @endif
+                            
                         </div>
                     </div>
                 </form>
