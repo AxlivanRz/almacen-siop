@@ -1,8 +1,12 @@
 @extends('sideb')
 @section('content')
+@section('select2')
+<script src="{{ asset('js/select2.min.js') }}" defer></script>
+<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
 <div class="row my-5 py-2 ">
     <div class="col-2"></div>
-    <div class="col-8">
+    <div class="col-10">
       <div class="card">
         <form action="{{route('vale.store')}}" method="post">
             @csrf
@@ -26,7 +30,7 @@
                             </button>
                         </div>
                         <div class="btn-group ">
-                            <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block">
+                            <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block">
                                 <i class="fas fa-plus"></i> Agregar producto
                             </button>
                         </div>
@@ -47,9 +51,13 @@
     <script>
         function load() {
             producto();
+            addSelect2();
         }
         window.onload = load;
         var parent = 0;
+        function addSelect2(){
+            $("#artparent" +parent).select2();
+        }
         function producto() {
             parent++;
             if (parent > 1) {

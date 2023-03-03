@@ -62,5 +62,15 @@
             </table> 
         </div>
     </div>
+    @if(Session::has('exito'))
+    <script>
+        toastr.success("{!! Session::get('exito') !!}");
+    </script>
+    @endif
+    @if(Session::has('no'))
+    <script>
+        toastr.error("{!! Session::get('no') !!}");
+    </script>
+    @endif
 </div>
 @endsection

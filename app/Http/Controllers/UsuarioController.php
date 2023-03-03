@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Gate;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         if (Gate::allows('isTi')){
@@ -40,33 +36,10 @@ class UsuarioController extends Controller
         $areas = Area::get();
         $departamentos = Departamento::get();
     
-        //return view ('Usuario.index', ['roles' => $roles]); 
         return view('Usuario.index', $user ,  compact(['roles', 'areas', 'departamentos']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // if($request->ajax()){
-        //     $roles = Rol::where('id_rol', $request->id_Rol)->first();
-        //     $permiso = $roles->permisos; 
-        //     return  $permiso;
-        //   }
-            // $roles = Rol::all(); 
-            // return view ('Usuario.create', ['roles' => $roles]);
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store( Request $request)
     {
         $request->validate([
@@ -111,35 +84,6 @@ class UsuarioController extends Controller
         return redirect('/usuario')->with('post',  $create->name.' se agrego con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show( $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit( $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $edit1 = User::findOrFail($id);
@@ -180,12 +124,6 @@ class UsuarioController extends Controller
         return redirect('/usuario')->with('put', 'Se actualizo el registro de '.$edit->name.' con éxito');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function destroy( $id)
     {
         $user = User::findOrFail($id); 

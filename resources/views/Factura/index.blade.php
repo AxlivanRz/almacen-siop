@@ -2,13 +2,23 @@
 @section('content')
 <br>
 <div class="row">
-    <div class="col-3 py-2">
+    <div class="col-2 py-3">
         <h5><i class="fa-solid fa-file-invoice-dollar fa-2x"></i> &NonBreakingSpace; Facturas</h5>
+    </div>
+    <div class="col-9 d-md-flex justify-content-end my-3 px-5">
+        <div class="col-5">
+            <form action="/factura" method="get">
+                <div class="btn-group col-11">
+                    <input type="text" name="busqueda" id="search" onkeyup="Buscar()" class="form-control form-control-sm border border-2 border-primary" placeholder="Ingrese el número de la factura">
+                    <input type="submit" value="Buscar" class="btn btn-sm btn-primary">
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 <div class="container bg-white col-md-10 col-sm-12 col-11">
     <div class="table-responsive">
-        <table class="table ">
+        <table class="table" id="table_search">
             <thead>
             <tr>
                 <th scope="col">Folio</th>
@@ -41,9 +51,9 @@
                             @endforeach
                             <td>{{$factura->imp_total}}</td>  
                             <td>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#facturaShow{{$factura->id_factura}}">
+                                <a href="{{ route('factura.show',$factura->id_factura)}}" class="btn btn-sm btn-info">
                                     <i class="fas fa-eye"></i>
-                                </button>
+                                </a>
                                 <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-sm btn-primary">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
@@ -57,11 +67,6 @@
         </table>
         <div class = "d-flex">{{$facturas->links()}}</div>
     </div>
-    @if ($facturas->isNotEmpty())   
-        @foreach ($facturas as $factura)
-            @include('Factura.show')
-        @endforeach
-    @endif
     @if(Session::has('exito'))
     <script>
         toastr.success("{!! Session::get('exito') !!}");

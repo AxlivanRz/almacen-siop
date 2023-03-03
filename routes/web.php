@@ -16,16 +16,6 @@ use App\Http\Controllers\SurtirController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 if (Auth::check()) {
     return redirect('/Inicio');
@@ -42,20 +32,12 @@ Route::get('/vales/surtidos', [SurtirController::class, 'indexSurtido'])->name('
 Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('surtir.createVale')->middleware('rol:ti,admin,alm');
 Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
 
-
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
+Route::get('/resultArt', [ArticuloController::class, 'searchArt'])->name('articulo.search');
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 
 
 Route::put('/vale/submit/{id}', [ValeController::class, 'Vsubmit'])->name('vale.submit')->middleware('auth');
-
-// Route::any('/Reportes/diario', [ReporteController::class, 'diario'])->name('reporte.diario');
-// Route::any('/reporte/salidas', [ReporteController::class, 'pdf'])->name('reporte.pdf');
-// Route::any('/reporte/entradas', [ReporteController::class, 'entradas'])->name('reporte.entradas');
-// Route::any('/reporte/diferencias', [ReporteController::class, 'diferencias'])->name('reporte.diferencias');
-// Route::any('/reporte/saldos', [ReporteController::class, 'saldos'])->name('reporte.saldos');
-// Route::any('/reporte/comparativo', [ReporteController::class, 'comparativo'])->name('reporte.comparativo');
-// Route::any('/reporte/movimiento', [ReporteController::class, 'movimientos'])->name('reporte.movimiento');
 
 Route::any('/pdf/vale/{id}', [SurtirController::class, 'pdf'])->name('vale.pdf');
 Route::any('/cierre', [ReporteController::class, 'cierre'])->name('reporte.cierre')->middleware('rol:ti,admin');

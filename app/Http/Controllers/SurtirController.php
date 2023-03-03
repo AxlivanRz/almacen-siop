@@ -18,11 +18,7 @@ use PDF;
 
 class SurtirController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function indexS(){
         $vales = Vale::get();
         $surtidos = ValeSurtido::get();
@@ -39,9 +35,10 @@ class SurtirController extends Controller
         ->join('articulos', 'entrada_articulos.articulo_id', '=', 'articulos.id')
         ->where('entrada_articulos.existencia', '>', 0)
         ->select('entrada_articulos.precio', 'entrada_articulos.factura_id', 'entrada_articulos.existencia','articulos.nombre_articulo', 'articulos.nombre_med', 'entrada_articulos.id', 'articulos.clave_articulo', 'entrada_articulos.articulo_id', 'entrada_articulos.caducidad',  'articulos.partida_id')
-        ->orderBy('entrada_articulos.caducidad','asc')->get();
+        ->orderBy('entrada_articulos.caducidad','desc')->get();
         return view('inicio', compact(['vales', 'statusUno', 'statusDos', 'statusTres', 'surtido', 'articulos', 'partidas']));
     }
+
     public function indexSurtido(Request $request){
         $usuarios = User::get();
         $areas = Area::get();
@@ -55,6 +52,7 @@ class SurtirController extends Controller
         }
         return view('Surtir.indexSurtidos', compact(['surtidos', 'usuarios', 'areas', 'departamentos', 'busqueda']));
     }
+
     public function indexAdmin(){
         $usuarios = User::get();
         $areas = Area::get();
@@ -62,6 +60,7 @@ class SurtirController extends Controller
         $vales = Vale::get();
         return view('Surtir.indexAdmin', compact(['vales', 'usuarios', 'areas', 'departamentos']));
     }
+
     public function index()
     {
         $usuarios = User::get();
@@ -72,15 +71,6 @@ class SurtirController extends Controller
         return view('Surtir.index', compact(['surtidos', 'usuarios', 'areas', 'departamentos', 'vales']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
     public function createV($id)
     {
         $facturas = Factura::get();
@@ -106,49 +96,39 @@ class SurtirController extends Controller
         return  $entrada;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function storeV(Request $request, $id)
     {
-        $date = Carbon::now();
-        $createSurtido = new ValeSurtido;
-        $createSurtido->total = $request->total;
-        $createSurtido->vale_id = $id;
-        $createSurtido->save();
-        $vale = Vale::findOrFail($id);
-        $vale->fecha_aprovado = $date;
-        $vale->administrador_id = $request->user()->id_usuario;
-        $vale->status = 2;
-        $vale->save();
-        if ($request->get('entrada') !=null) { 
-            foreach($request->get('entrada') as $key => $value){
-                $entrada = EntradaArticulo::findOrFail($value);
-                $existencia = $entrada->existencia;
-                $cantidad = $request->get('cantidad')[$key];
-                $total_art = $request->get('total_art')[$key];
-                $entrada->existencia = $existencia - $cantidad;
-                $entrada->save();
-                $createSurtido->entradas()->attach( $value, ['cantidad' => $cantidad, 'total_articulo' => $total_art]);
-                $createSurtido->save();
+        try {
+            $date = Carbon::now();
+            $createSurtido = new ValeSurtido;
+            $createSurtido->total = $request->total;
+            $createSurtido->vale_id = $id;
+            $createSurtido->save();
+            $vale = Vale::findOrFail($id);
+            $vale->fecha_aprovado = $date;
+            $vale->administrador_id = $request->user()->id_usuario;
+            $vale->status = 2;
+            $vale->save();
+            if ($request->get('entrada') !=null) { 
+                foreach($request->get('entrada') as $key => $value){
+                    $entrada = EntradaArticulo::findOrFail($value);
+                    $existencia = $entrada->existencia;
+                    $cantidad = $request->get('cantidad')[$key];
+                    $total_art = $request->get('total_art')[$key];
+                    $entrada->existencia = $existencia - $cantidad;
+                    $entrada->save();
+                    $createSurtido->entradas()->attach( $value, ['cantidad' => $cantidad, 'total_articulo' => $total_art]);
+                    $createSurtido->save();
+                }
             }
-        }
-        return redirect ('/inicio'); 
-    }
-    public function store(Request $request)
-    {
-        
-    }
+            return redirect ('/inicio')->with('exito', 'Se envío con éxito el vale solicitado N°'.$vale->id);
+        } catch (\Throwable $th) {
+            return redirect ('/inicio')->with('no', 'Algo salió mal con el vale solicitado N°'.$vale->id);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        }
+
+    }
+   
     public function show($id)
     {
         $usuarios = User::get();
@@ -187,16 +167,6 @@ class SurtirController extends Controller
         return $pdf->stream();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
     public function submitAlmacen($id)
     {
         $usuarios = User::get();
@@ -215,35 +185,22 @@ class SurtirController extends Controller
         return view('Surtir.editAdmin', compact(['vale', 'valeArticulos', 'surtido', 'queryEFAs', 'facturas', 'usuarios', 'departamentos', 'areas'])); 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $surtido = ValeSurtido::findOrFail($id);
-        $vale = Vale::findOrFail($surtido->vale_id);
-        $date = Carbon::now();
-        $vale->status = 4;
-        $vale->save();
-        $surtido->fecha = $date;
-        $surtido->capturista_id = $request->user()->id_usuario;
-        $surtido->save();
-        return redirect('/surtir');
-        
+        try {
+            $surtido = ValeSurtido::findOrFail($id);
+            $vale = Vale::findOrFail($surtido->vale_id);
+            $date = Carbon::now();
+            $vale->status = 4;
+            $vale->save();
+            $surtido->fecha = $date;
+            $surtido->capturista_id = $request->user()->id_usuario;
+            $surtido->save();
+            return redirect('/surtir')->with('exito', 'Se surtió con éxito el vale solicitado N°'.$vale->id. ', generando un vale surtido con N°'. $id);
+        } catch (\Throwable $th) {
+            return redirect('/surtir')->with('no', 'Algo salió mal con el vale solicitado N°'.$vale->id);
+
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -19,13 +19,19 @@ class FacturaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $facturas = Factura::paginate(15);
         $proveedores = Proveedores::get();
         $entradas = EntradaArticulo::get();
         $articulos = Articulo::get();
         $origenes = OrigenRecurso::get();
+        $busqueda = $request->busqueda;
+        if ($busqueda == null) {
+            $facturas = DB::table('facturas')->orderBy('fecha', 'desc')->paginate(15);
+        }else{
+            $facturas = Factura::where('numero_factura', '=', $busqueda)
+            ->paginate(15);
+        }
         return view ('Factura.index', compact(['facturas', 'proveedores', 'entradas', 'articulos', 'origenes']));
     }
 
@@ -107,7 +113,16 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        //
+        $factura = Factura::findOrFail($id);
+        $proveedores = Proveedores::get();
+        $numerof = DB::table('facturas')
+        ->select('numero_factura')
+        ->where('id_factura', $id)->get();
+        $articulos = Articulo::get();
+        $origenes = OrigenRecurso::get();
+        //$entradas = EntradaArticulo::get();
+        $entradas = DB::table('entrada_articulos')->orderBy('id', 'asc')->get();
+        return view('Factura.show', compact(['factura', 'entradas', 'proveedores', 'articulos', 'origenes']));
     }
 
     /**
@@ -140,7 +155,6 @@ class FacturaController extends Controller
     public function update(Request $request, $id)
     {   
         try {
-         //code...
             if ($request->get('elimado') != null) {
                 foreach($request->get('elimado') as $key1 => $value1){ 
                     $delete = EntradaArticulo::findOrFail($value1);
@@ -148,54 +162,53 @@ class FacturaController extends Controller
                 }
             } 
             $edit_factura = Factura::findOrFail($id);
-            $booleano =  $edit_factura->confirmed;
-            foreach($request->get('articulokey') as $key => $value){           
-                $numerof = $request->numerof; 
-                $cantidadkey = $request->get('cantidadkey')[$key];
-                $descuentokey = $request->get('descuentokey')[$key];
-                $basekey = $request->get('basekey')[$key];
-                $preciokey = $request->get('preciokey')[$key];
-                $preciofinalkey = $request->get('preciototalkey')[$key];
-                $articulokey= $value;
-                if ($request->get('caducidad') != null) {
-                    $caducidadkey = $request->get('caducidad')[$key];
-                }
-                $unitariokey = $request->get('unitariokey')[$key];
-                if (isset($request->get('id_entrada')[$key])) {
-                    $entrada_id = $request->get('id_entrada')[$key];
-                    $entrada = EntradaArticulo::firstOrNew(['id' =>  $entrada_id]);
-                    $entrada->factura_id = $numerof;
-                    $entrada->cantidad = $cantidadkey;
-                    $entrada->descuento = $descuentokey;
-                    $entrada->base = $basekey;
-                    $entrada->precio = $preciokey;
-                    $entrada->preciofinal = $preciofinalkey;
-                    $entrada->articulo_id = $articulokey;
-                    $entrada->imp_unitario = $unitariokey;
-                    if ($booleano == 0) {
+            if ($request->get('articulokey') != null) {
+                foreach($request->get('articulokey') as $key => $value){           
+                    $numerof = $request->numerof; 
+                    $cantidadkey = $request->get('cantidadkey')[$key];
+                    $descuentokey = $request->get('descuentokey')[$key];
+                    $basekey = $request->get('basekey')[$key];
+                    $preciokey = $request->get('preciokey')[$key];
+                    $preciofinalkey = $request->get('preciototalkey')[$key];
+                    $articulokey= $value;
+                    if ($request->get('caducidad') != null) {
+                        $caducidadkey = $request->get('caducidad')[$key];
+                    }
+                    $unitariokey = $request->get('unitariokey')[$key];
+                    if (isset($request->get('id_entrada')[$key])) {
+                        $entrada_id = $request->get('id_entrada')[$key];
+                        $entrada = EntradaArticulo::firstOrNew(['id' =>  $entrada_id]);
+                        $entrada->factura_id = $numerof;
+                        $entrada->cantidad = $cantidadkey;
+                        $entrada->descuento = $descuentokey;
+                        $entrada->base = $basekey;
+                        $entrada->precio = $preciokey;
+                        $entrada->preciofinal = $preciofinalkey;
+                        $entrada->articulo_id = $articulokey;
+                        $entrada->imp_unitario = $unitariokey;
                         $entrada->existencia = $cantidadkey;
+                        if( $request->get('caducidad') != null){
+                            $entrada->caducidad = $caducidadkey;
+                        }
+                        $entrada->save();
+                    }else{
+                        $create = new EntradaArticulo;
+                        $create->factura_id = $numerof;
+                        $create->cantidad = $cantidadkey;
+                        $create->descuento = $descuentokey;
+                        $create->base = $basekey;
+                        $create->precio = $preciokey;
+                        $create->preciofinal = $preciofinalkey;
+                        $create->articulo_id = $articulokey;
+                        $create->imp_unitario = $unitariokey;
+                        if( $request->get('caducidad') != null){
+                            $entrada->caducidad = $caducidadkey;
+                        }
+                        $create->existencia = $cantidadkey;
+                        $create->save();
                     }
-                    if( $request->get('caducidad') != null){
-                        $entrada->caducidad = $caducidadkey;
-                    }
-                    $entrada->save();
-                }else{
-                    $create = new EntradaArticulo;
-                    $create->factura_id = $numerof;
-                    $create->cantidad = $cantidadkey;
-                    $create->descuento = $descuentokey;
-                    $create->base = $basekey;
-                    $create->precio = $preciokey;
-                    $create->preciofinal = $preciofinalkey;
-                    $create->articulo_id = $articulokey;
-                    $create->imp_unitario = $unitariokey;
-                    if( $request->get('caducidad') != null){
-                        $entrada->caducidad = $caducidadkey;
-                    }
-                    $create->existencia = $cantidadkey;
-                    $create->save();
+                    
                 }
-                
             }
             $edit_factura -> fecha = $request->fecha;
             $edit_factura -> numero_factura = $request->numerof;
@@ -216,14 +229,4 @@ class FacturaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -13,35 +13,15 @@ use PDF;
 
 class ArticuloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         $partidas = Partida::get();
         $medidas = UnidadMedida::get();
-        $articulos = Articulo::paginate(15);
+        $articulos = Articulo::paginate(20);
         return view('Articulo.index', compact(['articulos', 'partidas', 'medidas']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -72,35 +52,6 @@ class ArticuloController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $edit1 = Articulo::findOrFail($id);
@@ -135,12 +86,6 @@ class ArticuloController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
@@ -148,15 +93,16 @@ class ArticuloController extends Controller
             $delete->delete();
             return redirect('/articulo')->with('exito',  $delete->nombre_articulo.' se elimino correctamente');
         } catch (\Throwable $th) {
-            //throw $th;
             return redirect('/articulo')->with('no',  'Algo salio mal');
         }
     }
+
     public function getArticulo(){
         $articulos[] = array();
         $query = Articulo::get();
         return ($query);
     }
+
     public function getExistencia(){ 
         $articulos[] = array();
         $query1 = DB::table('articulos')
@@ -166,5 +112,31 @@ class ArticuloController extends Controller
         ->get();
         $query2 = $query1->unique('nombre_articulo');
         return ($query2);
+    }
+
+    public function searchArt(Request $request){ 
+        $busqueda = $request->busqueda;
+        error_log("\n|\n|\n" . json_encode(['b0'=>$busqueda,])); //quitar
+        if ($busqueda === "") {
+            $articulos = DB::table('articulos')
+            ->join('partidas', 'articulos.partida_id', '=', 'partidas.id_partida')
+            ->select('partidas.nombre_partida', 'articulos.id', 'articulos.clave_articulo', 'articulos.nombre_med', 'articulos.nombre_articulo')
+            ->take(15)
+            ->get();
+            $articulos->all();
+            error_log("\n|\n|\n" . json_encode(['b1'=>$busqueda,])); //quitar
+        }else {
+            if (!empty($busqueda)) {
+                $articulos = DB::table('articulos')
+                ->join('partidas', 'articulos.partida_id', '=', 'partidas.id_partida')
+                ->where('nombre_articulo', 'like', '%'.$busqueda.'%')
+                ->select('partidas.nombre_partida', 'articulos.id', 'articulos.clave_articulo', 'articulos.nombre_med', 'articulos.nombre_articulo')
+                ->take(15)
+                ->get();
+                $articulos->all();
+                error_log("\n|\n|\n" . json_encode(['b2'=>$busqueda,])); //quitarc
+            }
+        }
+        return $articulos;
     }
 }

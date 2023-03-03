@@ -15,68 +15,51 @@ use Carbon\Carbon;
 
 class ValeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $vales = Vale::get();
         return view('Vale.index', compact('vales'));
     }
  
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('Vale.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $createVale = new Vale;
-        $date = Carbon::now();
-        $createVale->status = 1;
-        $createVale->fecha = $date;
-        $createVale->fecha_aprovado = null;
-        if (Gate::allows('isVal')) {
-            $createVale->usuario_id = $request->user()->id_usuario;
-            $createVale->administrador_id = null;
-        }
-        if($request->user()->area_id != null){
-            $createVale->area_id = $request->user()->area_id;
-        }
-        if($request->user()->departamento_id != null){
-            $departamento = Departamento::findOrFail($request->user()->departamento_id);
-            $createVale->area_id = $departamento->area_id;
-        }
-        $createVale->save();
-        if ($request->get('articulokey') !=null) { 
-            foreach($request->get('articulokey') as $key => $value){
-                $cantidad = $request->get('cantidadkey')[$key];
-                $createVale->articulos()->attach($value, ['cantidad' => $cantidad]);
-                $createVale->save();
+        try {
+            $createVale = new Vale;
+            $date = Carbon::now();
+            $createVale->status = 1;
+            $createVale->fecha = $date;
+            $createVale->fecha_aprovado = null;
+            if (Gate::allows('isVal')) {
+                $createVale->usuario_id = $request->user()->id_usuario;
+                $createVale->administrador_id = null;
             }
+            if($request->user()->area_id != null){
+                $createVale->area_id = $request->user()->area_id;
+            }
+            if($request->user()->departamento_id != null){
+                $departamento = Departamento::findOrFail($request->user()->departamento_id);
+                $createVale->area_id = $departamento->area_id;
+            }
+            $createVale->save();
+            if ($request->get('articulokey') !=null) { 
+                foreach($request->get('articulokey') as $key => $value){
+                    $cantidad = $request->get('cantidadkey')[$key];
+                    $createVale->articulos()->attach($value, ['cantidad' => $cantidad]);
+                    $createVale->save();
+                }
+            }
+            return redirect ('/vale')->with('exito', 'Se guardo con éxito el vale N°'.$createVale->id);
+        } catch (\Throwable $th) {
+            return redirect ('/vale')->with('no', 'Algo salio mal');
         }
-        return redirect ('/vale'); 
+            
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $vale = Vale::findOrFail($id);
@@ -104,12 +87,6 @@ class ValeController extends Controller
         return view('Vale.show', compact(['vale', 'entradas', 'valeArticulos', 'queryEFAs', 'surtido', 'usuarios'])); 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $vale = Vale::findOrFail($id);
@@ -127,36 +104,29 @@ class ValeController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $editVale = Vale::findOrFail($id);
-        if (Gate::allows('isVal') && Auth::user()->id_usuario == $editVale->usuario_id && $editVale->status == 1) {
-            $editVale->status = 1;
-            $editVale->save();
-            $editVale->articulos()->detach();
-            if ($request->articulokey !=null) { 
-                foreach($request->get('articulokey') as $key => $value){
-                    $cantidad = $request->get('cantidadkey')[$key];
-                    $editVale->articulos()->attach($value, ['cantidad' => $cantidad]);
-                    $editVale->save();
+        try {
+            $editVale = Vale::findOrFail($id);
+            if (Gate::allows('isVal') && Auth::user()->id_usuario == $editVale->usuario_id && $editVale->status == 1) {
+                $editVale->status = 1;
+                $editVale->save();
+                $editVale->articulos()->detach();
+                if ($request->articulokey !=null) { 
+                    foreach($request->get('articulokey') as $key => $value){
+                        $cantidad = $request->get('cantidadkey')[$key];
+                        $editVale->articulos()->attach($value, ['cantidad' => $cantidad]);
+                        $editVale->save();
+                    }
                 }
-            }
-            return redirect('/vale');
-        } 
+                return redirect('/vale')->with('exito', 'Se edito con éxito el vale N°'.$editVale->id);
+            } 
+        } catch (\Throwable $th) {
+            return redirect('/vale')->with('no', 'Algo salio mal');
+
+        }
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
         //

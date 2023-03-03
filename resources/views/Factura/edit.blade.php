@@ -1,5 +1,9 @@
 @extends('sideb')
 @section('content')
+@section('select2')
+<script src="{{ asset('js/select2.min.js') }}" defer></script>
+<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
 <br>
 <div class="row">
     <div class="col-12">
@@ -9,7 +13,7 @@
                 <form action="{{route('factura.update',$factura->id_factura)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <?php $contador = 0; ?>
+                    <?php $contador = 0;  ?>
                     <div id="eliminados" name="eliminados">
                     </div>
                     <div class="form-group row">
@@ -19,7 +23,7 @@
                         </div>
                         <div class="form-group col-3">
                             <label >Número de factura</label>                
-                            <input type="text" class="form-control"  id="numerof" name="numerof" value="{{$factura->numero_factura}}">
+                            <input type="text" class="form-control"  id="numerof" name="numerof" value="{{$factura->numero_factura}}" readonly>
                         </div>
                         <div class="form-group col-3">
                             <label >Proveedor</label>                               
@@ -45,7 +49,7 @@
                             @foreach ($entradas as $entrada)
                                 @foreach ($articulos as $articulo)
                                     @if ($articulo->id == $entrada->articulo_id && $entrada->factura_id == $factura->numero_factura)
-                                        <?php $contador++;?>
+                                        <?php $contador++; ?>
                                         @if ($entrada->existencia != $entrada->cantidad)
                                             <div id="newpro" name= "newpro" class="newpro">
                                                 <h5 class="border-top mt-4">Producto</h5>
@@ -53,7 +57,7 @@
                                                     <div class="form-group col-5">
                                                         <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                         <label>Articulo</label> 
-                                                        <select class="form-control form-control-sm" name="articulokey[]" id="artparent{{$contador}}" disabled>
+                                                        <select class="form-control form-control-sm" name="articulokey[]" id="selectEdit{{$contador}}" disabled>
                                                             @if ($articulo->id == $entrada->articulo_id)  
                                                                 <option selected value="{{$articulo->id}}">
                                                                     {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
@@ -70,7 +74,7 @@
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Cantidad</label>
-                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="0" value = "{{$entrada->cantidad}}" disabled>
+                                                        <input class="form-control form-control-sm" name="cantidadkey[]" id="cantidad{{$contador}}" type="number" min="1" value = "{{$entrada->cantidad}}" disabled>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label> Precio Base</label>
@@ -109,7 +113,7 @@
                                                     <div class="form-group col-6">
                                                         <input type="number" id="id_entrada{{$contador}}" name="id_entrada[]" value="{{$entrada->id}}" hidden>
                                                         <label>Articulo</label> 
-                                                        <select class="form-control form-control-sm" name="articulokey[]" id="artparent{{$contador}}">
+                                                        <select class="form-control form-control-sm" name="articulokey[]" id="selectEdit{{$contador}}">
                                                             @if ($articulo->id == $entrada->articulo_id)  
                                                                 <option selected value="{{$articulo->id}}">
                                                                     {{$articulo->nombre_articulo}} - {{$articulo->nombre_med}}
@@ -193,7 +197,7 @@
                         </div>
                         <div class="form-group col-3">
                             <label for="impfactura">Importe total IVA</label>
-                            <input id="impfactura" type="number" class="form-control form-control-sm" id="impfactura" name="impfactura" value="{{$factura->imp_iva}}" step="any" required>
+                            <input id="impfactura" type="number" class="form-control form-control-sm" id="impfactura" name="impfactura" value="{{$factura->imp_iva}}" step="any" readonly>
                         </div>
                         <div class="form-group col-2">                                          
                             <label>Origen del Recurso</label>                               
@@ -216,11 +220,11 @@
                         </div>  
                         <div class="form-goup col-2">
                             <label for="total">SubTotal</label>
-                            <input id="subtotal" type="number" class="form-control form-control-sm" id = "subtotal" name="subtotal" step="any" value="{{$factura->subtotal}}" required autofocus>
+                            <input id="subtotal" type="number" class="form-control form-control-sm" id = "subtotal" name="subtotal" step="any" value="{{$factura->subtotal}}" readonly>
                         </div>
                         <div class="form-group col-2">
                             <label for="total">Importe Total</label>
-                            <input type="number" class="form-control form-control-sm" id = "total" name="total" step="any" value="{{$factura->imp_total}}" required >
+                            <input type="number" class="form-control form-control-sm" id = "total" name="total" step="any" value="{{$factura->imp_total}}" readonly>
                         </div>
                         
                     </div>
@@ -237,7 +241,7 @@
                                 </button>
                             </div>
                             <div class="btn-group m-4">
-                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block" >
+                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block" >
                                     <i class="fas fa-plus"></i> Agregar producto
                                 </button>
                             </div> 
@@ -258,6 +262,7 @@
     <script>
         function load() {
             contadoredit();
+            
         }
         var increment = 0;
         var parent = 0;
@@ -269,7 +274,15 @@
             if (parent > 1) {
                 document.getElementById("btn_delete").style.display = "block";
             }
+            for (let index = 0; index <= Number(valoredit); index++) {
+                $("#selectEdit" +index).select2();
+            }
         }
+
+        function addSelect2(){
+            $("#select" +parent).select2();
+        }
+
         function producto() {
             parent++;
             if (parent > 1) {
@@ -300,7 +313,7 @@
             var select = document.createElement("select");
             select.className = "form-control form-control-sm";
             select.name = "articulokey[]";
-            select.id = "artparent" + parent;
+            select.id = "select" + parent;
             select.required = "required";
             formGroup1.appendChild(select);
             $.ajax({ 

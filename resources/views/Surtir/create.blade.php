@@ -1,5 +1,9 @@
 @extends('sideb')
 @section('content')
+@section('select2')
+<script src="{{ asset('js/select2.min.js') }}" defer></script>
+<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
 <div class="row my-3">
     <div class="col-12">
       <div class="card">
@@ -77,7 +81,7 @@
                                 </button>
                             </div>
                             <div class="btn-group ">
-                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();retroceso()" style="display:block">
+                                <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block">
                                     <i class="fas fa-plus"></i> Agregar producto
                                 </button>
                             </div>
@@ -103,9 +107,13 @@
     <script>
         function load() {
             producto();
+            addSelect2();
         }
         window.onload = load;
         var contador = 0;
+        function addSelect2(){
+            $("#" +contador).select2();
+        }
         function producto() {
             contador++;
             var producto = $('#productoSurtir');

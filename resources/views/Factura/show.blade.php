@@ -1,11 +1,11 @@
-<!-- Modal -->
-<div class="modal fade" id="facturaShow{{$factura->id_factura}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-white border-0 " >
-                <h5 class="modal-title" id="departamentoEditLabel" >Factura</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+@extends('sideb')
+@section('content')
+<br>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Factura</h5>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-3">
@@ -131,3 +131,6 @@
         </div>
     </div>
 </div>
+@endsection
+
+  

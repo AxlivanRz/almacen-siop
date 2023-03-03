@@ -13,13 +13,13 @@
     <link rel="shortcut icon" sizes="162x162" href="{{ asset('/img/ico.png') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('scripts')
-    @yield('scriptsApi')
     @yield('editarVale')
-    @yield('editarSurtir')
     @yield('scriptSurtir')
     @yield('scriptsCV')
-    @yield('form')
+    @yield('search_art')
+    @yield('select2')
     <script src="{{ asset('js/iconc.js') }}" defer></script>
+    <script src="{{ asset('js/search.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

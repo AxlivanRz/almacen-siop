@@ -1,5 +1,9 @@
 @extends('sideb')
 @section('content')
+@section('select2')
+<script src="{{ asset('js/select2.min.js') }}" defer></script>
+<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+@endsection
 <br>
 <div class="row">
     <div class="col-12">
@@ -100,7 +104,7 @@
                     </button>
                 </div>
                 <div class="btn-group m-4">
-                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();" style="display:block" >
+                    <button type="button" class="btn btn-primary" id="agregar_btn" onClick="producto();addSelect2();" style="display:block" >
                         <i class="fas fa-plus"></i> Agregar producto
                     </button>
                 </div>
@@ -139,11 +143,14 @@
     <script>
         function load() {
             producto();
+            addSelect2();
         }
         window.onload = load;
 
         var parent = 0;
-
+        function addSelect2(){
+            $("#select" +parent).select2();
+        }
         function producto() {
             parent++;
             if (parent > 1) {
@@ -169,9 +176,9 @@
             label.innerHTML = "Articulo";
             formGroup1.appendChild(label);
             var select = document.createElement("select");
-            select.className = "form-control form-control-sm";
+            select.className = "select2 form-control form-control-sm";
             select.name = "articulokey[]";
-            select.id = "artparent" + parent;
+            select.id = "select" + parent;
             select.required = "true";
             formGroup1.appendChild(select);
             $.ajax({ 
@@ -187,7 +194,6 @@
                     })
                 }
             });
-                     
             var column3 = document.createElement("div");
             column3.className = "col-2";
             row.appendChild(column3);
@@ -199,7 +205,7 @@
             cantidad.name = "cantidadkey[]";
             cantidad.id = "cantidad" + parent;
             cantidad.type = "number";
-            cantidad.min = "0";
+            cantidad.min = "1";
             cantidad.value = "0";
             cantidad.required = "required";
             column3.appendChild(cantidad);
@@ -338,7 +344,7 @@
             div.appendChild(row);
             document.getElementById("relationship").appendChild(div);
             document.getElementById("contador_producto").value = parent;            
-        }                    
+        }   
         function delete_last() {
             parent--;
             var divElement = document.querySelector('#relationship');
@@ -348,6 +354,7 @@
             }
             document.getElementById("contador_producto").value = parent;
         }
+
         function retroceso(){    
            var contador = document.getElementById("contador_producto").value;
             while (  contador != 0) {
@@ -369,6 +376,7 @@
                 contador--;
             }
         }
+
         function total() {
             var final = document.getElementById("contador_producto").value;
             while (  final != 0) {

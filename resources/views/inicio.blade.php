@@ -10,7 +10,7 @@
     }
 
     .table-responsive { 
-        height:250px;
+        height:350px;
         overflow:scroll;
     }
 </style>
@@ -71,14 +71,21 @@
     @endcanany
 </div>
 @canany(['isAdmin', 'isTi', 'isAlm'])
+<br>
+<br>
 <div class="row">
-    <div class="col-3 py-2 mx-3 mt-2">
+    <div class="col-3 py-3 mx-5">
         <h5> <i class="fas fa-cubes fa-2x"></i> &NonBreakingSpace; Existencias</h5>
     </div>
+    <div class="col-7 d-md-flex justify-content-end my-3">
+        <div class="col-7">
+            <input class="form-control form-control-sm border border-primary border-2" type="text" placeholder="Ingrese el texto a buscar" name="search" id="search" onkeyup="Buscar()" >
+       </div>        
+    </div>
 </div>
-<div class="container bg-white col-md-12 col-sm-12 col-11" style="height: 250px;overflow-y: scroll;">
+<div class="container ct-responsive bg-white col-md-12 col-sm-12 col-11" >
     <div class="table-responsive" >
-        <table class="table">
+        <table class="table" id="table_search">
             <thead class="thead-dark">
             <tr>
                 <th class="header" scope="col">Clave articulo</th>
@@ -93,7 +100,7 @@
             </thead>
             <tbody>            
                 @if ($articulos->isNotEmpty())
-                    @foreach ( $articulos as $articulo )
+                    @foreach ($articulos as $articulo )
                         <tr>
                             <th scope="row">{{$articulo->clave_articulo}}</th>
                             <td>{{$articulo->nombre_articulo}}</td>
@@ -112,9 +119,10 @@
                             <td>{{$articulo->existencia}}</td>     
                             @if ($articulo->caducidad != null)
                             <td>{{$articulo->caducidad}}</td> 
-                            @else
-                            <td>S/C</td> 
-                            @endif  
+                            @endif
+                                @if ($articulo->caducidad == null)
+                                <td>S/C</td> 
+                                @endif  
                         </tr>                 
                     @endforeach
                 @else
