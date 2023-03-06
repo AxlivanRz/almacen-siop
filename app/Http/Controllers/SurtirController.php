@@ -57,7 +57,7 @@ class SurtirController extends Controller
         $usuarios = User::get();
         $areas = Area::get();
         $departamentos = Departamento::get();
-        $vales = DB::table('vales')->orderBy('fecha', 'desc')->paginate(15);
+        $vales = Vale::latest('fecha')->paginate(15);
         return view('Surtir.indexAdmin', compact(['vales', 'usuarios', 'areas', 'departamentos']));
     }
 
@@ -67,7 +67,7 @@ class SurtirController extends Controller
         $areas = Area::get();
         $departamentos = Departamento::get();
         $surtidos = ValeSurtido::get();
-        $vales = DB::table('vales')->orderBy('fecha', 'desc')->paginate(15);
+        $vales = Vale::latest('fecha')->paginate(15);
         return view('Surtir.index', compact(['surtidos', 'usuarios', 'areas', 'departamentos', 'vales']));
     }
 
