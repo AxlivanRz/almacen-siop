@@ -3,7 +3,7 @@
 @section('Dtables')
 <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js" defer></script>`
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection
 <br>
