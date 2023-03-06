@@ -12,7 +12,7 @@
         <h5> <i class="fas fa-cubes fa-2x"></i> &NonBreakingSpace; Articulos</h5>
     </div>
 </div>
-.<div class="card">
+<div class="card">
     <div class="card">
         <div class="card-header" style="justify-items: right">
             <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#articuloCreate">
