@@ -9,7 +9,7 @@ class Partida extends Model
 {
     use HasFactory;
     protected $table = "partidas";
-    protected $primaryKey = 'id_partida';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
 
@@ -23,4 +23,7 @@ class Partida extends Model
         'descripcion_partida',
         'abreviado',
     ];
+    public function articulos (){
+        return $this->belongsTo(Articulo::class, 'articulos');
+    }
 }

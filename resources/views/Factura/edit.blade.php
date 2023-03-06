@@ -36,7 +36,7 @@
                                     @endif
                                 @endforeach
                                 @foreach ($proveedores as $proveedor)
-                                    @if ($proveedor->id_proveedor != $factura->proveedor_id)
+                                    @if ($proveedor->id_proveedor != $factura->proveedor_id && $proveedor->id_proveedor > 1)
                                         <option value="{{$proveedor->id_proveedor}}">{{$proveedor->nombre_empresa}}</option>
                                     @endif   
                                 @endforeach                

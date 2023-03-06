@@ -141,7 +141,7 @@
                             <select class="form-select" name="partida" id="partida" required>
                                 <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                                 @foreach ($partidas as $partida)
-                                <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                <option value="{{$partida->id}}">{{$partida->nombre_partida}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -166,7 +166,7 @@
                             <select class="form-select" name="partida_movimiento" id="partida" required>
                                 <div class="invalid-feedback">Este campo No Puede estar vacío</div>
                                 @foreach ($partidas as $partida)
-                                <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                <option value="{{$partida->id}}">{{$partida->nombre_partida}}</option>
                                 @endforeach
                             </select>
                         </div>

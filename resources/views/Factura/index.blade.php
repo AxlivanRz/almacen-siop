@@ -26,6 +26,7 @@
                 <th scope="col">Fecha</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Monto total</th>
+                <th scope="col">Estatus existencia</th>
                 <th scope="col" style="width: 150px;">Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="{{ route('factura.create')}}" class="btn btn-success">
                         <i class="far fa-plus-square"></i>
@@ -35,7 +36,7 @@
             </thead>
             <tbody>            
                 @if ($facturas->isNotEmpty())
-                    @foreach ( $facturas as $factura )
+                    @foreach ($facturas as $factura )
                         <tr>
                             <th scope="row">{{$factura->id_factura}}</th>
                             <td>{{$factura->numero_factura}}</td>
@@ -49,12 +50,16 @@
                                     @endif
                                 @endif
                             @endforeach
-                            <td>{{$factura->imp_total}}</td>  
+                            <td>${{$factura->imp_total}}</td>
+                            <td>
+                                <span class="badge rounded-pill bg-danger" id="S{{$factura->numero_factura}}" style="display: block">Sin existencias</span>
+                                <span class="badge rounded-pill bg-success" id="C{{$factura->numero_factura}}" style="display: none">Con existencias</span>
+                            </td>
                             <td>
                                 <a href="{{ route('factura.show',$factura->id_factura)}}" class="btn btn-sm btn-info">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('factura.edit',$factura->id_factura)}}" class="btn btn-sm btn-primary" {{$factura->confirmed == 1 ? 'hidden' : ''}}>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                             </td>                   
@@ -78,4 +83,19 @@
     </script>
     @endif
 </div>
+<script>
+    $(function() {   
+        $.ajax({ 
+            type: "GET",
+            url: "{{ route('factura.index') }}",
+            success: function(facturas_existencia) {
+                $.each(facturas_existencia, function(key, value) {
+                    document.getElementById('S'+value['numero_factura']).style.display="none";
+                    document.getElementById('C'+value['numero_factura']).style.display="block";
+                    console.log(value['numero_factura']);
+                })
+            }
+        });
+    });
+</script>
 @endsection

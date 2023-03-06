@@ -14,12 +14,20 @@ use PDF;
 class ArticuloController extends Controller
 {
    
-    public function index()
+    public function index(Request $request)
     {
-        $partidas = Partida::get();
-        $medidas = UnidadMedida::get();
-        $articulos = Articulo::paginate(20);
-        return view('Articulo.index', compact(['articulos', 'partidas', 'medidas']));
+
+       if ($request->ajax()) {
+        $articulo = DB::table('articulos')
+        ->join('partidas', 'articulos.partida_id', '=', 'partidas.id')
+        ->where('articulos.id', $request->idArtAjx)
+        ->select('partidas.descripcion_partida', 'articulos.*')
+        ->get();
+        return  $articulo;
+        }
+        $medidas= UnidadMedida::all();
+        $partidas= Partida::all();
+        return view('Articulo.index', compact(['medidas', 'partidas']));
     }
 
     public function store(Request $request)
@@ -102,7 +110,18 @@ class ArticuloController extends Controller
         $query = Articulo::get();
         return ($query);
     }
-
+    public function tblArticulo(){
+        $articulos = Articulo::with('partidas')->get();
+        return datatables()->eloquent(Articulo::with('partidas'))->addColumn('actions', function ($articulo) {
+            return 
+            '<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"  data-bs-target="#articuloEdit'.$articulo->id.'">'.
+                '<i class="fa-regular fa-pen-to-square"></i>' .
+                '</button>'. '&nbsp'.
+            '<button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" onclick="idArt(this);" id = "'.$articulo->id.'" data-bs-target="#articuloShow">'.
+                '<i class="fas fa-eye"></i>'.
+           ' </button>';
+        })->rawColumns(['actions'])->toJson();
+    }
     public function getExistencia(){ 
         $articulos[] = array();
         $query1 = DB::table('articulos')
@@ -112,31 +131,5 @@ class ArticuloController extends Controller
         ->get();
         $query2 = $query1->unique('nombre_articulo');
         return ($query2);
-    }
-
-    public function searchArt(Request $request){ 
-        $busqueda = $request->busqueda;
-        error_log("\n|\n|\n" . json_encode(['b0'=>$busqueda,])); //quitar
-        if ($busqueda === "") {
-            $articulos = DB::table('articulos')
-            ->join('partidas', 'articulos.partida_id', '=', 'partidas.id_partida')
-            ->select('partidas.nombre_partida', 'articulos.id', 'articulos.clave_articulo', 'articulos.nombre_med', 'articulos.nombre_articulo')
-            ->take(15)
-            ->get();
-            $articulos->all();
-            error_log("\n|\n|\n" . json_encode(['b1'=>$busqueda,])); //quitar
-        }else {
-            if (!empty($busqueda)) {
-                $articulos = DB::table('articulos')
-                ->join('partidas', 'articulos.partida_id', '=', 'partidas.id_partida')
-                ->where('nombre_articulo', 'like', '%'.$busqueda.'%')
-                ->select('partidas.nombre_partida', 'articulos.id', 'articulos.clave_articulo', 'articulos.nombre_med', 'articulos.nombre_articulo')
-                ->take(15)
-                ->get();
-                $articulos->all();
-                error_log("\n|\n|\n" . json_encode(['b2'=>$busqueda,])); //quitarc
-            }
-        }
-        return $articulos;
     }
 }

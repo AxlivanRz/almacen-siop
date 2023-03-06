@@ -26,12 +26,12 @@
                 @if ($partidas->isNotEmpty())
                     @foreach ( $partidas as $partida )
                         <tr>
-                            <th scope="row">{{$partida->id_partida}}</th>
+                            <th scope="row">{{$partida->id}}</th>
                             <td>{{$partida->descripcion_partida}}</td>
                             <td>{{$partida->nombre_partida}}</td>
                             <td>{{$partida->abreviado}}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#partidaEdit{{$partida->id_partida}}">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#partidaEdit{{$partida->id}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                             </td>                   

@@ -65,9 +65,6 @@
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#userEdit{{$us->id_usuario}}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#userDelete{{$us->id_usuario}}">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button> 
                             </td>                   
                         </tr>    
                     @endif            
@@ -81,7 +78,6 @@
     </div>
     @foreach ( $user as $us )
         @if ($user->isNotEmpty())
-            @include('Usuario.delete')
             @include('Usuario.edit')
         @endif 
     @endforeach

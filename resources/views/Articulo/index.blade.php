@@ -1,75 +1,89 @@
 @extends('sideb')
 @section('content')
+@section('Dtables')
+<link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js" defer></script>`
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+@endsection
 <br>
-<div class="row">
+<div class="row" id="varArt">
     <div class="col-3 py-2">
         <h5> <i class="fas fa-cubes fa-2x"></i> &NonBreakingSpace; Articulos</h5>
     </div>
-    <div class="col-7 d-md-flex justify-content-end my-3">
-        <div class="col-7">
-            <input class="form-control form-control-sm border border-primary border-2" type="text" placeholder="Ingrese el texto a buscar" name="search_aj" id="search_aj" onkeyup="search()">
-       </div>        
-    </div>
 </div>
-<div class="container bg-white col-md-10 col-sm-12 col-12">
-    <div class="table-responsive">
-        <table class="table" id="tbl_ajx_art">
+.<div class="card">
+    <div class="card">
+        <div class="card-header" style="justify-items: right">
+            <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#articuloCreate">
+                <i class="far fa-plus-square"></i>
+            </button>   
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-responsive bg-white col-md-10 col-sm-12 col-12"  id="tbl0_articulos" style="width:100%">
             <thead>
             <tr>
                 <th scope="col">Clave</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Unidad de medida</th>
                 <th scope="col">Partida</th>
-                <th scope="col" style="width: 150px;">
-                    Acciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </th>     
-                <th scope="col-1">
-                    <button type="button" class="btn btn-tool btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#articuloCreate">
-                        <i class="far fa-plus-square"></i>
-                    </button>
-                </th>          
+                <th scope="col">Acciones</th>
             </tr>
             </thead>
-            <tbody id="delete">            
-                @if ($articulos->isNotEmpty())
-                    @foreach ( $articulos as $articulo )
-                        <tr>
-                            <td scope="row"><strong>{{$articulo->clave_articulo}}</strong></td>
-                            <td>{{$articulo->nombre_articulo}}</td>
-                            <td>{{$articulo->nombre_med}}</td> 
-                            @foreach ($partidas as $partida )
-                                @if ($partida->id_partida == $articulo->partida_id)  
-                                <td>{{$partida->nombre_partida}}</td>                              
-                                @else
-                                    @if ($articulo->partida_id == null)
-                                        <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de up</span></td> 
-                                    @endif
-                                @endif
-                            @endforeach                                                
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit{{$articulo->id}}">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#articuloShow{{$articulo->id}}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </td>       
-                            <td></td>
-                        </tr>                    
-                    @endforeach
-                @else
-                    <td colspan="6" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros</span></td>
-                @endif                            
-            </tbody>
+            
         </table>
-        <div class = "d-flex">{{$articulos->links()}}</div>
     </div>
-    @if ($articulos->isNotEmpty())  
-        @foreach ($articulos as $articulo )
-            @include('Articulo.edit')   
-            @include('Articulo.show')   
-        @endforeach
-    @endif
+    <!-- Modal -->
+<div class="modal fade" id="articuloShow" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-white border-0 " >
+                <h5 class="modal-title" id="departamentoEditLabel" >Artículo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="content">
+                <div class="modal-body">
+                    <div class="col-10 mx-5">
+                        <label >Clave</label>
+                        <input type="text" class="form-control form-control-sm" id ="claveMD" name ="clave" value="" disabled>
+                    </div>
+                    <div class="col-10 mx-5">
+                        <label >Nombre artículo</label>                
+                        <input type="text" class="form-control form-control-sm"  id="nombreArMD" name="nombreAr"  value="" disabled>
+                    </div>
+                    <div class="col-10 mx-5">
+                        <label >Ubicación</label>
+                        <input type="text" class="form-control form-control-sm" id ="ubicacionMD" name ="ubicacion"  value="" disabled>
+                    </div>
+                    <div class="col-10 mx-5">
+                        <label >Observaciones</label>
+                        <input type="text" class="form-control form-control-sm" id ="observacionesMD" name ="observaciones" value="" disabled>
+                    </div>                   
+                    <div class="col-10 mx-5">
+                        <label >Partida</label>
+                        <input type="text" class="form-control form-control-sm" id ="partidaMD" name ="partida" value="" disabled>
+                    </div>
+                    <div class="col-10 mx-5">                                          
+                        <label >Unidad de medida</label>
+                        <input type="text" class="form-control form-control-sm" id ="medidaMD" name ="medida" value="" disabled>
+                        
+                    </div>
+                    <br>  
+                    <div class="col-10 mx-5">
+                       
+                        <div class="col-9" id="divIMG">
+                            <img src="" id= "imgArt" alt="Foto de articulo" style="height: 120px;">
+
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
     @include('Articulo.create') 
     @if ($errors->isNotEmpty())
         @foreach ( $errors->all() as $nuevo )
@@ -88,60 +102,66 @@
         toastr.error("{!! Session::get('no') !!}");
     </script>
     @endif  
-</div>
-@endsection
-@section('search_art')
-<script>
-function search(){
-    var busqueda = document.getElementById('search_aj').value.toLowerCase();
-    var dato = document.getElementById('delete');
-    var tabla = document.getElementById('tbl_ajx_art'); 
-    $.ajax({ 
-        type: "GET",
-        url: "/resultArt",
-        data:{'busqueda': busqueda,
-        }
-    }).done(function(data){
-        console.log(busqueda);//quitarc
-        $.each(data, function(index, element){
-            $(dato).append(
-                '<tr>' +
-                    '<td scope="row"><strong>'+ element.clave_articulo +'</strong></td>'+
-                    '<td>'+element.nombre_articulo+'</td>'+
-                    '<td>' + element.nombre_med +'</td>' +
-                    '<td>' + element.nombre_partida +'</td>' +                             
-                    '<td>' +
-                        '<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#articuloEdit'+element.id+'">' +
-                        '<i class="fa-regular fa-pen-to-square"></i>' +
-                        '</button>' +
-                        '<button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#articuloShow'+element.id+'">' +
-                            '<i class="fas fa-eye"></i>' +
-                        '</button>' +
-                    '</td>'+  
-                    '<td></td>'+
-                '</tr>'
-            );
-        });
-        var cellsOfRow="";
-        var found=false;
-        var compareWith="";
-        for (var i = 1; i < tabla.rows.length; i++) {
-            cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-            found = false;
-            for (var j = 0; j < cellsOfRow.length && !found; j++) { compareWith = cellsOfRow[j].innerHTML.toLowerCase(); if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
-                {
-                    found = true;
+    <script>
+        $(document).ready(function () {
+        $('#tbl0_articulos').DataTable({
+            ajax: '/tblArticulo',
+            columns: [
+                { 'data': 'clave_articulo'},
+                { 'data': 'nombre_articulo'},
+                { 'data': 'nombre_med'},
+                { 'data': 'partidas.descripcion_partida'},
+                { 'data': 'actions', orderable:false, searchable:false},
+            ],
+        
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
                 }
-            }
-            if(found)
-            {
-                tabla.rows[i].style.display = '';
-            } else {
-                tabla.rows[i].style.display = 'none';
-            }
-
-        }
+            },
+            "lengthMenu": [ [15, 30, 60, -1], [15, 30, 60, "All"] ],
+        });
     });
-}
-</script>
+    function idArt(objBtn) {
+        var idArtAjx =objBtn.id;
+        $.ajax({ 
+            type: "GET",
+            url: "{{route ('articulo.index')}}",
+            data:{'idArtAjx': idArtAjx}
+        }).done(function(data){
+            $.each(data, function(index, element){
+                var clave = document.getElementById('claveMD');
+                clave.value = element.clave_articulo;
+                var nombre = document.getElementById('nombreArMD');
+                nombre.value = element.nombre_articulo;
+                var ubicacion = document.getElementById('ubicacionMD');
+                ubicacion.value = element.ubicacion;
+                var observaciones = document.getElementById('observacionesMD');
+                observaciones.value = element.observaciones;
+                var partida = document.getElementById('partidaMD');
+                partida.value = element.descripcion_partida;
+                var medida = document.getElementById('medidaMD');
+                medida.value = element.nombre_med;
+                var imagen = document.getElementById('imgArt');
+                imagen.src = "storage/"+element.foto_articulo;
+            }); 
+        });
+    }
+    </script>
+
 @endsection

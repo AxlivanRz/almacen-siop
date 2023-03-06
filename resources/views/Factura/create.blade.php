@@ -45,9 +45,11 @@
                         <label >Proveedor</label>                               
                         <select class="form-select"  name="proveedor" id="proveedor" >
                             @foreach ($proveedores as $proveedor )
+                                @if ($proveedor->id_proveedor != 1)
                                 <option selected value="{{$proveedor->id_proveedor}}">
                                     {{$proveedor->nombre_empresa}}
                                 </option>
+                                @endif
                             @endforeach                 
                         </select>
                     </div>  

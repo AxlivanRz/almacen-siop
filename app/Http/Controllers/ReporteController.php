@@ -38,7 +38,7 @@ class ReporteController extends Controller
     }
   
     public function cierre(Request $request){
-        try {
+        //try {
             $iniI = Carbon::parse($request->mesCierre)->startOfMonth()->toDateString();
             $finF = Carbon::parse($request->mesCierre)->endOfMonth()->toDateString();
             $tomorrow = Carbon::parse($request->mesCierre)->endOfMonth()->addDay()->toDateString();
@@ -138,9 +138,9 @@ class ReporteController extends Controller
                 }              
             }
             return redirect ('/cierre/mensual')->with('exito', 'Se cerro el mes de '.$nombre.' con éxito');
-        } catch (\Throwable $th) {
-         return redirect ('/cierre/mensual')->with('no', 'Algo salío mal');
-        }
+        // } catch (\Throwable $th) {
+        //  return redirect ('/cierre/mensual')->with('no', 'Algo salío mal');
+        // }
     }
 
     public function index()

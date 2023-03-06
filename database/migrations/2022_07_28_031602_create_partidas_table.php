@@ -14,7 +14,7 @@ class CreatePartidasTable extends Migration
     public function up()
     {
         Schema::create('partidas', function (Blueprint $table) {
-            $table->bigIncrements('id_partida');
+            $table->bigIncrements('id');
             $table->string('nombre_partida');
             $table->string('descripcion_partida');
             $table->string('abreviado');

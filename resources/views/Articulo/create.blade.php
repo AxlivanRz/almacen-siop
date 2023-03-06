@@ -44,7 +44,7 @@
                         <select class="form-select form-select-sm"  name="partida" id="partida">
                             <option selected>Seleccionar a la partida que pertenece</option>
                             @foreach ($partidas as $partida)
-                            <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>   
+                            <option value="{{$partida->id}}">{{$partida->nombre_partida}}</option>   
                             @endforeach                      
                         </select>
                     </div>

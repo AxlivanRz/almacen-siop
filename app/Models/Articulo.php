@@ -31,4 +31,7 @@ class Articulo extends Model
     public function vales (){
         return $this->belongsToMany(Vale::class, 'vale_articulos');
     }
+    public function partidas (){
+        return $this->belongsTo(Partida::class, 'partida_id');
+    }
 }

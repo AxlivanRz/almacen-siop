@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="partidaDelete{{$partida->id_partida}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="partidaDeleteLabel" aria-hidden="true">
+<div class="modal fade" id="partidaDelete{{$partida->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="partidaDeleteLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content" style="width: 450px">
         <div class="modal-header bg-white border-0 " style="height: 50px">
@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-center align-items-center " style="height: 85px">
                 <div class="modal-footer bg-white border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cerrar</button>
-                    <form action="{{route('partida.destroy',$partida->id_partida)}}" method="POST">
+                    <form action="{{route('partida.destroy',$partida->id)}}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-outline-success">Sí</button>

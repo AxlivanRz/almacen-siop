@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="partidaEdit{{$partida->id_partida}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="partidaEditLabel" aria-hidden="true">
+<div class="modal fade" id="partidaEdit{{$partida->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="partidaEditLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-aentered modal-dialog-scrollable">
       <div class="modal-content ">
         <div class="modal-header bg-white border-0 " style="height: 50px">
@@ -8,7 +8,7 @@
         </div>
             <div class="content" style="align-self: center">
                 <div class="modal-body">
-                    <form class="needs-validation" action="{{route('partida.update',$partida->id_partida)}}" method="POST" novalidate>
+                    <form class="needs-validation" action="{{route('partida.update',$partida->id)}}" method="POST" novalidate>
                         @csrf 
                         @method('PUT')
                         <div class="col-12">

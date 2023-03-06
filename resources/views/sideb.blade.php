@@ -16,8 +16,9 @@
     @yield('editarVale')
     @yield('scriptSurtir')
     @yield('scriptsCV')
-    @yield('search_art')
     @yield('select2')
+    @yield('Dtables')
+
     <script src="{{ asset('js/iconc.js') }}" defer></script>
     <script src="{{ asset('js/search.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>

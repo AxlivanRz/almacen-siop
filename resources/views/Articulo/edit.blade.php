@@ -31,13 +31,13 @@
                         <div class="col-12">                                          
                             <select class="form-select form-select-sm"  name="partida" id="partida">
                                 @foreach ($partidas as $partida )
-                                    @if ($partida->id_partida == $articulo->partida_id)  
-                                        <option selected value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                    @if ($partida->id == $articulo->partida_id)  
+                                        <option selected value="{{$partida->id}}">{{$partida->nombre_partida}}</option>
                                     @endif
                                 @endforeach 
                                 @foreach ($partidas as $partida)
-                                    @if ($partida->id_partida != $articulo->partida_id)
-                                        <option value="{{$partida->id_partida}}">{{$partida->nombre_partida}}</option>
+                                    @if ($partida->id != $articulo->partida_id)
+                                        <option value="{{$partida->id}}">{{$partida->nombre_partida}}</option>
                                     @endif   
                                 @endforeach                  
                             </select>

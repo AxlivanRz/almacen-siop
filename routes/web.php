@@ -33,7 +33,7 @@ Route::get('/surtir/vale/{id}', [SurtirController::class, 'createV'])->name('sur
 Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir.getFactura');
 
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
-Route::get('/resultArt', [ArticuloController::class, 'searchArt'])->name('articulo.search');
+Route::get('tblArticulo', [ArticuloController::class, 'tblArticulo'])->name('articulo.table');
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 
 

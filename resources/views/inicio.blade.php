@@ -106,8 +106,8 @@
                             <td>{{$articulo->nombre_articulo}}</td>
                             <td>{{$articulo->nombre_med}}</td> 
                             @foreach ($partidas as $partida )
-                                @if ($partida->id_partida == $articulo->partida_id)  
-                                 <td>{{$partida->nombre_partida}}</td>                              
+                                @if ($partida->id == $articulo->partida_id)  
+                                 <td>{{$partida->descripcion_partida}}</td>                              
                                 @else
                                     @if ($articulo->partida_id == null)
                                         <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de up</span></td> 

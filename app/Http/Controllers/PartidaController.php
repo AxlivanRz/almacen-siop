@@ -39,7 +39,7 @@ class PartidaController extends Controller
     {
         $edit = Partida::findOrFail($id); 
         $request->validate([
-            'descripcion_partida' => Rule::unique('partidas', 'descripcion_partida')->ignore($edit->id_partida),
+            'descripcion_partida' => Rule::unique('partidas', 'descripcion_partida')->ignore($edit->id),
         ],
             [
             'descripcion_partida.unique' => 'La clave de la partida ya existe',

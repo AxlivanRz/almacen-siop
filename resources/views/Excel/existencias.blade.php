@@ -27,7 +27,7 @@
                         <td>{{$articulo->nombre_articulo}}</td>
                         <td>{{$articulo->nombre_med}}</td>
                         @foreach ($partidas as $partida)
-                            @if ($partida->id_partida == $articulo->partida_id)
+                            @if ($partida->id == $articulo->partida_id)
                             <td>{{$partida->nombre_partida}}</td>
                             @endif
                         @endforeach

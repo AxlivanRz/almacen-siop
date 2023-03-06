@@ -26,6 +26,16 @@ class FacturaController extends Controller
         $articulos = Articulo::get();
         $origenes = OrigenRecurso::get();
         $busqueda = $request->busqueda;
+        if ($request->ajax()) {
+            $getF_existencia = DB::table('facturas') 
+            ->join('entrada_articulos', 'facturas.numero_factura', '=', 'entrada_articulos.factura_id')
+            ->where('entrada_articulos.existencia', '>', 0)
+            ->select('facturas.numero_factura')
+            ->get();
+            $facturas_existencia = $getF_existencia->unique('numero_factura');
+            return $facturas_existencia;
+        }
+        //dd($facturas_existencia);
         if ($busqueda == null) {
             $facturas = DB::table('facturas')->orderBy('fecha', 'desc')->paginate(15);
         }else{

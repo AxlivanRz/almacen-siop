@@ -17,7 +17,7 @@ class ValeController extends Controller
 {
     public function index()
     {
-        $vales = Vale::get();
+        $vales = Vale::latest('created_at')->get();
         return view('Vale.index', compact('vales'));
     }
  

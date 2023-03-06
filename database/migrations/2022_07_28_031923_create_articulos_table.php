@@ -25,7 +25,7 @@ class CreateArticulosTable extends Migration
             $table->string('foto_articulo')->nullable();         
             $table->timestamps();
             $table->foreign('medida_id')->references('id_medida')->on('unidad_medidas')->onDelete('cascade');
-            $table->foreign('partida_id')->references('id_partida')->on('partidas')->onDelete('cascade');
+            $table->foreign('partida_id')->references('id')->on('partidas')->onDelete('cascade');
         });
     }
 

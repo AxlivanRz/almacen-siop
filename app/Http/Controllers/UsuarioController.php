@@ -126,9 +126,9 @@ class UsuarioController extends Controller
 
     public function destroy( $id)
     {
-        $user = User::findOrFail($id); 
-        $user->roles()->detach();
-        $user->delete();
-        return redirect('/usuario')->with('delete', $user->name.' se elimino con exito');
+        // $user = User::findOrFail($id); 
+        // $user->roles()->detach();
+        // $user->delete();
+        // return redirect('/usuario')->with('delete', $user->name.' se elimino con exito');
     }
 }
