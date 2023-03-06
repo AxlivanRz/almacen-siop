@@ -103,42 +103,45 @@
     </script>
     @endif  
     <script>
-        $(document).ready(function () {
-        $('#tbl0_articulos').DataTable({
-            ajax: "{!! route('articulo.table') !!}",
-            processing: true,
-            serverSide: true,
-            columns: [
-                { 'data': 'clave_articulo'},
-                { 'data': 'nombre_articulo'},
-                { 'data': 'nombre_med'},
-                { 'data': 'partidas.descripcion_partida'},
-                { 'data': 'actions', orderable:false, searchable:false},
-            ],
-        
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            },
-            "lengthMenu": [ [15, 30, 60, -1], [15, 30, 60, "All"] ],
-        });
-    });
+        function execut() {
+            $(document).ready(function () {
+                $('#tbl0_articulos').DataTable({
+                    ajax: "{!! route('articulo.table') !!}",
+                    processing: true,
+                    serverSide: true,
+                    columns: [
+                        { 'data': 'clave_articulo'},
+                        { 'data': 'nombre_articulo'},
+                        { 'data': 'nombre_med'},
+                        { 'data': 'partidas.descripcion_partida'},
+                        { 'data': 'actions', orderable:false, searchable:false},
+                    ],
+                
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                    "lengthMenu": [ [15, 30, 60, -1], [15, 30, 60, "All"] ],
+                });
+            });
+        }
+    setTimeout(execut, 2000);
     function idArt(objBtn) {
         var idArtAjx =objBtn.id;
         $.ajax({ 
