@@ -23,7 +23,7 @@
                             <input type="text" class="form-control form-control-sm" id ="ubicacion" name ="ubicacion"  value="{{$articulo->ubicacion}}">
                         </div>  
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row mt-3">
                         <div class="form-group col-3">
                             <label >Observaciones</label>
                             <input type="text" class="form-control form-control-sm" id ="observaciones" name ="observaciones" value="{{$articulo->observaciones}}">
