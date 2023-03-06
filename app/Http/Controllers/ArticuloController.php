@@ -60,6 +60,14 @@ class ArticuloController extends Controller
         }
     }
 
+    public function edit($id)
+    {    
+        $articulo = Articulo::findOrFail($id);
+        $medidas= UnidadMedida::all();
+        $partidas= Partida::all();
+        return view('Articulo.edit', compact(['medidas', 'partidas', 'articulo']));
+    }
+
     public function update(Request $request, $id)
     {
         $edit1 = Articulo::findOrFail($id);
@@ -114,9 +122,9 @@ class ArticuloController extends Controller
         $articulos = Articulo::with('partidas')->get();
         return datatables()->eloquent(Articulo::with('partidas'))->addColumn('actions', function ($articulo) {
             return 
-            '<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"  data-bs-target="#articuloEdit'.$articulo->id.'">'.
+            '<a class="btn btn-sm btn-primary"  href="/articulo/'.$articulo->id.'/edit" >'.
                 '<i class="fa-regular fa-pen-to-square"></i>' .
-                '</button>'. '&nbsp'.
+                '</a>'. '&nbsp'.
             '<button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" onclick="idArt(this);" id = "'.$articulo->id.'" data-bs-target="#articuloShow">'.
                 '<i class="fas fa-eye"></i>'.
            ' </button>';

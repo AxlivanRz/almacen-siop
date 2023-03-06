@@ -1,34 +1,36 @@
-<!-- Modal -->
-<div class="modal fade" id="articuloEdit{{$articulo->id}}" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloEditLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header bg-white border-0 " >
-                <h5 class="modal-title" id="departamentoEditLabel">Editar artículo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{route('articulo.update',$articulo->id)}}" method="POST" enctype="multipart/form-data">
-                @csrf 
-                @method('PUT')
-                <div class="content" style="align-self: center">
-                    <div class="modal-body">
-                        <div class="col-12">
+@extends('sideb')
+@section('content')
+<br>
+<div class="row mx-5 px-5">
+    <div class="col-11">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Articulo</h5>
+                <form action="{{route('articulo.update',$articulo->id)}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group row">
+                        <div class="form-group col-3">
                             <label >Clave</label>
-                            <input type="text" class="form-control" id ="clave" name ="clave" style="height: 35px"value="{{$articulo->clave_articulo}}" >
+                            <input type="text" class="form-control form-control-sm" id ="clave" name ="clave" value="{{$articulo->clave_articulo}}" >
                         </div>
-                        <div class="col-12">
+                        <div class="form-group col-5">
                             <label >Nombre artículo</label>                
-                            <input type="text" class="form-control"  id="nombreAr" name="nombreAr" style="height: 35px" value="{{$articulo->nombre_articulo}}">
+                            <input type="text" class="form-control form-control-sm"  id="nombreAr" name="nombreAr"  value="{{$articulo->nombre_articulo}}">
                         </div>
-                        <div class="col-12">
+                        <div class="form-group col-3">
                             <label >Ubicación</label>
-                            <input type="text" class="form-control" id ="ubicacion" name ="ubicacion" style="height: 35px" value="{{$articulo->ubicacion}}">
-                        </div>
-                        <div class="col-12">
+                            <input type="text" class="form-control form-control-sm" id ="ubicacion" name ="ubicacion"  value="{{$articulo->ubicacion}}">
+                        </div>  
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-group col-3">
                             <label >Observaciones</label>
-                            <input type="text" class="form-control" id ="observaciones" name ="observaciones" style="height: 35px" value="{{$articulo->observaciones}}">
+                            <input type="text" class="form-control form-control-sm" id ="observaciones" name ="observaciones" value="{{$articulo->observaciones}}">
                         </div>                   
-                        <label >Partida</label>
-                        <div class="col-12">                                          
+                        
+                        <div class="form-group col-4 "> 
+                            <label >Partida</label>                                         
                             <select class="form-select form-select-sm"  name="partida" id="partida">
                                 @foreach ($partidas as $partida )
                                     @if ($partida->id == $articulo->partida_id)  
@@ -42,8 +44,9 @@
                                 @endforeach                  
                             </select>
                         </div>  
-                        <label >Unidad de medida</label>
-                        <div class="col-12">                                          
+                        
+                        <div class="form-group col-4">    
+                            <label >Unidad de medida</label>                                      
                             <select class="form-select form-select-sm"  name="medida" id="medida">
                                 @foreach ($medidas as $medida )
                                     @if ($medida->id_medida == $articulo->medida_id)  
@@ -57,10 +60,11 @@
                                 @endforeach                  
                             </select>
                         </div>
-                        <br>  
-                        <div class="col-12">
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-group col-5">
                             @if (isset($articulo->foto_articulo))
-                            <div class="col-8">
+                            <div class="col-4 mt-3">
                                 <img src="{{asset('storage').'/'.$articulo->foto_articulo}}" alt="Foto de articulo" style="height: 120px;">
                             </div>
                             @endif 
@@ -68,16 +72,16 @@
                                 <label for="foto" class="form-label">Foto del articulo</label>
                                 <input class="form-control form-control-sm" id="foto" name="foto" type="file" accept="image/*" >
                             </div>
-                        </div>  
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center " style="height: 85px">
+                            <div class="modal-footer bg-white border-0">
+                                <button type="submit" class="btn btn-outline-primary">Editar</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center align-items-center " style="height: 85px">
-                    <div class="modal-footer bg-white border-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cerrar</button>
-                        <button type="submit" class="btn btn-outline-primary">Editar</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</div>           
+@endsection
