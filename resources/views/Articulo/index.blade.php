@@ -105,7 +105,9 @@
     <script>
         $(document).ready(function () {
         $('#tbl0_articulos').DataTable({
-            ajax: '/tblArticulo',
+            ajax: "{!! route('articulo.table') !!}",
+            processing: true,
+            serverSide: true,
             columns: [
                 { 'data': 'clave_articulo'},
                 { 'data': 'nombre_articulo'},
