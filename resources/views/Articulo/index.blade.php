@@ -2,9 +2,6 @@
 @section('content')
 @section('Dtables')
 <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js" defer></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection
 <br>
 <div class="row" id="varArt">
@@ -35,54 +32,58 @@
         </table>
     </div>
     <!-- Modal -->
-<div class="modal fade" id="articuloShow" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-white border-0 " >
-                <h5 class="modal-title" id="departamentoEditLabel" >Artículo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="content">
-                <div class="modal-body">
-                    <div class="col-10 mx-5">
-                        <label >Clave</label>
-                        <input type="text" class="form-control form-control-sm" id ="claveMD" name ="clave" value="" disabled>
-                    </div>
-                    <div class="col-10 mx-5">
-                        <label >Nombre artículo</label>                
-                        <input type="text" class="form-control form-control-sm"  id="nombreArMD" name="nombreAr"  value="" disabled>
-                    </div>
-                    <div class="col-10 mx-5">
-                        <label >Ubicación</label>
-                        <input type="text" class="form-control form-control-sm" id ="ubicacionMD" name ="ubicacion"  value="" disabled>
-                    </div>
-                    <div class="col-10 mx-5">
-                        <label >Observaciones</label>
-                        <input type="text" class="form-control form-control-sm" id ="observacionesMD" name ="observaciones" value="" disabled>
-                    </div>                   
-                    <div class="col-10 mx-5">
-                        <label >Partida</label>
-                        <input type="text" class="form-control form-control-sm" id ="partidaMD" name ="partida" value="" disabled>
-                    </div>
-                    <div class="col-10 mx-5">                                          
-                        <label >Unidad de medida</label>
-                        <input type="text" class="form-control form-control-sm" id ="medidaMD" name ="medida" value="" disabled>
-                        
-                    </div>
-                    <br>  
-                    <div class="col-10 mx-5">
-                       
-                        <div class="col-9" id="divIMG">
-                            <img src="" id= "imgArt" alt="Foto de articulo" style="height: 120px;">
-
+    <div class="modal fade" id="articuloShow" style="overflow-y: scroll;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="articuloShowLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-white border-0 " >
+                    <h5 class="modal-title" id="departamentoEditLabel" >Artículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="content">
+                    <div class="modal-body">
+                        <div class="col-10 mx-5">
+                            <label >Clave</label>
+                            <input type="text" class="form-control form-control-sm" id ="claveMD" name ="clave" value="" disabled>
                         </div>
-                    </div>  
+                        <div class="col-10 mx-5">
+                            <label >Nombre artículo</label>                
+                            <input type="text" class="form-control form-control-sm"  id="nombreArMD" name="nombreAr"  value="" disabled>
+                        </div>
+                        <div class="col-10 mx-5">
+                            <label >Ubicación</label>
+                            <input type="text" class="form-control form-control-sm" id ="ubicacionMD" name ="ubicacion"  value="" disabled>
+                        </div>
+                        <div class="col-10 mx-5">
+                            <label >Observaciones</label>
+                            <input type="text" class="form-control form-control-sm" id ="observacionesMD" name ="observaciones" value="" disabled>
+                        </div>                   
+                        <div class="col-10 mx-5">
+                            <label >Partida</label>
+                            <input type="text" class="form-control form-control-sm" id ="partidaMD" name ="partida" value="" disabled>
+                        </div>
+                        <div class="col-10 mx-5">                                          
+                            <label >Unidad de medida</label>
+                            <input type="text" class="form-control form-control-sm" id ="medidaMD" name ="medida" value="" disabled>
+                            
+                        </div>
+                        <br>  
+                        <div class="col-10 mx-5">
+                        
+                            <div class="col-9" id="divIMG">
+                                <img src="" id= "imgArt" alt="Foto de articulo" style="height: 120px;">
+
+                            </div>
+                        </div>  
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+@section('jsData')
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+@endsection
 </div>
     @include('Articulo.create') 
     @if ($errors->isNotEmpty())
@@ -108,13 +109,13 @@
                 $('#tbl0_articulos').DataTable({
                     ajax: "{!! route('articulo.table') !!}",
                     processing: true,
-                    serverSide: true,
+                    serverSide: false,
                     columns: [
-                        { 'data': 'clave_articulo'},
-                        { 'data': 'nombre_articulo'},
-                        { 'data': 'nombre_med'},
-                        { 'data': 'partidas.descripcion_partida'},
-                        { 'data': 'actions', orderable:false, searchable:false},
+                        { data: 'clave_articulo'},
+                        { data: 'nombre_articulo'},
+                        { data: 'nombre_med', orderable:false, searchable:false},
+                        { data: 'partidas.descripcion_partida', orderable:false},
+                        { data: 'actions', orderable:false, searchable:false},
                     ],
                 
                     language: {
@@ -137,7 +138,6 @@
                             "previous": "Anterior"
                         }
                     },
-                    "lengthMenu": [ [15, 30, 60, -1], [15, 30, 60, "All"] ],
                 });
             });
         }
