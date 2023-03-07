@@ -110,7 +110,7 @@
                     ajax: "{!! route('articulo.table') !!}",
                     processing: true,
                     serverSide: true,
-                    columnsDefs: [{"defaultContent": "---", "targets": "_all"}],
+                    columnDefs: [{"defaultContent": "---", "targets": "_all"}],
                     columns: [
                         { data: 'clave_articulo'},
                         { data: 'nombre_articulo'},
@@ -163,11 +163,10 @@
                 partida.value = element.descripcion_partida;
                 var medida = document.getElementById('medidaMD');
                 medida.value = element.nombre_med;
-                // var imagen = document.getElementById('imgArt');
-                // imagen.src = "storage/"+element.foto_articulo;
+                var imagen = document.getElementById('imgArt');
+                imagen.src = "storage/"+element.foto_articulo;
             }); 
         });
     }
     </script>
-
 @endsection
