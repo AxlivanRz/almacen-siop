@@ -109,7 +109,8 @@
                 $('#tbl0_articulos').DataTable({
                     ajax: "{!! route('articulo.table') !!}",
                     processing: true,
-                    serverSide: false,
+                    serverSide: true,
+                    columnsDefs: [{"defaultContent": "---", "targets": "_all"}],
                     columns: [
                         { data: 'clave_articulo'},
                         { data: 'nombre_articulo'},
@@ -141,7 +142,7 @@
                 });
             });
         }
-    setTimeout(execut, 2000);
+    setTimeout(execut, 1000);
     function idArt(objBtn) {
         var idArtAjx =objBtn.id;
         $.ajax({ 
@@ -162,8 +163,8 @@
                 partida.value = element.descripcion_partida;
                 var medida = document.getElementById('medidaMD');
                 medida.value = element.nombre_med;
-                var imagen = document.getElementById('imgArt');
-                imagen.src = "storage/"+element.foto_articulo;
+                // var imagen = document.getElementById('imgArt');
+                // imagen.src = "storage/"+element.foto_articulo;
             }); 
         });
     }
