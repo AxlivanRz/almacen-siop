@@ -34,6 +34,10 @@ Route::get('/getFactura', [SurtirController::class, 'getFactura'])->name('surtir
 
 Route::get('getArticulo', [ArticuloController::class, 'getArticulo'])->name('articulo.get');
 Route::get('tblArticulo', [ArticuloController::class, 'tblArticulo'])->name('articulo.table');
+Route::get('tblArticulo2', [ArticuloController::class, 'tblaArticuloDos'])->name('articulo.tableD');
+Route::get('tblart', [ArticuloController::class, 'indexDos'])->name('articulo.dos');
+
+
 Route::get('getExistencia', [ArticuloController::class, 'getExistencia'])->name('articulo.existencia');
 
 
