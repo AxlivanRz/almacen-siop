@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="form-group col-2">
                                     <label>IVA %</label>
-                                    <input class="form-control form-control-sm" name="iva" id="iva" type="number" min="0" max="100" value = "{{$factura->iva}}" disabled>
+                                    <input class="form-control form-control-sm" name="iva" id="iva" type="number" min="0" max="100" value = "{{$entrada->iva}}" disabled>
                                 </div>
                                 <div class="form-group col-3">
                                     <label>Importe IVA</label>

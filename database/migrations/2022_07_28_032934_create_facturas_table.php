@@ -18,7 +18,6 @@ class CreateFacturasTable extends Migration
             $table->date('fecha');
             $table->string('numero_factura')->unique();
             $table->string('respaldo_factura')->nullable();
-            $table->double('iva')->unsigned();
             $table->double('subtotal')->unsigned();
             $table->double('imp_total')->unsigned();
             $table->double('imp_iva')->unsigned();

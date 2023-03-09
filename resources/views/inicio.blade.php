@@ -1,4 +1,7 @@
 @extends('sideb')
+@section('buscar')
+<script src="{{ asset('js/search.js') }}" defer></script>
+@endsection
 @section('content')
 @canany(['isAdmin', 'isTi', 'isAlm'])
 <style type="text/css"> 

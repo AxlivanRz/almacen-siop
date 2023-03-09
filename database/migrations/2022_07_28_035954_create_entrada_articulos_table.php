@@ -21,6 +21,7 @@ class CreateEntradaArticulosTable extends Migration
             $table->double('precio')->unsigned();
             $table->double('preciofinal')->unsigned();
             $table->double('imp_unitario');
+            $table->double('iva')->unsigned();
             $table->unsignedBigInteger('articulo_id');
             $table->string('factura_id');
             $table->date('caducidad')->nullable();

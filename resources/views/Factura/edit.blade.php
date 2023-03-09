@@ -87,7 +87,7 @@
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>IVA %</label>
-                                                        <input class="form-control form-control-sm" name="iva" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$factura->iva}}" {{$editado == true ? 'disabled' : ''}}>
+                                                        <input class="form-control form-control-sm" name="iva[]" id="iva{{$contador}}" type="number" min="0" max="100" value = "{{$entrada->iva}}" {{$editado == true ? 'disabled' : ''}}>
                                                     </div>
                                                     <div class="form-group col-2">
                                                         <label>Importe Unitario</label>
@@ -421,7 +421,7 @@
             formGroup3.appendChild(label);
             var iva = document.createElement("input");
             iva.className = "form-control form-control-sm";
-            iva.name = "iva";
+            iva.name = "iva[]";
             iva.id = "iva" + parent;
             iva.type = "number";
             iva.min = "0";

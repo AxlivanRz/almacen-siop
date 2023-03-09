@@ -8,8 +8,8 @@
     <div class="d-md-flex justify-content-md-end my-3 px-5">
         <form action="/vales/surtidos" method="get">
             <div class="btn-group">
-                <input type="text" name="busqueda" class="form-control">
-                <input type="submit" value="Buscar" class="btn btn-primary">
+                <input type="text" name="busqueda"  placeholder= "Ingresa el N° de vale surtido" class="form-control form-control-sm">
+                <input type="submit" value="Buscar" class="btn btn-sm btn-primary">
             </div>
         </form>
     </div>
@@ -17,14 +17,15 @@
 <div class="row">
     <div class="container bg-white col-10">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" >
                 <thead>
                     <tr>
-                        <th scope="col">Id</th>
+                        <th scope="col">N° de vale surtido</th>
                         <th scope="col">Fecha de Surtido</th>
                         <th scope="col">Cantidad de articulos</th>
                         <th scope="col">Total del vale</th>
                         <th scope="col">Surtido por</th>
+                        <th scope="col">N° de vale solicitado</th>
                         <th scope="col" style="width: 150px;">Acciones&nbsp;</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                                     <td>{{$usuario->name}} {{$usuario->primer_apellido}}</td>
                                     @endif
                                 @endforeach
+                                <td>{{$surtido->vale_id}}</td>
                                 <td>                                                            
                                     <a href="{{route('surtir.show',$surtido->id)}}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye" style="color: white"></i>

@@ -24,7 +24,6 @@ class Factura extends Model
         'respaldo_factura',
         'imp_iva',
         'imp_total',
-        'iva',
         'subtotal',
         'confirmed',
         'recurso_id',

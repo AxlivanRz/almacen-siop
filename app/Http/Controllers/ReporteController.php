@@ -65,7 +65,6 @@ class ReporteController extends Controller
                 ->where('entrada_articulos.existencia', '>',  0)
                 ->where('facturas.recurso_id', '=', $recurso->id_origen)
                 ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
-                ->select('facturas.iva')
                 ->selectRaw('SUM(entrada_articulos.existencia * entrada_articulos.precio) as suma_recurso')
                 ->get();
             }
@@ -85,17 +84,16 @@ class ReporteController extends Controller
             ->join('facturas', 'entrada_articulos.factura_id', '=', 'facturas.numero_factura')
             ->where('entrada_articulos.existencia', '>',  0)
             ->whereBetween('entrada_articulos.created_at', [$inicio, $finF])
-            ->select('entrada_articulos.articulo_id', 'entrada_articulos.caducidad', 'entrada_articulos.existencia', 'entrada_articulos.cantidad', 'entrada_articulos.precio',  'entrada_articulos.id', 'facturas.recurso_id', 'facturas.iva', 'facturas.proveedor_id')
+            ->select('entrada_articulos.articulo_id', 'entrada_articulos.iva', 'entrada_articulos.caducidad', 'entrada_articulos.existencia', 'entrada_articulos.cantidad', 'entrada_articulos.precio',  'entrada_articulos.id', 'facturas.recurso_id', 'facturas.proveedor_id')
             ->get();
             foreach ($recursos as $recurso) {
-                if (isset($total_existencia_recurso[$recurso->id_origen][0]->iva)) {
+                if (isset($total_existencia_recurso[$recurso->id_origen][0])) {
                     $numerof = "inv/".$ano."/".$recurso->nombre_recurso;
                     $new_factura = new Factura();
                     $new_factura->fecha = $tomorrow;
                     $new_factura->numero_factura = $numerof;
                     $new_factura->proveedor_id = 1;
                     $new_factura->respaldo_factura = null;
-                    $new_factura->iva = $total_existencia_recurso[$recurso->id_origen][0]->iva;
                     $new_factura->imp_iva = 0;
                     $new_factura->imp_total =  $total_existencia_recurso[$recurso->id_origen][0]->suma_recurso;
                     $new_factura->subtotal = 0;
@@ -121,6 +119,7 @@ class ReporteController extends Controller
                         $new_entrada->cantidad = $value->existencia;
                         $new_entrada->existencia = $value->existencia;
                         $new_entrada->precio = $value->precio;
+                        $new_entrada->iva = $value->iva;
                         $new_entrada->factura_id = $numerofa;
                         $new_entrada->descuento = 0;
                         $new_entrada->base = $base_new;

@@ -131,14 +131,6 @@ class ArticuloController extends Controller
         })->rawColumns(['actions'])->toJson();
     }
 
-    public function tblaArticuloDos(){
-        $datos['articulos'] = Articulo::with('partidas')->get();
-        return response()->json($datos);
-    }
-    public function indexDos(){
-       return view('Articulo.index2');
-    }
-
     public function getExistencia(){ 
         $articulos[] = array();
         $query1 = DB::table('articulos')

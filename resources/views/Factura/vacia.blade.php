@@ -6,11 +6,11 @@
 <br>
 <div class="row">
     <div class="col-3 py-3">
-        <h5><i class="fa-solid fa-file-invoice-dollar fa-2x"></i> &NonBreakingSpace;Facturas con existencia</h5>
+        <h5><i class="fa-solid fa-file-invoice-dollar fa-2x"></i> &NonBreakingSpace;Facturas sin existencia</h5>
     </div>
     <div class="col-9 d-md-flex justify-content-end my-3 px-5">
         <div class="col-5">
-            <form action="/factura" method="get">
+            <form action="/factura/sin_existencia" method="get">
                 <div class="btn-group col-11">
                     <input type="text" name="busqueda" id="search" onkeyup="Buscar()" class="form-control form-control-sm border border-2 border-primary" placeholder="Ingrese el número de la factura">
                     <input type="submit" value="Buscar" class="btn btn-sm btn-primary">
@@ -40,30 +40,30 @@
                 </tr>
                 </thead>
                 <tbody>            
-                    @if ($facturasExis->isNotEmpty())
-                        @foreach ($facturasExis as $facturaE )
+                    @if ($facturasSin->isNotEmpty())
+                        @foreach ($facturasSin as $facturaS )
                             <tr>
-                                <th scope="row">{{$facturaE->id_factura}}</th>
-                                <td>{{$facturaE->numero_factura}}</td>
-                                <td>{{$facturaE->fecha}}</td>
+                                <th scope="row">{{$facturaS->id_factura}}</th>
+                                <td>{{$facturaS->numero_factura}}</td>
+                                <td>{{$facturaS->fecha}}</td>
                                 @foreach ($proveedores as $proveedor )
-                                    @if ($proveedor->id_proveedor == $facturaE->proveedor_id)  
+                                    @if ($proveedor->id_proveedor == $facturaS->proveedor_id)  
                                     <td>{{$proveedor->nombre_empresa}}</td>                              
                                     @else
-                                        @if ($facturaE->proveedor_id == null)
+                                        @if ($facturaS->proveedor_id == null)
                                             <td colspan="1" style="text-align: center"><span class="badge rounded-pill bg-danger">Sin registros de provedor</span></td> 
                                         @endif
                                     @endif
                                 @endforeach
-                                <td>${{$facturaE->imp_total}}</td>
+                                <td>${{$facturaS->imp_total}}</td>
                                 <td>
-                                    <span class="badge rounded-pill bg-success">Con existencias</span>
+                                    <span class="badge rounded-pill bg-danger">Sin existencias</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('factura.show',$facturaE->id_factura)}}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('factura.show',$facturaS->id_factura)}}" class="btn btn-sm btn-info">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('factura.edit',$facturaE->id_factura)}}" class="btn btn-sm btn-primary" {{$facturaE->confirmed == 1 ? 'hidden' : ''}}>
+                                    <a href="{{ route('factura.edit',$facturaS->id_factura)}}" class="btn btn-sm btn-primary" {{$facturaS->confirmed == 1 ? 'hidden' : ''}}>
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </a>
                                 </td>                   
@@ -74,7 +74,7 @@
                     @endif                            
                 </tbody>
             </table>
-            <div class = "d-flex">{{$facturasExis->links()}}</div>
+            <div class = "d-flex">{{$facturasSin->links()}}</div>
         </div>
         {{-- Fin --}}
         

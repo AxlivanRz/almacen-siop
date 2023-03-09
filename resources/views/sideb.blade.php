@@ -18,8 +18,8 @@
     @yield('scriptsCV')
     @yield('select2')
     @yield('Dtables')
+    @yield('buscar')
     <script src="{{ asset('js/iconc.js') }}" defer></script>
-    <script src="{{ asset('js/search.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -113,7 +113,9 @@
                             </p>
                             <div class="collapse" id="drop1">
                                 <div class="card card-body col-md-12 shadow-none p-1 mb-2 bg-white rounded">
-                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('factura.index')}}">Alta factura</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('factura.create')}}">Alta factura</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('factura.index')}}">Con existencia</a>
+                                    <a class="btn btn-sm btn-outline-dark border border-0 shadow-none p-1 mb-1 rounded" href="{{route('factura.vacia')}}">Sin existencia</a>
                                 </div>
                             </div>
                             <p>

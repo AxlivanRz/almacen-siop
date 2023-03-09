@@ -23,6 +23,7 @@ class EntradaArticulo extends Model
         'descuento',
         'base',
         'precio',
+        'iva',
         'preciofinal',
         'imp_unitario',
         'articulo_id',

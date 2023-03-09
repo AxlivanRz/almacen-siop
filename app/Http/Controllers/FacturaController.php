@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EntradaArticulo;
+use Illuminate\Database\Query\Builder;
 use App\Models\OrigenRecurso;
 use App\Models\UnidadMedida;
 use App\Models\Proveedores;
@@ -22,27 +23,67 @@ class FacturaController extends Controller
     public function index(Request $request)
     {
         $proveedores = Proveedores::get();
-        $entradas = EntradaArticulo::get();
-        $articulos = Articulo::get();
-        $origenes = OrigenRecurso::get();
         $busqueda = $request->busqueda;
-        if ($request->ajax()) {
-            $getF_existencia = DB::table('facturas') 
+        if ($busqueda == null) {
+            $facturasExis = DB::table('facturas') 
             ->join('entrada_articulos', 'facturas.numero_factura', '=', 'entrada_articulos.factura_id')
             ->where('entrada_articulos.existencia', '>', 0)
-            ->select('facturas.numero_factura')
-            ->get();
-            $facturas_existencia = $getF_existencia->unique('numero_factura');
-            return $facturas_existencia;
-        }
-        //dd($facturas_existencia);
-        if ($busqueda == null) {
-            $facturas = DB::table('facturas')->orderBy('fecha', 'desc')->paginate(15);
+            ->select('facturas.*')
+            ->orderBy('fecha', 'desc')
+            ->groupBy('numero_factura')
+            ->paginate(15);        
         }else{
+            $facturasExis = DB::table('facturas') 
+            ->join('entrada_articulos', 'facturas.numero_factura', '=', 'entrada_articulos.factura_id')
+            ->where('entrada_articulos.existencia', '>', 0)
+            ->where('facturas.numero_factura', 'LIKE', $busqueda)
+            ->select('facturas.*')
+            ->orderBy('fecha', 'desc')
+            ->groupBy('numero_factura')
+            ->paginate(15);      
             $facturas = Factura::where('numero_factura', '=', $busqueda)
             ->paginate(15);
         }
-        return view ('Factura.index', compact(['facturas', 'proveedores', 'entradas', 'articulos', 'origenes']));
+        return view ('Factura.index', compact(['proveedores', 'facturasExis']));
+    }
+
+    public function vacias(Request $request)
+    {
+        $proveedores = Proveedores::get();
+        $busqueda = $request->busqueda;
+        if ($busqueda == null) {
+            $facturasSin = DB::table('facturas') 
+            ->join('entrada_articulos', 'facturas.numero_factura', '=', 'entrada_articulos.factura_id')
+            ->where('entrada_articulos.existencia', '=', 0)
+            ->whereNotExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                ->from('entrada_articulos')
+                ->whereRaw('entrada_articulos.factura_id = facturas.numero_factura')
+                ->whereRaw('entrada_articulos.existencia > 0');
+            })
+            ->select('facturas.*')
+            ->orderBy('fecha', 'desc')
+            ->groupBy('numero_factura')
+            ->paginate(15);
+        }else{
+            $facturasSin = DB::table('facturas') 
+            ->join('entrada_articulos', 'facturas.numero_factura', '=', 'entrada_articulos.factura_id')
+            ->where('entrada_articulos.existencia', '=', 0)
+            ->where('facturas.numero_factura', 'LIKE', $busqueda)
+            ->whereNotExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                ->from('entrada_articulos')
+                ->whereRaw('entrada_articulos.factura_id = facturas.numero_factura')
+                ->whereRaw('entrada_articulos.existencia > 0');
+            })
+            ->select('facturas.*')
+            ->orderBy('fecha', 'desc')
+            ->groupBy('numero_factura')
+            ->paginate(15);
+        }
+        return view ('Factura.vacia', compact(['proveedores', 'facturasSin']));
     }
 
     /**
@@ -89,6 +130,7 @@ class FacturaController extends Controller
                 $entrada_create->precio = $request->get('preciokey')[$key];
                 $entrada_create->preciofinal = $request->get('preciototalkey')[$key];
                 $entrada_create->articulo_id = $value;
+                $entrada_create->iva = $request->get('iva')[$key];
                 $entrada_create->caducidad = $request->get('caducidad')[$key];
                 $entrada_create->imp_unitario = $request->get('unitariokey')[$key];
                 $entrada_create->existencia = $request->get('cantidadkey')[$key];
@@ -102,7 +144,6 @@ class FacturaController extends Controller
                 $factura_create['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
             }
             $factura_create->proveedor_id = $request->proveedor;
-            $factura_create->iva = $request->iva;
             $factura_create->imp_iva = $request->impfactura;
             $factura_create->imp_total = $request->total;
             $factura_create->subtotal = $request->subtotal;
@@ -180,6 +221,7 @@ class FacturaController extends Controller
                     $basekey = $request->get('basekey')[$key];
                     $preciokey = $request->get('preciokey')[$key];
                     $preciofinalkey = $request->get('preciototalkey')[$key];
+                    $iva = $request->get('preciototalkey')[$key];
                     $articulokey= $value;
                     if ($request->get('caducidad') != null) {
                         $caducidadkey = $request->get('caducidad')[$key];
@@ -193,6 +235,7 @@ class FacturaController extends Controller
                         $entrada->descuento = $descuentokey;
                         $entrada->base = $basekey;
                         $entrada->precio = $preciokey;
+                        $entrada->iva = $iva;
                         $entrada->preciofinal = $preciofinalkey;
                         $entrada->articulo_id = $articulokey;
                         $entrada->imp_unitario = $unitariokey;
@@ -207,6 +250,7 @@ class FacturaController extends Controller
                         $create->cantidad = $cantidadkey;
                         $create->descuento = $descuentokey;
                         $create->base = $basekey;
+                        $create->iva = $iva;
                         $create->precio = $preciokey;
                         $create->preciofinal = $preciofinalkey;
                         $create->articulo_id = $articulokey;
@@ -227,7 +271,6 @@ class FacturaController extends Controller
                 $edit_factura['respaldo_factura']=$request->file('archivo')->store('uploads', 'public');
             }
             $edit_factura->proveedor_id = $request->proveedor;
-            $edit_factura->iva = $request->iva;
             $edit_factura->imp_iva = $request->impfactura;
             $edit_factura->imp_total = $request->total;
             $edit_factura->subtotal = $request->subtotal;

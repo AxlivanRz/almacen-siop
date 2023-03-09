@@ -262,7 +262,7 @@
             formGroup3.appendChild(label);
             var iva = document.createElement("input");
             iva.className = "form-control form-control-sm";
-            iva.name = "iva";
+            iva.name = "iva[]";
             iva.id = "iva" + parent;
             iva.type = "number";
             iva.min = "0";
